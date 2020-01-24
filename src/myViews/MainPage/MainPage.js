@@ -22,7 +22,7 @@ import NavBar from "../../myComponents/NavBar/NavBar.jsx";
 
 const useStyles = makeStyles(MainPageStyle);
 
-export default function BlogPostsPage() {
+const MainPage = () => {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -93,4 +93,6 @@ export default function BlogPostsPage() {
       />
     </div>
   );
-}
+};
+
+export default MainPage;

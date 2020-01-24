@@ -7,12 +7,13 @@ import Button from "@material-ui/core/Button";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import CampPickChild from "./CampPickerComponents/CampPickChild";
+import CampCreateChildPersonalData from "./CampPickerComponents/CampCreateChildPersonalData";
+import CampCreateChildAdressData from "./CampPickerComponents/CampCreateChildAdressData";
+import PickChildAllergies from "./PickChildAllergies";
 import CampPickWeek from "./CampPickerComponents/CampPickWeek";
 import CampPickFinish from "./CampPickerComponents/CampPickFinish";
 import CampPickCamp from "./CampPickerComponents/CampPickCamp";
 import CampPickChildCare from "./CampPickerComponents/CampPickChildCare";
-import CampPickOverview from "./CampPickerComponents/CampPickOverview";
 
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
 
@@ -21,10 +22,11 @@ const useStyles = makeStyles(campsStyle);
 function getSteps() {
   return [
     "Wer nimmt teil?",
+    "Kontakt",
+    "Krankheiten/Allergien",
     "Welche Woche?",
     "Camps wählen",
     "Randbetreuung",
-    "Übersicht",
     "Abschließen"
   ];
 }
@@ -32,16 +34,18 @@ function getSteps() {
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
-      return <CampPickChild />;
+      return <CampCreateChildPersonalData />;
     case 1:
-      return <CampPickWeek />;
+      return <CampCreateChildAdressData />;
     case 2:
-      return <CampPickCamp />;
+      return <PickChildAllergies />;
     case 3:
-      return <CampPickChildCare />;
+      return <CampPickWeek />;
     case 4:
-      return <CampPickOverview />;
+      return <CampPickCamp />;
     case 5:
+      return <CampPickChildCare />;
+    case 6:
       return <CampPickFinish />;
     default:
       return "Unknown stepIndex";

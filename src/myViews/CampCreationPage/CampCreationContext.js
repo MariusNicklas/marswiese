@@ -1,3 +1,9 @@
-import { createContext } from "react";
+import React from "react";
 
-export const CampCreationContext = createContext(null);
+const CampCreationContext = React.createContext();
+
+export const CampCreationProvider = CampCreationContext.Provider;
+
+export const CampCreationConsumer = CampCreationContext.Consumer;
+
+export default CampCreationContext;

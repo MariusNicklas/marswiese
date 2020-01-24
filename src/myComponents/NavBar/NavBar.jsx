@@ -40,7 +40,7 @@ function reducer(state, action) {
   }
 }
 
-const NavBar = () => {
+const NavBar = props => {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);

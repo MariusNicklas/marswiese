@@ -15,12 +15,14 @@ import campsImg from "assets/myImg/Camp_Sternkreis.JPG";
 
 const useStyles = makeStyles(sectionPillsStyle);
 
-function SectionProducts(props) {
+const SectionProducts = props => {
   const classes = useStyles();
+
   return (
     <div className={classes.section}>
       <h2>Angebote</h2>
       <GridContainer>
+        {/* GRID ITEM 1 KURSE*/}
         <GridItem xs={12} sm={12} md={12}>
           <Card
             onClick={() =>
@@ -39,6 +41,7 @@ function SectionProducts(props) {
           </Card>
         </GridItem>
 
+        {/* GRID ITEM 2 FERIENCAMPS*/}
         <GridItem xs={12} sm={6} md={6}>
           <Card
             onClick={() => props.history.push("/camps")}
@@ -54,6 +57,7 @@ function SectionProducts(props) {
           </Card>
         </GridItem>
 
+        {/* GRID ITEM 3 KINDERGEBURTSTAGE*/}
         <GridItem xs={12} sm={6} md={6}>
           <Card
             onClick={() =>
@@ -72,9 +76,28 @@ function SectionProducts(props) {
             </CardBody>
           </Card>
         </GridItem>
+
+        {/* GRID ITEM 4 EIGENE VERANSTALTUNGEN*/}
+        <GridItem xs={12} sm={12} md={12}>
+          <Card
+            onClick={() =>
+              (window.location.href =
+                "https://www.marswiese.at/veranstaltungs-anfrage/")
+            }
+            raised
+            background
+            style={{
+              backgroundImage: "url()"
+            }}
+          >
+            <CardBody background>
+              <h3 className={classes.cardTitle}>Eigene Veranstaltung</h3>
+            </CardBody>
+          </Card>
+        </GridItem>
       </GridContainer>
     </div>
   );
-}
+};
 
 export default withRouter(SectionProducts);

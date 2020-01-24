@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, { useReducer } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -18,10 +18,28 @@ import Button from "components/CustomButtons/Button.js";
 // sections for this page
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import CampPicker from "./CampPicker";
-import { CampCreationContext } from "./CampCreationContext";
+import CampCreationContext, {
+  CampCreationProvider
+} from "./CampCreationContext";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "field-change": {
+      console.log("state about to change");
+      return {
+        ...state,
+        [action.field]: action.value
+      };
+    }
+
+    default: {
+      return state;
+    }
+  }
+}
 
 const useStyles = makeStyles(campsStyle);
 
@@ -30,9 +48,23 @@ function CampCreationPage({ width }) {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
   });
+
   const classes = useStyles();
+
+  // CAMP ERSTELLEN - GLOBAL STATE
+  const [state, dispatch] = useReducer(reducer, {
+    firstName: "Jesus",
+    lastName: "Christus",
+    birthday: "24.12.0000",
+    userName: "jesusMotherfucker",
+    phone: "0190 666666",
+    street: "Road to Zion",
+    zip: "1200",
+    city: "Nazareth"
+  });
+
   return (
-    <div>
+    <CampCreationProvider value={{ state, dispatch }}>
       <Header
         brand="Marswiese"
         links={<HeaderLinks dropdownHoverColor="primary" />}
@@ -54,7 +86,7 @@ function CampCreationPage({ width }) {
               <div className={classes.brand}>
                 <h1>Stelle dein Camp zusammen</h1>
                 <h3 className={classes.title}>
-                  Verbringe die Ferien genauso wie du es willst
+                  Verbringe die Ferien genau so wie du es willst
                 </h3>
               </div>
             </GridItem>
@@ -63,9 +95,7 @@ function CampCreationPage({ width }) {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <CampCreationContext.Provider value="Jesus">
-            <CampPicker classes={{ ...classes }} />
-          </CampCreationContext.Provider>
+          <CampPicker classes={{ ...classes }} />
         </div>
       </div>
       <Footer
@@ -125,7 +155,7 @@ function CampCreationPage({ width }) {
           </div>
         }
       />
-    </div>
+    </CampCreationProvider>
   );
 }
 export default withWidth()(CampCreationPage);
