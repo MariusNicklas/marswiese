@@ -1,13 +1,17 @@
 /* eslint-disable */
-import React, { useCallback, useState, useReducer } from "react";
+import React, {
+  useCallback,
+  useState,
+  useReducer,
+  useEffect,
+  useContext
+} from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
-// react components for routing our app without refresh
-import { Link } from "react-router-dom";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField } from "@material-ui/core";
+import { Grid, TextField, Input } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Menu from "@material-ui/core/Menu";
@@ -21,6 +25,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Button from "components/CustomButtons/Button.js";
 import { login } from "../../APIUtils";
 import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
+import CampCreationContext from "../../myViews/CampCreationPage/CampCreationContext";
 
 const useStyles = makeStyles(styles);
 
@@ -40,6 +45,7 @@ function reducer(state, action) {
       };
 
     case "logout":
+      console.log("logged out");
       return {
         ...state,
         auth: false
@@ -97,8 +103,6 @@ export default function NavBarItems(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isSending, setIsSending] = useState(false);
 
-  const open = Boolean(anchorEl);
-
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
   };
@@ -151,19 +155,17 @@ export default function NavBarItems(props) {
             <div>{state.user}</div>
             <Menu
               id="menu-appbar"
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right"
-              }}
+              anchorEl={anchorEl}
               keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right"
-              }}
-              open={open}
+              open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={e => dispatch({ type: "logout" })}>
+              <MenuItem
+                onClick={e => {
+                  handleClose();
+                  dispatch({ type: "logout" });
+                }}
+              >
                 Logout
               </MenuItem>
               <MenuItem onClick={handleClose}>Profil ansehen</MenuItem>
@@ -171,34 +173,57 @@ export default function NavBarItems(props) {
           </div>
         ) : (
           // if not authenticated
-          <div className={classes.loginControls}>
-            <TextField
-              id="username"
-              label="Benutzername"
-              onChange={e =>
-                dispatch({
-                  type: "field-change",
-                  field: "user",
-                  value: e.target.value
-                })
-              }
-            />
-            <TextField
-              id="password"
-              label="Passwort"
-              type="password"
-              onChange={e =>
-                dispatch({
-                  type: "field-change",
-                  field: "password",
-                  value: e.target.value
-                })
-              }
-            />
-            <Button disabled={isSending} onClick={postLogin} color="primary">
-              Anmelden
-            </Button>
-          </div>
+          <Grid container spacing={3}>
+            <Grid item key="username-input-grid-item" xs={12} md={4}>
+              <Input
+                id="username"
+                label="Benutzername"
+                onChange={e =>
+                  dispatch({
+                    type: "field-change",
+                    field: "user",
+                    value: e.target.value
+                  })
+                }
+                placeholder="Benutzername"
+                style={{
+                  padding: "5px",
+                  backgroundColor: "white"
+                }}
+              />
+            </Grid>
+
+            <Grid item key="password-input-grid-item" xs={12} md={4}>
+              <Input
+                id="password"
+                label="Passwort"
+                type="password"
+                onChange={e =>
+                  dispatch({
+                    type: "field-change",
+                    field: "password",
+                    value: e.target.value
+                  })
+                }
+                placeholder="Passwort"
+                style={{
+                  padding: "5px",
+                  backgroundColor: "white"
+                }}
+              />
+            </Grid>
+
+            <Grid item key="button-grid-item" xs={12} md={4}>
+              <Button
+                disabled={isSending}
+                onClick={postLogin}
+                color="primary"
+                style={{ margin: 0 }}
+              >
+                Anmelden
+              </Button>
+            </Grid>
+          </Grid>
         )}
       </ListItem>
     </List>

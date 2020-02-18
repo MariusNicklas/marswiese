@@ -20,7 +20,6 @@ const catchAxiosError = error => {
 
   throw error;
 };
-
 /**
  *
  * @param {String} email
@@ -28,6 +27,7 @@ const catchAxiosError = error => {
  * @returns {Promise<JSON>}
  */
 export const login = (email, password) => {
+  console.log(`${url}/api/v2/users/login`);
   try {
     return axios({
       method: "POST",
@@ -98,6 +98,42 @@ export const register = input => {
     .catch(err => catchAxiosError(err));
 };
 
+export const createCamp = input => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}/api/v2/camps`,
+    data: input
+  })
+    .then(response => response.data.data)
+    .catch(err => catchAxiosError(err));
+};
+/*
+ * fromDate and toDate must be a ISODate on daytime 0:00 ex.: "2020-04-06T00:00:00.000Z"
+ */
+export const getCampsByTimeInterval = (fromDate, toDate) => {
+  if (!fromDate || !toDate) {
+    throw new Error("toDate and/or fromDate not set");
+  }
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v2/camps/timeinterval/${fromDate}/${toDate}`
+  })
+    .then(response => response.data.data)
+    .catch(err => catchAxiosError(err));
+};
+
+export const getAllCampWeeks = () => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v2/camps/weeks`
+  })
+    .then(response => response.data.data)
+    .catch(err => catchAxiosError(err));
+};
+
 export const isLoggedIn = () => {
   return axios({
     method: "GET",
@@ -117,5 +153,36 @@ export const getAllCamps = () => {
     url: `${url}/api/v2/camps `
   })
     .then(response => [...response.data.data])
+    .catch(err => catchAxiosError(err));
+};
+
+export const getAllCategories = () => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v2/categories/labels`
+  })
+    .then(response => [...response.data.data])
+    .catch(err => catchAxiosError(err));
+};
+
+export const postCampPseudoBooking = input => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}/api/v2/camppseudobookings`,
+    data: input
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
+};
+
+export const getMe = () => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v2/users/me `
+  })
+    .then(response => response.data.data.data)
     .catch(err => catchAxiosError(err));
 };

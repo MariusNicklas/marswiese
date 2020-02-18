@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useReducer } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -14,10 +14,40 @@ import CampPickWeek from "./CampPickerComponents/CampPickWeek";
 import CampPickFinish from "./CampPickerComponents/CampPickFinish";
 import CampPickCamp from "./CampPickerComponents/CampPickCamp";
 import CampPickChildCare from "./CampPickerComponents/CampPickChildCare";
+import CampCreationContext from "./CampCreationContext";
+import UserContext from "./UserContext";
+import { Box } from "@material-ui/core";
+import { postCampPseudoBooking } from "../../APIUtils";
 
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
 
 const useStyles = makeStyles(campsStyle);
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "field-change": {
+      return {
+        ...state,
+        [action.field]: action.value
+      };
+    }
+    case "login": {
+      return {
+        ...state,
+        authenticated: true
+      };
+    }
+    case "logout": {
+      return {
+        ...state,
+        authenticated: false
+      };
+    }
+    default: {
+      return state;
+    }
+  }
+}
 
 function getSteps() {
   return [
@@ -34,19 +64,47 @@ function getSteps() {
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
-      return <CampCreateChildPersonalData />;
+      return (
+        <Box minHeight="200px">
+          <CampCreateChildPersonalData />
+        </Box>
+      );
     case 1:
-      return <CampCreateChildAdressData />;
+      return (
+        <Box minHeight="200px">
+          <CampCreateChildAdressData />
+        </Box>
+      );
     case 2:
-      return <PickChildAllergies />;
+      return (
+        <Box minHeight="200px">
+          <PickChildAllergies />
+        </Box>
+      );
     case 3:
-      return <CampPickWeek />;
+      return (
+        <Box minHeight="200px">
+          <CampPickWeek />
+        </Box>
+      );
     case 4:
-      return <CampPickCamp />;
+      return (
+        <Box minHeight="200px">
+          <CampPickCamp />
+        </Box>
+      );
     case 5:
-      return <CampPickChildCare />;
+      return (
+        <Box minHeight="200px">
+          <CampPickChildCare />
+        </Box>
+      );
     case 6:
-      return <CampPickFinish />;
+      return (
+        <Box minHeight="200px">
+          <CampPickFinish />
+        </Box>
+      );
     default:
       return "Unknown stepIndex";
   }
@@ -55,66 +113,119 @@ function getStepContent(stepIndex) {
 // eslint-disable-next-line react/prop-types
 const CampPicker = ({ width }) => {
   const classes = useStyles();
+
+  const [state, dispatch] = useReducer(reducer, {
+    authenticated: false,
+    firstName: "",
+    lastName: "",
+    birthday: "",
+    emergencyNumber: "",
+    address: "",
+    zip: "",
+    city: "",
+    allergies: [],
+    diseases: "",
+    measures: "",
+    week: [],
+    campMorning: "",
+    campAfternoon: "",
+    morningCare: false,
+    afternoonCare: false
+  });
+
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    if (activeStep === steps.length - 1) {
+      submitBooking();
+    }
   };
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  async function submitBooking() {
+    try {
+      const response = await postCampPseudoBooking({
+        kid: { name: `state.firstName` },
+        morningChildCare: state.morningCare,
+        afternoonChildCare: state.afternoonCare,
+        camps: [state.campMorning, state.campAfternoon]
+      });
+
+      const status = await response.status;
+
+      if (status === 201) {
+        console.log("success");
+      }
+    } catch (err) {
+      console.log("error");
+    }
+  }
+
+  // USER CONTEXT
+  const user = useContext(UserContext);
 
   return (
-    <div>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel>{isWidthUp("sm", width) ? label : ""}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <GridContainer justify="center">
-        <GridItem md={10} sm={10} xs={12}>
-          {activeStep === steps.length ? (
-            <div>
-              <h3>Alle Schritte abgeschlossen</h3>
-              <Button onClick={handleReset}>Zurücksetzen</Button>
-            </div>
-          ) : (
-            <div>
-              <h3>
-                {isWidthUp("sm", width)
-                  ? steps[activeStep]
-                  : `Schritt ${activeStep + 1}: ${steps[activeStep]}`}
-              </h3>
-              {getStepContent(activeStep)}
+    <UserContext.Provider value={user}>
+      <CampCreationContext.Provider
+        value={{ state: state, dispatch: dispatch }}
+      >
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map(label => (
+            <Step key={label}>
+              <StepLabel>{isWidthUp("sm", width) ? label : ""}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <GridContainer justify="center">
+          <GridItem md={10} sm={10} xs={12}>
+            {activeStep === steps.length ? (
               <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                >
-                  Zurück
-                </Button>
+                <h3>Alle Schritte abgeschlossen</h3>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handleNext}
+                  onClick={submitBooking}
+                  className={classes.nextButton}
                 >
-                  {activeStep === steps.length - 1 ? "Abschließen" : "Weiter"}
+                  Jetzt buchen
                 </Button>
               </div>
-            </div>
-          )}
-        </GridItem>
-      </GridContainer>
-    </div>
+            ) : (
+              <div>
+                <h3>
+                  {isWidthUp("sm", width)
+                    ? steps[activeStep]
+                    : `Schritt ${activeStep + 1}: ${steps[activeStep]}`}
+                </h3>
+                {getStepContent(activeStep)}
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.backButton}
+                  >
+                    Zurück
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.nextButton}
+                  >
+                    {activeStep === steps.length - 1 ? "Abschließen" : "Weiter"}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </GridItem>
+        </GridContainer>
+      </CampCreationContext.Provider>
+    </UserContext.Provider>
   );
 };
 

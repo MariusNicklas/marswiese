@@ -23,6 +23,7 @@ import CampsSectionOffice from "myViews/CampsPage/Sections/CampsSectionOffice.js
 import CampsSectionContact from "myViews/CampsPage/Sections/CampsSectionContact.js";
 
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
+import { BrowserRouter } from "react-router-dom";
 
 const useStyles = makeStyles(campsStyle);
 
@@ -33,22 +34,8 @@ export default function AboutUsPage() {
   });
   const classes = useStyles();
   return (
-    <div>
-      <Header
-        brand="Marswiese"
-        links={<HeaderLinks dropdownHoverColor="primary" />}
-        fixed
-        color="transparent"
-        changeColorOnScroll={{
-          height: 100,
-          color: "primary"
-        }}
-      />
-      <Parallax
-        image={require("assets/img/K1600_mars.JPG")}
-        filter="dark"
-        small
-      >
+    <BrowserRouter>
+      <Parallax image={require("assets/img/K1600_mars.JPG")} small>
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem
@@ -156,6 +143,6 @@ export default function AboutUsPage() {
           </div>
         }
       />
-    </div>
+    </BrowserRouter>
   );
 }

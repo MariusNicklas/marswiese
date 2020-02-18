@@ -76,11 +76,21 @@ const campsStyle = {
     width: "90%"
   },
   backButton: {
-    marginRight: "12px"
+    marginRight: "12px",
+    marginBottom: "12px"
+  },
+  nextButton: {
+    marginBottom: "12px"
   },
   instructions: {
     marginTop: "12px",
     marginBottom: "12px"
+  },
+  selectField: {
+    marginBottom: "12px"
+  },
+  box: {
+    minHeight: "200px"
   }
 };
 

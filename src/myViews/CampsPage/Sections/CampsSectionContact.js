@@ -7,13 +7,13 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import Button from "components/CustomButtons/Button.js";
 
 import contactStyle from "assets/jss/material-kit-pro-react/views/aboutUsSections/contactStyle.js";
+import { Link } from "@material-ui/core";
 
 const useStyles = makeStyles(contactStyle);
 
-export default function SectionContact() {
+const SectionContact = () => {
   const classes = useStyles();
   return (
     <div className={classes.aboutUs}>
@@ -41,18 +41,13 @@ export default function SectionContact() {
                 classes.textCenter
               )}
             >
-              <Button
-                color="primary"
-                size="large"
-                round
-                onClick={() => alert("btn 2 clicked")}
-              >
-                Camp zusammenstellen
-              </Button>
+              <Link href="/gestalte-dein-camp">Camp zusammenstellen</Link>
             </GridItem>
           </GridContainer>
         </GridItem>
       </GridContainer>
     </div>
   );
-}
+};
+
+export default SectionContact;

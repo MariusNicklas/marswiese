@@ -7,10 +7,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { TextField, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { login } from "../../APIUtils";
 
 import styles from "assets/jss/material-kit-pro-react/components/headerStyle.js";
+import CustomInput from "components/CustomInput/CustomInput";
 
 const useStyles = makeStyles(styles);
 
@@ -130,7 +131,7 @@ const NavBar = props => {
           ) : (
             // if not authenticated
             <div className={classes.loginControls}>
-              <TextField
+              <CustomInput
                 id="username"
                 label="Benutzername"
                 onChange={e =>
@@ -141,7 +142,7 @@ const NavBar = props => {
                   })
                 }
               />
-              <TextField
+              <CustomInput
                 id="password"
                 label="Passwort"
                 type="password"

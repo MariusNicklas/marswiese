@@ -9,37 +9,16 @@ import ListItem from "@material-ui/core/ListItem";
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 // core components
-import Header from "components/Header/Header.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Parallax from "components/Parallax/Parallax.js";
 import Footer from "components/Footer/Footer.js";
-import Button from "components/CustomButtons/Button.js";
 // sections for this page
-import HeaderLinks from "components/Header/HeaderLinks.js";
 import CampPicker from "./CampPicker";
-import CampCreationContext, {
-  CampCreationProvider
-} from "./CampCreationContext";
+
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "field-change": {
-      console.log("state about to change");
-      return {
-        ...state,
-        [action.field]: action.value
-      };
-    }
-
-    default: {
-      return state;
-    }
-  }
-}
 
 const useStyles = makeStyles(campsStyle);
 
@@ -51,30 +30,8 @@ function CampCreationPage({ width }) {
 
   const classes = useStyles();
 
-  // CAMP ERSTELLEN - GLOBAL STATE
-  const [state, dispatch] = useReducer(reducer, {
-    firstName: "Jesus",
-    lastName: "Christus",
-    birthday: "24.12.0000",
-    userName: "jesusMotherfucker",
-    phone: "0190 666666",
-    street: "Road to Zion",
-    zip: "1200",
-    city: "Nazareth"
-  });
-
   return (
-    <CampCreationProvider value={{ state, dispatch }}>
-      <Header
-        brand="Marswiese"
-        links={<HeaderLinks dropdownHoverColor="primary" />}
-        fixed
-        color="transparent"
-        changeColorOnScroll={{
-          height: 100,
-          color: "primary"
-        }}
-      />
+    <React.Fragment>
       <Parallax
         image={require("assets/img/klettern__camp.jpg")}
         small={isWidthUp("sm", width)}
@@ -155,7 +112,7 @@ function CampCreationPage({ width }) {
           </div>
         }
       />
-    </CampCreationProvider>
+    </React.Fragment>
   );
 }
 export default withWidth()(CampCreationPage);

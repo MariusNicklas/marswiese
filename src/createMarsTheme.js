@@ -1,13 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
 const createMarsTheme = createMuiTheme({
-  overrides: {
-    MuiButtonBase: {
-      root: {
-        margin: "24px 0px 16px"
-      }
-    }
-  },
   palette: {
     primary: {
       light: "#8bc464",
