@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import React, { useContext, useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 
 import DataContext from "./DataContext";
-import ValidatedTextField from "./ValidatedTextField.component";
+import ValidatedTextField from "../../myComponents/ValidatedTextField.component";
 import { isEmpty } from "validator";
 
-export default function PersonalData(props) {
+export default function AddressData(props) {
   // Global state
   const { state, dispatch } = useContext(DataContext);
 

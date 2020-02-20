@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isLoggedIn } from "../APIUtils";
@@ -14,18 +15,26 @@ const AuthRoute = ({ component: Component, ...rest }) => {
         }
         setloading(false);
       })
-      .catch(err => setloading(false));
+      .catch(() => setloading(false));
   }, []);
 
   return !loading ? (
     <Route
       {...rest}
       render={props => {
-        if (authenticated === true) {
+        if (authenticated) {
           return <Component {...props} />;
         }
-        if (authenticated === false) {
-          return <Redirect to={{ pathname: "/signup" }} />;
+        if (!authenticated) {
+          console.log("next should be " + props.location.pathname);
+          return (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { next: props.location.pathname }
+              }}
+            />
+          );
         }
       }}
     />

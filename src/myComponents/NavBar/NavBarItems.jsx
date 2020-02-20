@@ -38,14 +38,12 @@ function reducer(state, action) {
       };
 
     case "login":
-      console.log("logged in");
       return {
         ...state,
         auth: true
       };
 
     case "logout":
-      console.log("logged out");
       return {
         ...state,
         auth: false

@@ -14,7 +14,7 @@ import MainPage from "./myViews/MainPage/MainPage";
 import CampsPage from "./myViews/CampsPage/CampsPage";
 import CampCreationPage from "./myViews/CampCreationPage/CampCreationPage";
 import AuthRoute from "myViews/AuthRoute";
-import LoginPage from "myViews/LoginPage/LoginPage";
+import SignInPage from "myViews/SignIn/SignIn";
 import SignUp from "myViews/SignUp/SignUp.component.jsx";
 
 var hist = createBrowserHistory();
@@ -23,13 +23,13 @@ const theme = createMarsTheme;
 
 const LoginContainer = () => (
   <div className="container">
-    <Route path="/login" component={LoginPage} />
-    <Route exact path="/signup" component={SignUp} />
+    <Route exact path="/registrierung" component={SignUp} />
+    <Route exact path="/login" component={SignInPage} />
   </div>
 );
 
 const DefaultContainer = () => (
-  <div className="container">
+  <React.Fragment>
     <Header
       links={<NavBarItems dropdownHoverColor="info" />}
       fixed
@@ -42,14 +42,15 @@ const DefaultContainer = () => (
     <Route path="/camps" component={CampsPage} />
     <AuthRoute path="/gestalte-dein-camp" component={CampCreationPage} />
     <Route exact path="/" component={MainPage} />
-  </div>
+  </React.Fragment>
 );
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Router history={hist}>
       <Switch>
-        <Route exact path="/signup" component={LoginContainer} />
+        <Route exact path="/registrierung" component={LoginContainer} />
+        <Route exact path="/login" component={LoginContainer} />
         <Route component={DefaultContainer} />
       </Switch>
     </Router>

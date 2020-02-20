@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useReducer } from "react";
 import { withRouter } from "react-router-dom";
 import Stepper from "@material-ui/core/Stepper";
@@ -23,6 +24,7 @@ import Parallax from "components/Parallax/Parallax.js";
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
 
 const useStyles = makeStyles(campsStyle);
+
 function reducer(state, action) {
   switch (action.type) {
     case "field-change": {
@@ -150,7 +152,7 @@ const SignUp = props => {
               ))}
             </Stepper>
 
-            <Link to="/signin">Schon registriert?</Link>
+            <Link to="/login">Schon registriert?</Link>
           </DataContext.Provider>
         </div>
       </div>

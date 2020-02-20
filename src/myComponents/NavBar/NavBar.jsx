@@ -24,12 +24,14 @@ function reducer(state, action) {
       };
 
     case "login":
+      console.log("authenticated? " + action.value);
       return {
         ...state,
         auth: true
       };
 
     case "logout":
+      console.log("authenticated? " + action.value);
       return {
         ...state,
         auth: false

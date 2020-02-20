@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 
-import ValidatedTextField from "./ValidatedTextField.component";
+import ValidatedTextField from "../../myComponents/ValidatedTextField.component";
 import DataContext from "./DataContext";
 
 export default function PersonalData(props) {

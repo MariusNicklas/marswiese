@@ -30,15 +30,6 @@ const MainPage = () => {
   const classes = useStyles();
   return (
     <div>
-      <Header
-        links={<NavBarItems dropdownHoverColor="info" />}
-        fixed
-        color="transparent"
-        changeColorOnScroll={{
-          height: 400,
-          color: "primary"
-        }}
-      />
       <Parallax
         image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
         small
