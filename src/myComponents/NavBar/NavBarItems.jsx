@@ -1,31 +1,22 @@
 /* eslint-disable */
-import React, {
-  useCallback,
-  useState,
-  useReducer,
-  useEffect,
-  useContext
-} from "react";
+import React, { useCallback, useState, useReducer, useEffect } from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, TextField, Input } from "@material-ui/core";
+import { Grid, Input } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
-// @material-ui/icons
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import IconButton from "@material-ui/core/IconButton";
-
 // core components
 import Button from "components/CustomButtons/Button.js";
 import { login, isLoggedIn, getMe } from "../../APIUtils";
 import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
-import CampCreationContext from "../../myViews/CampCreationPage/CampCreationContext";
+import ShoppingCartItem from "./ShoppingCartItem";
+import AvatarItem from "./AvatarItem";
 
 const useStyles = makeStyles(styles);
 
@@ -98,16 +89,7 @@ export default function NavBarItems(props) {
   const { dropdownHoverColor } = props;
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [isSending, setIsSending] = useState(false);
-
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const [state, dispatch] = useReducer(reducer, {
     user: "",
@@ -175,33 +157,8 @@ export default function NavBarItems(props) {
         {state.auth ? (
           // if authenticated
           <div className={classes.loginControls}>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <div>{state.user}</div>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem
-                onClick={e => {
-                  handleClose();
-                  dispatch({ type: "logout" });
-                }}
-              >
-                Logout
-              </MenuItem>
-              <MenuItem onClick={handleClose}>Profil ansehen</MenuItem>
-            </Menu>
+            <ShoppingCartItem />
+            <AvatarItem user={state.user} dispatch={dispatch} />
           </div>
         ) : (
           // if not authenticated

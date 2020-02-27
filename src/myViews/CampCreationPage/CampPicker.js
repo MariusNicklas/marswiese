@@ -147,23 +147,26 @@ const CampPicker = ({ width }) => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
+  const [isSending, setIsSending] = React.useState(false);
+
   async function submitBooking() {
     try {
+      setIsSending(true);
       const response = await postCampPseudoBooking({
-        kid: { name: `state.firstName` },
+        kid: "{ name: " + state.firstName + "}",
         morningChildCare: state.morningCare,
         afternoonChildCare: state.afternoonCare,
         camps: [state.campMorning, state.campAfternoon]
       });
 
-      const status = await response.status;
-
-      if (status === 201) {
-        console.log("success");
+      if (response.status === 201) {
+        console.log("camp successfully booked");
+        console.log(response);
       }
     } catch (err) {
       console.log("error");
     }
+    setIsSending(false);
   }
 
   // USER CONTEXT
@@ -213,11 +216,14 @@ const CampPicker = ({ width }) => {
                   </Button>
                   <Button
                     variant="contained"
+                    disabled={isSending}
                     color="primary"
                     onClick={handleNext}
                     className={classes.nextButton}
                   >
-                    {activeStep === steps.length - 1 ? "Abschließen" : "Weiter"}
+                    {activeStep === steps.length - 1
+                      ? "In den Warenkorb"
+                      : "Weiter"}
                   </Button>
                 </div>
               </div>
