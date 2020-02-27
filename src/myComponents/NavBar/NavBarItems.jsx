@@ -23,7 +23,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 // core components
 import Button from "components/CustomButtons/Button.js";
-import { login } from "../../APIUtils";
+import { login, isLoggedIn, getMe } from "../../APIUtils";
 import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 import CampCreationContext from "../../myViews/CampCreationPage/CampCreationContext";
 
@@ -125,6 +125,16 @@ export default function NavBarItems(props) {
         // send the actual request
         const response = await login(state.user, state.password);
         if (response.status === 200) {
+          try {
+            const userResponse = await getMe();
+            dispatch({
+              type: "field-change",
+              field: "user",
+              value: userResponse.firstName + " " + userResponse.lastName
+            });
+          } catch (err) {
+            console.log(err);
+          }
           dispatch({ type: "login" });
         }
       } catch (err) {
@@ -134,6 +144,30 @@ export default function NavBarItems(props) {
       setIsSending(false);
     })();
   }, [isSending, state.password, state.user]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        // send the actual request
+        const response = await isLoggedIn();
+        if (response.status === 200 || 304) {
+          try {
+            const userResponse = await getMe();
+            dispatch({
+              type: "field-change",
+              field: "user",
+              value: userResponse.firstName + " " + userResponse.lastName
+            });
+          } catch (err) {
+            console.log(err);
+          }
+          dispatch({ type: "login" });
+        }
+      } catch (err) {
+        dispatch({ type: "logout" });
+      }
+    })();
+  }, []);
 
   return (
     <List className={classes.list + " " + classes.mlAuto}>

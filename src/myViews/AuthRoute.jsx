@@ -26,7 +26,6 @@ const AuthRoute = ({ component: Component, ...rest }) => {
           return <Component {...props} />;
         }
         if (!authenticated) {
-          console.log("next should be " + props.location.pathname);
           return (
             <Redirect
               to={{

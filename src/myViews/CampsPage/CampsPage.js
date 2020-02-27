@@ -67,7 +67,7 @@ export default function AboutUsPage() {
             >
               <Button
                 color="primary"
-                size="large"
+                size="lg"
                 round
                 onClick={() => alert("camp zusammenstellen: btn 1 clicked")}
               >
