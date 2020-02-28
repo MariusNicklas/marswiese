@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 // @material-ui/icons
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import IconButton from "@material-ui/core/IconButton";
@@ -7,6 +8,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const AvatarItem = props => {
+  const { dispatch } = props;
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenuOpen = event => {
@@ -39,7 +42,7 @@ const AvatarItem = props => {
         <MenuItem
           onClick={e => {
             handleMenuClose();
-            props.dispatch({ type: "logout" });
+            dispatch({ type: "logout" });
           }}
         >
           Logout
@@ -47,6 +50,10 @@ const AvatarItem = props => {
       </Menu>
     </React.Fragment>
   );
+};
+
+AvatarItem.propTypes = {
+  dispatch: PropTypes.func.isRequired
 };
 
 export default AvatarItem;

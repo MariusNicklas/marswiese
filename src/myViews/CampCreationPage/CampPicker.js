@@ -138,9 +138,6 @@ const CampPicker = ({ width }) => {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
-    if (activeStep === steps.length - 1) {
-      submitBooking();
-    }
   };
 
   const handleBack = () => {
@@ -153,7 +150,7 @@ const CampPicker = ({ width }) => {
     try {
       setIsSending(true);
       const response = await postCampPseudoBooking({
-        kid: "{ name: " + state.firstName + "}",
+        kid: { name: state.firstName + " " + state.lastName },
         morningChildCare: state.morningCare,
         afternoonChildCare: state.afternoonCare,
         camps: [state.campMorning, state.campAfternoon]
@@ -195,7 +192,7 @@ const CampPicker = ({ width }) => {
                   onClick={submitBooking}
                   className={classes.nextButton}
                 >
-                  Jetzt buchen
+                  In den Warenkorb
                 </Button>
               </div>
             ) : (
@@ -222,7 +219,7 @@ const CampPicker = ({ width }) => {
                     className={classes.nextButton}
                   >
                     {activeStep === steps.length - 1
-                      ? "In den Warenkorb"
+                      ? "Fertigstellen"
                       : "Weiter"}
                   </Button>
                 </div>
