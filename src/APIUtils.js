@@ -196,3 +196,13 @@ export const getShoppingCart = () => {
     .then(response => response.data.data.shoppingCart)
     .catch(err => catchAxiosError(err));
 };
+
+export const deleteCampPseudoBooking = id => {
+  return axios({
+    method: "DELETE",
+    withCredentials: true,
+    url: `${url}/api/v1/camppseudobookings/${id}`
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
+};

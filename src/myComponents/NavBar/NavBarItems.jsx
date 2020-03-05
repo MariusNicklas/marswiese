@@ -3,6 +3,8 @@ import React, { useCallback, useState, useReducer, useEffect } from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 
+import clsx from "clsx";
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Input } from "@material-ui/core";
@@ -47,44 +49,46 @@ function reducer(state, action) {
 }
 
 export default function NavBarItems(props) {
-  const easeInOutQuad = (t, b, c, d) => {
-    t /= d / 2;
-    if (t < 1) return (c / 2) * t * t + b;
-    t--;
-    return (-c / 2) * (t * (t - 2) - 1) + b;
-  };
+  {
+    const easeInOutQuad = (t, b, c, d) => {
+      t /= d / 2;
+      if (t < 1) return (c / 2) * t * t + b;
+      t--;
+      return (-c / 2) * (t * (t - 2) - 1) + b;
+    };
 
-  const smoothScroll = (e, target) => {
-    if (window.location.pathname === "/sections") {
-      var isMobile = navigator.userAgent.match(
-        /(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i
-      );
-      if (isMobile) {
-        // if we are on mobile device the scroll into view will be managed by the browser
-      } else {
-        e.preventDefault();
-        var targetScroll = document.getElementById(target);
-        scrollGo(document.documentElement, targetScroll.offsetTop, 1250);
-      }
-    }
-  };
-  const scrollGo = (element, to, duration) => {
-    var start = element.scrollTop,
-      change = to - start,
-      currentTime = 0,
-      increment = 20;
-
-    var animateScroll = function() {
-      currentTime += increment;
-      var val = easeInOutQuad(currentTime, start, change, duration);
-      element.scrollTop = val;
-      if (currentTime < duration) {
-        setTimeout(animateScroll, increment);
+    const smoothScroll = (e, target) => {
+      if (window.location.pathname === "/sections") {
+        var isMobile = navigator.userAgent.match(
+          /(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i
+        );
+        if (isMobile) {
+          // if we are on mobile device the scroll into view will be managed by the browser
+        } else {
+          e.preventDefault();
+          var targetScroll = document.getElementById(target);
+          scrollGo(document.documentElement, targetScroll.offsetTop, 1250);
+        }
       }
     };
-    animateScroll();
-  };
-  var onClickSections = {};
+    const scrollGo = (element, to, duration) => {
+      var start = element.scrollTop,
+        change = to - start,
+        currentTime = 0,
+        increment = 20;
+
+      var animateScroll = function() {
+        currentTime += increment;
+        var val = easeInOutQuad(currentTime, start, change, duration);
+        element.scrollTop = val;
+        if (currentTime < duration) {
+          setTimeout(animateScroll, increment);
+        }
+      };
+      animateScroll();
+    };
+    var onClickSections = {};
+  }
 
   const { dropdownHoverColor } = props;
   const classes = useStyles();
@@ -109,10 +113,11 @@ export default function NavBarItems(props) {
         if (response.status === 200) {
           try {
             const userResponse = await getMe();
+            const userName = `${userResponse.firstName} ${userResponse.lastName}`;
             dispatch({
               type: "field-change",
               field: "user",
-              value: userResponse.firstName + " " + userResponse.lastName
+              value: username
             });
           } catch (err) {
             console.log(err);
@@ -125,7 +130,7 @@ export default function NavBarItems(props) {
       // once the request is sent, update state again
       setIsSending(false);
     })();
-  }, [isSending, state.password, state.user]);
+  }, [state.password, state.user]);
 
   useEffect(() => {
     (async () => {
@@ -135,10 +140,11 @@ export default function NavBarItems(props) {
         if (response.status === 200 || 304) {
           try {
             const userResponse = await getMe();
+            const userName = `${userResponse.firstName} ${userResponse.lastName}`;
             dispatch({
               type: "field-change",
               field: "user",
-              value: userResponse.firstName + " " + userResponse.lastName
+              value: userName
             });
           } catch (err) {
             console.log(err);
@@ -152,7 +158,7 @@ export default function NavBarItems(props) {
   }, []);
 
   return (
-    <List className={classes.list + " " + classes.mlAuto}>
+    <List className={clsx(classes.list, classes.mlAuto)}>
       <ListItem className={classes.listItem}>
         {state.auth ? (
           // if authenticated

@@ -149,15 +149,15 @@ const CampPicker = ({ width }) => {
   async function submitBooking() {
     try {
       setIsSending(true);
+      const name = `${state.firstName} ${state.lastName}`;
       const response = await postCampPseudoBooking({
-        kid: { name: state.firstName + " " + state.lastName },
+        kid: { name },
         morningChildCare: state.morningCare,
         afternoonChildCare: state.afternoonCare,
         camps: [state.campMorning, state.campAfternoon]
       });
 
       if (response.status === 201) {
-        console.log("camp successfully booked");
         console.log(response);
       }
     } catch (err) {
