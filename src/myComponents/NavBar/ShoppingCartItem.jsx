@@ -9,18 +9,18 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Badge from "@material-ui/core/Badge";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
 // @material-ui/lab components
 import Skeleton from "@material-ui/lab/Skeleton";
-import { Button } from "@material-ui/core";
+import { Button, TableHead, TableRow, TableCell } from "@material-ui/core";
 
 const ShoppingCartItem = props => {
   const [open, setOpen] = React.useState(false);
   const [itemCount, setItemCount] = React.useState(0);
   const [items, setItems] = React.useState([]);
-  const [price, setPrice] = React.useState(0);
+  const [cartPrice, setCartPrice] = React.useState(0);
+  const [refreshCartToggle, setRefreshCartToggle] = React.useState(false);
 
   const handleCartOpen = event => {
     setOpen(true);
@@ -32,7 +32,7 @@ const ShoppingCartItem = props => {
 
   const handleDeleteItem = async id => {
     await deleteCampPseudoBooking(id);
-    setItems(items.filter(item => item._id !== id));
+    setRefreshCartToggle(!refreshCartToggle);
   };
 
   useEffect(() => {
@@ -41,10 +41,10 @@ const ShoppingCartItem = props => {
         const response = await getShoppingCart();
         setItemCount(response.shopItemCount);
         setItems(response.campPseudoBookings);
-        setPrice(response.totalPrice);
+        setCartPrice(response.totalPrice);
       } catch {}
     })();
-  }, []);
+  }, [refreshCartToggle]);
 
   return (
     <React.Fragment>
@@ -64,21 +64,39 @@ const ShoppingCartItem = props => {
         <DialogTitle id="shopping-cart-dialog-title">
           Dein Warenkorb
         </DialogTitle>
-        <List>
-          {items.map(item => (
-            <ListItem key={item._id}>
-              <Skeleton variant="rect" width={150} height={90} />
-              <ListItemText
-                primary={
-                  "Camp für " + item.kid.name + " Preis " + item.totalPrice
-                }
-              />
-              <Button onClick={e => handleDeleteItem(item._id)}>
-                <DeleteOutlinedIcon />
-              </Button>
-            </ListItem>
-          ))}
-        </List>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" colSpan={2}>
+                Details
+              </TableCell>
+              <TableCell>Aktionen</TableCell>
+              <TableCell>Preis</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {items.map(item => (
+              <TableRow key={item._id}>
+                <TableCell>
+                  <Skeleton variant="rect" width={150} height={90} />
+                </TableCell>
+                <TableCell>{item.kid.name}</TableCell>
+                <TableCell>
+                  <Button onClick={e => handleDeleteItem(item._id)}>
+                    <DeleteOutlinedIcon />
+                  </Button>
+                </TableCell>
+                <TableCell>{item.totalPrice}</TableCell>
+              </TableRow>
+            ))}
+            {/* Final price of shopping cart, total of all items */}
+            <TableRow>
+              <TableCell align="center" colSpan={2} />
+              <TableCell>Gesamtpreis</TableCell>
+              <TableCell>{cartPrice}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </Dialog>
     </React.Fragment>
   );
