@@ -9,11 +9,10 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Badge from "@material-ui/core/Badge";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
+import Grid from "@material-ui/core/Grid";
 // @material-ui/lab components
 import Skeleton from "@material-ui/lab/Skeleton";
-import { Button, TableHead, TableRow, TableCell } from "@material-ui/core";
+import { Button, TableRow, TableCell } from "@material-ui/core";
 
 const ShoppingCartItem = props => {
   const [open, setOpen] = React.useState(false);
@@ -64,39 +63,47 @@ const ShoppingCartItem = props => {
         <DialogTitle id="shopping-cart-dialog-title">
           Dein Warenkorb
         </DialogTitle>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center" colSpan={2}>
-                Details
-              </TableCell>
-              <TableCell>Aktionen</TableCell>
-              <TableCell>Preis</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map(item => (
-              <TableRow key={item._id}>
-                <TableCell>
-                  <Skeleton variant="rect" width={150} height={90} />
-                </TableCell>
-                <TableCell>{item.kid.name}</TableCell>
-                <TableCell>
-                  <Button onClick={e => handleDeleteItem(item._id)}>
-                    <DeleteOutlinedIcon />
-                  </Button>
-                </TableCell>
-                <TableCell>{item.totalPrice}</TableCell>
-              </TableRow>
-            ))}
-            {/* Final price of shopping cart, total of all items */}
-            <TableRow>
-              <TableCell align="center" colSpan={2} />
-              <TableCell>Gesamtpreis</TableCell>
-              <TableCell>{cartPrice}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+
+        <Grid container>
+          <Grid item align="center" xs={4}>
+            Details
+          </Grid>
+          <Grid item align="right" xs={4}>
+            Aktionen
+          </Grid>
+          <Grid item align="right" xs={4}>
+            Preis
+          </Grid>
+
+          {items.map(item => (
+            <Grid container>
+              <Grid item align="center" xs={3}>
+                <Skeleton variant="rect" width={50} height={30} />
+              </Grid>
+              <Grid item align="center" xs={3}>
+                Ostercamp {item.kid.name}
+              </Grid>
+              <Grid item align="right" xs={3}>
+                <Button onClick={e => handleDeleteItem(item._id)}>
+                  <DeleteOutlinedIcon />
+                </Button>
+              </Grid>
+              <Grid item align="right" xs={3}>
+                {item.totalPrice}
+              </Grid>
+            </Grid>
+          ))}
+          {/* Final price of shopping cart, total of all items */}
+          <Grid container>
+            <Grid item align="center" xs={4} />
+            <Grid item align="right" xs={4}>
+              Gesamtpreis
+            </Grid>
+            <Grid item align="right" xs={4}>
+              {cartPrice}
+            </Grid>
+          </Grid>
+        </Grid>
       </Dialog>
     </React.Fragment>
   );
