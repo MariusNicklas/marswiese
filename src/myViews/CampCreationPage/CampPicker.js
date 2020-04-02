@@ -1,4 +1,5 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useState, useReducer } from "react";
+import { ShoppingCartContext } from "../../myComponents/NavBar/ShoppingCartContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -133,7 +134,12 @@ const CampPicker = ({ width }) => {
     afternoonCare: false
   });
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  // eslint-disable-next-line no-unused-vars
+  const [cart, setCart, cartChangedToggle, setCartChangedToggle] = useContext(
+    ShoppingCartContext
+  );
+
+  const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
@@ -144,7 +150,7 @@ const CampPicker = ({ width }) => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
-  const [isSending, setIsSending] = React.useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   async function submitBooking() {
     try {
@@ -156,10 +162,10 @@ const CampPicker = ({ width }) => {
         afternoonChildCare: state.afternoonCare,
         camps: [state.campMorning, state.campAfternoon]
       });
-
-      if (response.status === 201) {
-        console.log(response);
-      }
+      console.log("in camppicker toggle", cartChangedToggle);
+      setCartChangedToggle(!cartChangedToggle);
+      console.log("in camppicker after toggle", cartChangedToggle);
+      if (response.status === 201) {}
     } catch (err) {
       console.log("error");
     }

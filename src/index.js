@@ -7,6 +7,7 @@ import "assets/scss/material-kit-pro-react.scss?v=1.8.0";
 
 import { MuiThemeProvider } from "@material-ui/core";
 import createMarsTheme from "./createMarsTheme";
+import { ShoppingCartContextProvider } from "./myComponents/NavBar/ShoppingCartContext";
 
 import Header from "components/Header/Header.js";
 import NavBarItems from "myComponents/NavBar/NavBarItems";
@@ -28,32 +29,36 @@ const LoginContainer = () => (
   </div>
 );
 
-const DefaultContainer = () => (
-  <React.Fragment>
-    <Header
-      links={<NavBarItems dropdownHoverColor="info" />}
-      fixed
-      color="transparent"
-      changeColorOnScroll={{
-        height: 400,
-        color: "primary"
-      }}
-    />
-    <Route path="/camps" component={CampsPage} />
-    <AuthRoute path="/gestalte-dein-camp" component={CampCreationPage} />
-    <Route exact path="/" component={MainPage} />
-  </React.Fragment>
-);
+function DefaultContainer() {
+  return (
+    <React.Fragment>
+      <Header
+        links={<NavBarItems dropdownHoverColor="info" />}
+        fixed
+        color="transparent"
+        changeColorOnScroll={{
+          height: 400,
+          color: "primary"
+        }}
+      />
+      <Route path="/camps" component={CampsPage} />
+      <AuthRoute path="/gestalte-dein-camp" component={CampCreationPage} />
+      <Route exact path="/" component={MainPage} />
+    </React.Fragment>
+  );
+}
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
-    <Router history={hist}>
-      <Switch>
-        <Route exact path="/registrierung" component={LoginContainer} />
-        <Route exact path="/login" component={LoginContainer} />
-        <Route component={DefaultContainer} />
-      </Switch>
-    </Router>
+    <ShoppingCartContextProvider>
+      <Router history={hist}>
+        <Switch>
+          <Route exact path="/registrierung" component={LoginContainer} />
+          <Route exact path="/login" component={LoginContainer} />
+          <Route component={DefaultContainer} />
+        </Switch>
+      </Router>
+    </ShoppingCartContextProvider>
   </MuiThemeProvider>,
   document.getElementById("root")
 );
