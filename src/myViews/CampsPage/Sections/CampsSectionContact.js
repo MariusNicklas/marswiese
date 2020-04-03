@@ -1,6 +1,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
+import Button from "components/CustomButtons/Button.js";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
@@ -41,7 +42,11 @@ const SectionContact = () => {
                 classes.textCenter
               )}
             >
-              <Link href="/gestalte-dein-camp">Camp zusammenstellen</Link>
+              <Link href="/gestalte-dein-camp">
+                <Button color="primary" size="lg" round>
+                  Camp zusammenstellen
+                </Button>
+              </Link>
             </GridItem>
           </GridContainer>
         </GridItem>

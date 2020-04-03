@@ -5,47 +5,28 @@ import { ShoppingCartContext } from "./ShoppingCartContext";
 // @material-ui/icons
 import IconButton from "@material-ui/core/IconButton";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import Close from "@material-ui/icons/Close";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 // @material-ui/core components
-import Badge from "@material-ui/core/Badge";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Grid from "@material-ui/core/Grid";
-// @material-ui/lab components
-import Skeleton from "@material-ui/lab/Skeleton";
-import { Button } from "@material-ui/core";
+import { Badge, Button, Drawer, Table, TableRow, TableCell, TableHead, Typography, TableBody } from "@material-ui/core";
 
 const ShoppingCartItem = props => {
-  const [open, setOpen]           = useState(false);
-  //const [itemCount, setItemCount] = useState(0);
-
-  //isLoading Cart State
-  const [isLoadingCart, setLoadingCart] = useState(true);
 
   const [cart, setCart, cartChangedToggle, setCartChangedToggle] = useContext(ShoppingCartContext);
 
-  //const [items, setItems]         = useState(cart.campPseudoBookings);
-  const [cartPrice, setCartPrice] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    console.log('useEffect');  
     (async getCart => {
       try {
-        setLoadingCart(true);
         const response = await getShoppingCart();
-        console.log('befor setCart', response);
         setCart(response);
-        setLoadingCart(false);
       } catch {}
     })();
-  }, [cartChangedToggle] );
+  }, [cartChangedToggle, setCart] );
 
-  const handleCartOpen = event => {
-    setOpen(true);
-  };
-
-  const handleCartClose = value => {
-    setOpen(false);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
   const handleDeleteItem = async id => {
@@ -53,75 +34,163 @@ const ShoppingCartItem = props => {
     setCartChangedToggle(!cartChangedToggle);
   };
 
-  if(isLoadingCart) { return (<h1>loading spinner</h1>);} else {
-    if(cart) {
+  const checkoutCart = () => {
+    console.log("checking out...")
+  }
+
+  const fullCart = () => (
+    <React.Fragment>
+        <Drawer
+          variant="temporary"
+          anchor={"right"}
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+        >
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+          >
+            <Close />
+          </IconButton>  
+  
+          <Typography variant="h6" id="tableTitle" component="div">
+            Dein Warenkorb
+          </Typography>
+          
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  Item
+                </TableCell>
+                <TableCell>
+                  Preis
+                </TableCell>
+                <TableCell>
+                  Löschen
+                </TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {cart.campPseudoBookings.map(booking => (
+                <TableRow key={booking._id}>
+                  <TableCell>
+                    Feriencamp für {booking.kid.name}
+                  </TableCell>
+  
+                  <TableCell>
+                    EUR {booking.totalPrice}
+                  </TableCell>
+
+                  <TableCell>
+                    <Button onClick={e => handleDeleteItem(booking._id)}>
+                      <DeleteOutlinedIcon />
+                    </Button>
+                  </TableCell>
+
+                </TableRow>
+              ))}
+            </TableBody>
+            
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>
+                  Total
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              <TableRow>
+                <TableCell />
+                <TableCell>
+                  EUR {cart.totalPrice}
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            </TableBody>
+          </Table>
+
+          <Button color="primary" variant="contained" onClick={e => checkoutCart()}>
+            Jetzt bezahlen
+          </Button>
+        </Drawer>
+      </React.Fragment>
+  )
+
+  const emptyCart = () => (
+    <React.Fragment>
+        <Drawer
+          variant="temporary"
+          anchor={"right"}
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+        >
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+          >
+            <Close />
+          </IconButton>  
+  
+          <Typography variant="h6" id="tableTitle" component="div">
+            Dein Warenkorb
+          </Typography>
+          
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  Der Warenkorb ist leer
+                </TableCell>
+              </TableRow>
+            </TableHead>
+          </Table>
+        </Drawer>
+      </React.Fragment>
+  )
+
+  if(!cart || cart.shopItemCount === 0) { return (
+    <React.Fragment>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={handleDrawerToggle}
+          color="inherit"
+        >
+          <Badge color="secondary" badgeContent={0}>
+            <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+
+        {emptyCart()}
+      </React.Fragment>
+  )}
+  else {
     return (
       <React.Fragment>
         <IconButton
           aria-label="account of current user"
           aria-controls="menu-appbar"
           aria-haspopup="true"
-          onClick={handleCartOpen}
+          onClick={handleDrawerToggle}
           color="inherit"
         >
           <Badge color="secondary" badgeContent={cart.shopItemCount}>
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
-  
-        <Dialog open={open} onClose={handleCartClose}>
-          <DialogTitle id="shopping-cart-dialog-title">
-            Dein Warenkorb
-          </DialogTitle>
-  
-          <Grid container>
-            <Grid item align="center" xs={4}>
-              Details
-            </Grid>
-            <Grid item align="right" xs={4}>
-              Aktionen
-            </Grid>
-            <Grid item align="right" xs={4}>
-              Preis
-            </Grid>
-  
-          {cart.campPseudoBookings.map(booking => (
-              <Grid container key={booking._id}>
-                <Grid item align="center" xs={3}>
-                  <Skeleton variant="rect" width={50} height={30} />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                  Ostercamp {booking.kid.name}
-                </Grid>
-                <Grid item align="right" xs={3}>
-                  <Button onClick={e => handleDeleteItem(booking._id)}>
-                    <DeleteOutlinedIcon />
-                  </Button>
-                </Grid>
-                <Grid item align="right" xs={3}>
-                  {booking.totalPrice}
-                </Grid>
-              </Grid>
-            ))}
-            {/* Final price of shopping cart, total of all items */}
-            <Grid container>
-              <Grid item align="center" xs={4} />
-              <Grid item align="right" xs={4}>
-                Gesamtpreis
-              </Grid>
-              <Grid item align="right" xs={4}>
-                {cart.totalPrice}
-              </Grid>
-            </Grid>
-          </Grid>
-        </Dialog>
+
+        {fullCart()}
       </React.Fragment>
     );
   }
-  else {
-    return (<h1>Oops... etwas ist schiefgelaufen</h1>)
-  }}
-  
 };
 
 export default ShoppingCartItem;

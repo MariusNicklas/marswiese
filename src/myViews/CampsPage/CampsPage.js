@@ -23,11 +23,12 @@ import CampsSectionOffice from "myViews/CampsPage/Sections/CampsSectionOffice.js
 import CampsSectionContact from "myViews/CampsPage/Sections/CampsSectionContact.js";
 
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Link } from "react-router-dom";
 
 const useStyles = makeStyles(campsStyle);
 
 export default function AboutUsPage() {
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -65,14 +66,11 @@ export default function AboutUsPage() {
                 classes.textCenter
               )}
             >
-              <Button
-                color="primary"
-                size="lg"
-                round
-                onClick={() => alert("camp zusammenstellen: btn 1 clicked")}
-              >
-                Camp zusammenstellen
-              </Button>
+              <Link href="/gestalte-dein-camp">
+                <Button color="primary" size="lg" round>
+                  Camp zusammenstellen
+                </Button>
+              </Link>
             </GridItem>
           </GridContainer>
         </div>

@@ -156,18 +156,16 @@ const CampPicker = ({ width }) => {
     try {
       setIsSending(true);
       const name = `${state.firstName} ${state.lastName}`;
-      const response = await postCampPseudoBooking({
+      await postCampPseudoBooking({
         kid: { name },
         morningChildCare: state.morningCare,
         afternoonChildCare: state.afternoonCare,
         camps: [state.campMorning, state.campAfternoon]
       });
-      console.log("in camppicker toggle", cartChangedToggle);
       setCartChangedToggle(!cartChangedToggle);
-      console.log("in camppicker after toggle", cartChangedToggle);
-      if (response.status === 201) {}
+      setActiveStep(0);
     } catch (err) {
-      console.log("error");
+      console.log(err);
     }
     setIsSending(false);
   }
