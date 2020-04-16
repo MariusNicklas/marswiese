@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 // own components and functionality
-import { getShoppingCart, deleteCampPseudoBooking } from "../../APIUtils";
+import { getShoppingCart, deleteCampPseudoBooking, getPayPalPaymentSession, getKlarnaPaymentSession } from "../../APIUtils";
 import { ShoppingCartContext } from "./ShoppingCartContext";
+// @material-ui/core
+import { makeStyles } from '@material-ui/core/styles';
 // @material-ui/icons
 import IconButton from "@material-ui/core/IconButton";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -9,12 +11,41 @@ import Close from "@material-ui/icons/Close";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 // @material-ui/core components
 import { Badge, Button, Drawer, Table, TableRow, TableCell, TableHead, Typography, TableBody } from "@material-ui/core";
+// payment icons
+import PaymentIcon from 'react-payment-icons';
+
+  const useStyles = makeStyles(theme => ({
+    drawer: {
+      [theme.breakpoints.down('sm')]: {
+        width: "100%",
+        flexShrink: 0,
+      },
+      [theme.breakpoints.up('md')]: {
+        width: "30%",
+        flexShrink: 0,
+      }
+    },
+    drawerPaper: {
+      [theme.breakpoints.down('sm')]: {
+        width: "100%",
+        flexShrink: 0,
+      },
+      [theme.breakpoints.up('md')]: {
+        width: "30%",
+        flexShrink: 0,
+      }
+    },
+  }));
+
 
 const ShoppingCartItem = props => {
 
+  const classes = useStyles();
+  
   const [cart, setCart, cartChangedToggle, setCartChangedToggle] = useContext(ShoppingCartContext);
-
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+  const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
+  const [loadingPayment, setLoadingPayment] = useState(false);
 
   useEffect(() => {
     (async getCart => {
@@ -25,8 +56,12 @@ const ShoppingCartItem = props => {
     })();
   }, [cartChangedToggle, setCart] );
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleCartDrawerToggle = () => {
+    setCartDrawerOpen(!cartDrawerOpen);
+  };
+
+  const handleServicesDrawerToggle = () => {
+    setServicesDrawerOpen(!servicesDrawerOpen);
   };
 
   const handleDeleteItem = async id => {
@@ -34,26 +69,60 @@ const ShoppingCartItem = props => {
     setCartChangedToggle(!cartChangedToggle);
   };
 
-  const checkoutCart = () => {
-    console.log("checking out...")
+  const checkOutCart = async () => {
+    setLoadingPayment(true);
+    setCartDrawerOpen(false);
+    setServicesDrawerOpen(true);
+    /*const response = await getPayPalPaymentSession();
+    
+    if(response.status === 200) {
+      const url = response.data.data["payment-redirect-url"]; 
+      window.open(url, "_blank")
+    }*/
+    setLoadingPayment(false)
+  }
+
+  const handlePayPalPayment = async () => {
+    const response = await getPayPalPaymentSession();
+    
+    if(response.status === 200) {
+      const url = response.data.data["payment-redirect-url"]; 
+      window.open(url, "_blank")
+    }
+  }
+
+  const handleKlarnaPayment = async () => {
+    const response = await getKlarnaPaymentSession();
+    
+    if(response.status === 200) {
+      const url = response.data.data["payment-redirect-url"]; 
+      window.open(url, "_blank")
+    }
   }
 
   const fullCart = () => (
-    <React.Fragment>
-        <Drawer
-          variant="temporary"
-          anchor={"right"}
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-        >
+    <Drawer
+      className={classes.drawer}
+      classes={{
+        paper: classes.drawerPaper,
+      }}
+      
+      variant="temporary"
+      anchor={"right"}
+      open={cartDrawerOpen || servicesDrawerOpen}
+      onClose={handleCartDrawerToggle}
+      width="75%"
+    >
+      {cartDrawerOpen && (
+        <React.Fragment>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerToggle}
+            onClick={handleCartDrawerToggle}
           >
             <Close />
           </IconButton>  
-  
+
           <Typography variant="h6" id="tableTitle" component="div">
             Dein Warenkorb
           </Typography>
@@ -79,7 +148,7 @@ const ShoppingCartItem = props => {
                   <TableCell>
                     Feriencamp für {booking.kid.name}
                   </TableCell>
-  
+
                   <TableCell>
                     EUR {booking.totalPrice}
                   </TableCell>
@@ -115,11 +184,54 @@ const ShoppingCartItem = props => {
             </TableBody>
           </Table>
 
-          <Button color="primary" variant="contained" onClick={e => checkoutCart()}>
-            Jetzt bezahlen
+          <Button disabled={loadingPayment} color="primary" variant="contained" onClick={e => checkOutCart()}>
+            {loadingPayment && (
+              <i
+                className="fa fa-refresh fa-spin"
+                style={{ color: "primary", marginRight: "5px" }}
+              />
+            )}
+            {loadingPayment && <span>Daten werden übermittelt</span>}
+            {!loadingPayment && <span>Jetzt bezahlen</span>}
           </Button>
-        </Drawer>
-      </React.Fragment>
+        </React.Fragment>
+      )}
+
+      {servicesDrawerOpen && (
+        <React.Fragment>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleServicesDrawerToggle} 
+          >
+            <Close />
+          </IconButton>
+            
+          <Button onClick={handlePayPalPayment}>
+            <PaymentIcon
+              id="paypal"
+              style={{ margin: 10, width: 100 }}
+              className="payment-icon"
+            />
+          </Button>
+
+          <Button onClick={handleKlarnaPayment}>
+            <img src="https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg"
+              alt="Pay now with Klarna"
+              style={{ margin: 10, width: 100 }}
+            />
+          </Button>
+
+          <Button>
+            <PaymentIcon
+              id="visa"
+              style={{ margin: 10, width: 100 }}
+              className="payment-icon"
+            />
+          </Button>
+        </React.Fragment>
+      )}
+    </Drawer>
   )
 
   const emptyCart = () => (
@@ -127,13 +239,13 @@ const ShoppingCartItem = props => {
         <Drawer
           variant="temporary"
           anchor={"right"}
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
+          open={cartDrawerOpen}
+          onClose={handleCartDrawerToggle}
         >
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerToggle}
+            onClick={handleCartDrawerToggle}
           >
             <Close />
           </IconButton>  
@@ -161,7 +273,7 @@ const ShoppingCartItem = props => {
           aria-label="account of current user"
           aria-controls="menu-appbar"
           aria-haspopup="true"
-          onClick={handleDrawerToggle}
+          onClick={handleCartDrawerToggle}
           color="inherit"
         >
           <Badge color="secondary" badgeContent={0}>
@@ -179,7 +291,7 @@ const ShoppingCartItem = props => {
           aria-label="account of current user"
           aria-controls="menu-appbar"
           aria-haspopup="true"
-          onClick={handleDrawerToggle}
+          onClick={handleCartDrawerToggle}
           color="inherit"
         >
           <Badge color="secondary" badgeContent={cart.shopItemCount}>

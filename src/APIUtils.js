@@ -206,3 +206,23 @@ export const deleteCampPseudoBooking = id => {
     .then(response => response)
     .catch(err => catchAxiosError(err));
 };
+
+export const getPayPalPaymentSession = () => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}api/v1/payments/paypal`
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
+}
+
+export const getKlarnaPaymentSession = () => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}api/v1/payments/sofort`
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
+}
