@@ -17,6 +17,9 @@ import CampCreationPage from "./myViews/CampCreationPage/CampCreationPage";
 import AuthRoute from "myViews/AuthRoute";
 import SignInPage from "myViews/SignIn/SignIn";
 import SignUp from "myViews/SignUp/SignUp.component.jsx";
+import SuccessPage from "myViews/SuccessPage";
+import CancelPage from "myViews/CancelPage";
+import FailurePage from "myViews/FailurePage";
 
 var hist = createBrowserHistory();
 
@@ -44,6 +47,9 @@ function DefaultContainer() {
       <Route path="/camps" component={CampsPage} />
       <AuthRoute path="/gestalte-dein-camp" component={CampCreationPage} />
       <Route exact path="/" component={MainPage} />
+      <Route path="/payment/success" component={SuccessPage} />
+      <Route path="/payment/cancel" component={CancelPage} />
+      <Route path="/payment/fail" component={FailurePage} />
     </React.Fragment>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 // own components and functionality
-import { getShoppingCart, deleteCampPseudoBooking, getPayPalPaymentSession, getKlarnaPaymentSession } from "../../APIUtils";
+import { getShoppingCart, deleteCampPseudoBooking, getPayPalPaymentSession, getVisaPaymentSession, getKlarnaPaymentSession, getEpsPaymentSession } from "../../APIUtils";
 import { ShoppingCartContext } from "./ShoppingCartContext";
 // @material-ui/core
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +13,7 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import { Badge, Button, Drawer, Table, TableRow, TableCell, TableHead, Typography, TableBody } from "@material-ui/core";
 // payment icons
 import PaymentIcon from 'react-payment-icons';
+import EpsLogo from "../../assets/img/epsLogo.png";
 
   const useStyles = makeStyles(theme => ({
     drawer: {
@@ -87,7 +88,16 @@ const ShoppingCartItem = props => {
     
     if(response.status === 200) {
       const url = response.data.data["payment-redirect-url"]; 
-      window.open(url, "_blank")
+      window.open(url, "_self")
+    }
+  }
+
+  const handleVisaPayment = async () => {
+    const response = await getVisaPaymentSession();
+    
+    if(response.status === 200) {
+      const url = response.data.data["payment-redirect-url"]; 
+      window.open(url, "_self")
     }
   }
 
@@ -96,7 +106,16 @@ const ShoppingCartItem = props => {
     
     if(response.status === 200) {
       const url = response.data.data["payment-redirect-url"]; 
-      window.open(url, "_blank")
+      window.open(url, "_self")
+    }
+  }
+
+  const handleEpsPayment = async () => {
+    const response = await getEpsPaymentSession();
+    
+    if(response.status === 200) {
+      const url = response.data.data["payment-redirect-url"]; 
+      window.open(url, "_self")
     }
   }
 
@@ -222,13 +241,21 @@ const ShoppingCartItem = props => {
             />
           </Button>
 
-          <Button>
+          <Button onCLick={handleVisaPayment}>
             <PaymentIcon
               id="visa"
               style={{ margin: 10, width: 100 }}
               className="payment-icon"
             />
           </Button>
+
+          <Button onClick={handleEpsPayment}>
+            <img src={EpsLogo}
+              alt="Pay now with Eps"
+              style={{ margin: 10, width: 100 }}
+            />
+          </Button>
+
         </React.Fragment>
       )}
     </Drawer>

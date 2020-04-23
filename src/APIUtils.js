@@ -217,11 +217,31 @@ export const getPayPalPaymentSession = () => {
     .catch(err => catchAxiosError(err));
 }
 
+export const getVisaPaymentSession = () => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}api/v1/payments/card`
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
+}
+
 export const getKlarnaPaymentSession = () => {
   return axios({
     method: "POST",
     withCredentials: true,
     url: `${url}api/v1/payments/sofort`
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
+}
+
+export const getEpsPaymentSession = () => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}api/v1/payments/eps`
   })
     .then(response => response)
     .catch(err => catchAxiosError(err));
