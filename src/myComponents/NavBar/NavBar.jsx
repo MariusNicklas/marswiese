@@ -64,7 +64,7 @@ export default function NavBar() {
   });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isSending, setIsSending] = useState(false);
-
+  /*
   const postLogin = useCallback(() => {
     (async () => {
       // don't send again while we are sending
@@ -96,7 +96,7 @@ export default function NavBar() {
       setIsSending(false);
     })();
   }, [auth.password, auth.user, isSending]);
-
+*/
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -114,53 +114,55 @@ export default function NavBar() {
     })();
   }, [cartChangedToggle, setCart]);
 
-  const handleTabClick = (event, value) => {
+  const handleTabClick = (event,value) => {
     setSelectedTab(value);
-    console.log("selected tab:");
-    console.log(selectedTab);
+
   };
 
   return (
     <AppBar position="static">
+
       <Tabs value={selectedTab} onChange={handleTabClick}>
         <Tab
           icon={<HomeIcon />}
           label={<Hidden xsDown>Startseite</Hidden>}
           href="/"
-        ></Tab>
+          
+        />
         <Tab
           icon={<LocationOnIcon />}
           label={<Hidden xsDown>Anfahrt</Hidden>}
           href="/anfahrt"
-        ></Tab>
-        {auth.authenticated} ? (
-        <Grid container justify="flex-end">
+          
+        />
           <Tab
-            icon={<TodayIcon />}
-            label={<Hidden xsDown>Buchungen</Hidden>}
-            href="/meine-Buchungen"
-          ></Tab>
+              icon={<TodayIcon />}
+              label={<Hidden xsDown>Buchungen</Hidden>}
+              href="/meine-Buchungen"
+
+          /> 
           <Tab
-            icon={
-              <Badge
-                color="secondary"
-                badgeContent={cart ? cart.shopItemCount : 0}
-              >
-                <ShoppingCartIcon />
-              </Badge>
-            }
-            label={<Hidden xsDown>Warenkorb</Hidden>}
-            href="/mein-warenkorb"
-          ></Tab>
-          <IconButton
+              icon={
+                <Badge
+                  color="secondary"
+                  badgeContent={cart ? cart.shopItemCount : 0}
+                >
+                  <ShoppingCartIcon />
+                </Badge>
+              }
+              label={<Hidden xsDown>Warenkorb</Hidden>}
+              href="/mein-warenkorb"
+              
+            />    
+      </Tabs>      
+      
+      <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenuOpen}
             color="inherit"
-          >
-            <ArrowDropDownIcon />
-            <Label>{auth.user}</Label>
+          ><ArrowDropDownIcon />
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -178,9 +180,15 @@ export default function NavBar() {
               </MenuItem>
             </Menu>
           </IconButton>
-        </Grid>
-        )
-      </Tabs>
     </AppBar>
   );
 }
+/** 
+ * {auth.authenticated} ? (
+        
+          
+          
+            
+       
+        )
+*/
