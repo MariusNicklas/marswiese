@@ -18,7 +18,7 @@ import SubscribeLine from "./Sections/SubscribeLine.js";
 
 import MainPageStyle from "../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js";
 import NavBarItems from "../../myComponents/NavBar/NavBarItems";
-import NavBar from "../../myComponents/NavBar/NavBar.jsx";
+import NavBar from "../../myComponents/NavBar/NavBar_old.jsx";
 
 const useStyles = makeStyles(MainPageStyle);
 

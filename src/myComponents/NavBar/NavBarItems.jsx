@@ -7,18 +7,22 @@ import clsx from "clsx";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Input } from "@material-ui/core";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-
-// core components
+import {
+  Grid,
+  Input,
+  List,
+  ListItem,
+  Menu,
+  MenuItem,
+  Link,
+} from "@material-ui/core";
 import Button from "components/CustomButtons/Button.js";
 import { login, isLoggedIn, getMe } from "../../APIUtils";
 import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
-import ShoppingCartItem from "./ShoppingCartItem";
+import ShoppingCart from "./ShoppingCart";
 import AvatarItem from "./AvatarItem";
+import LocationItem from "./LocationItem";
+import BookingsItem from "./BookingsItem";
 
 const useStyles = makeStyles(styles);
 
@@ -27,19 +31,19 @@ function reducer(state, action) {
     case "field-change":
       return {
         ...state,
-        [action.field]: action.value
+        [action.field]: action.value,
       };
 
     case "login":
       return {
         ...state,
-        auth: true
+        auth: true,
       };
 
     case "logout":
       return {
         ...state,
-        auth: false
+        auth: false,
       };
 
     default: {
@@ -98,7 +102,7 @@ export default function NavBarItems(props) {
   const [state, dispatch] = useReducer(reducer, {
     user: "",
     password: "",
-    auth: false
+    auth: false,
   });
 
   const postLogin = useCallback(() => {
@@ -117,7 +121,7 @@ export default function NavBarItems(props) {
             dispatch({
               type: "field-change",
               field: "user",
-              value: username
+              value: username,
             });
           } catch (err) {
             console.log(err);
@@ -144,7 +148,7 @@ export default function NavBarItems(props) {
             dispatch({
               type: "field-change",
               field: "user",
-              value: userName
+              value: userName,
             });
           } catch (err) {
             console.log(err);
@@ -163,7 +167,9 @@ export default function NavBarItems(props) {
         {state.auth ? (
           // if authenticated
           <div className={classes.loginControls}>
-            <ShoppingCartItem />
+            <LocationItem />
+            <BookingsItem />
+            <ShoppingCart />
             <AvatarItem user={state.user} dispatch={dispatch} />
           </div>
         ) : (
@@ -173,17 +179,17 @@ export default function NavBarItems(props) {
               <Input
                 id="username"
                 label="Benutzername"
-                onChange={e =>
+                onChange={(e) =>
                   dispatch({
                     type: "field-change",
                     field: "user",
-                    value: e.target.value
+                    value: e.target.value,
                   })
                 }
                 placeholder="Benutzername"
                 style={{
                   padding: "5px",
-                  backgroundColor: "white"
+                  backgroundColor: "white",
                 }}
               />
             </Grid>
@@ -193,17 +199,17 @@ export default function NavBarItems(props) {
                 id="password"
                 label="Passwort"
                 type="password"
-                onChange={e =>
+                onChange={(e) =>
                   dispatch({
                     type: "field-change",
                     field: "password",
-                    value: e.target.value
+                    value: e.target.value,
                   })
                 }
                 placeholder="Passwort"
                 style={{
                   padding: "5px",
-                  backgroundColor: "white"
+                  backgroundColor: "white",
                 }}
               />
             </Grid>
@@ -226,7 +232,7 @@ export default function NavBarItems(props) {
 }
 
 NavBarItems.defaultProps = {
-  hoverColor: "primary"
+  hoverColor: "primary",
 };
 
 NavBarItems.propTypes = {
@@ -237,6 +243,6 @@ NavBarItems.propTypes = {
     "success",
     "warning",
     "danger",
-    "rose"
-  ])
+    "rose",
+  ]),
 };

@@ -3,6 +3,7 @@ import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
+import { Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -23,7 +24,7 @@ import CampsSectionOffice from "myViews/CampsPage/Sections/CampsSectionOffice.js
 import CampsSectionContact from "myViews/CampsPage/Sections/CampsSectionContact.js";
 
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
-import { BrowserRouter, Link } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 const useStyles = makeStyles(campsStyle);
 

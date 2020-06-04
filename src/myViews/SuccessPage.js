@@ -1,14 +1,59 @@
-import React from 'react';
-import { Button } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+// nodejs library that concatenates classes
+import classNames from "classnames";
+import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Button from "components/CustomButtons/Button.js";
+// core components
+import GridContainer from "components/Grid/GridContainer.js";
+import GridItem from "components/Grid/GridItem.js";
 
-const SuccessPage = props => {
-    return (
-        <React.Fragment>
-            <h3>Zahlung erfolgreich abgeschlossen! :)</h3>
-            <Button onClick={() => props.history.push("/")} >Zurück zur Hauptseite</Button>
-        </React.Fragment>
-    )
-}
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3, 2),
+    height: 200,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+}));
 
-export default withRouter(SuccessPage);
+const SuccessPage = () => {
+  const classes = useStyles();
+
+  return (
+    <GridContainer>
+      <GridItem
+        md={8}
+        sm={8}
+        className={classNames(
+          classes.mrAuto,
+          classes.mlAuto,
+          classes.textCenter
+        )}
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <Typography variant="h5" component="h3">
+          Die Zahlung wurde erfolgreich abgeschlossen. Vielen Dank für Ihre
+          Bestellung!
+        </Typography>
+        <br />
+        <br />
+        <Link href="/">
+          <Button color="primary" size="lg" round>
+            Zurück zur Hauptseite
+          </Button>
+        </Link>
+      </GridItem>
+    </GridContainer>
+  );
+};
+
+export default SuccessPage;

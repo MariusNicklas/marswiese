@@ -6,13 +6,14 @@ import IconButton from "@material-ui/core/IconButton";
 // @material-ui/core components
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { Label } from "reactstrap";
 
-const AvatarItem = props => {
-  const { dispatch } = props;
+const AvatarItem = (props) => {
+  const { user, dispatch } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleMenuOpen = event => {
+  const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -30,6 +31,7 @@ const AvatarItem = props => {
         color="inherit"
       >
         <ArrowDropDownIcon />
+        <Label>{user}</Label>
       </IconButton>
 
       <Menu
@@ -40,7 +42,7 @@ const AvatarItem = props => {
         onClose={handleMenuClose}
       >
         <MenuItem
-          onClick={e => {
+          onClick={(e) => {
             handleMenuClose();
             dispatch({ type: "logout" });
           }}
@@ -53,7 +55,7 @@ const AvatarItem = props => {
 };
 
 AvatarItem.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default AvatarItem;
