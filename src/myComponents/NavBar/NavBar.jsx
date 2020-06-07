@@ -22,10 +22,54 @@ import { UserContext } from "../../userContext";
 
 const NavBar = (props) => {
   const [cart, setCart, cartChangedToggle] = useContext(ShoppingCartContext);
+<<<<<<< HEAD
   const [selectedTab, setSelectedTab] = useState("/");
   const [user] = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
 
+=======
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [auth, dispatch] = useReducer(reducer, {
+    user: "",
+    password: "",
+    authenticated: false,
+  });
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isSending, setIsSending] = useState(false);
+  /*
+  const postLogin = useCallback(() => {
+    (async () => {
+      // don't send again while we are sending
+      if (isSending) return;
+      // update state
+      setIsSending(true);
+      try {
+        // send the actual request
+        const response = await login(auth.user, auth.password);
+        if (response.status === 200) {
+          try {
+            const userResponse = await getMe();
+            const userName = `${userResponse.firstName} ${userResponse.lastName}`;
+            console.log(userName);
+            dispatch({
+              type: "field-change",
+              field: "user",
+              value: userName,
+            });
+          } catch (err) {
+            console.log(err);
+          }
+          dispatch({ type: "login" });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+      // once the request is sent, update state again
+      setIsSending(false);
+    })();
+  }, [auth.password, auth.user, isSending]);
+*/
+>>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,13 +87,18 @@ const NavBar = (props) => {
     })();
   }, [cartChangedToggle, setCart]);
 
-  const handleTabClick = (event, value) => {
+  const handleTabClick = (event,value) => {
     setSelectedTab(value);
+<<<<<<< HEAD
     props.history.push(value);
+=======
+
+>>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
   };
 
   return (
     <AppBar position="static">
+<<<<<<< HEAD
       <Grid container justify="center">
         <Grid item>
           <Tabs value={selectedTab} onChange={handleTabClick}>
@@ -72,6 +121,29 @@ const NavBar = (props) => {
             />
 
             <Tab
+=======
+
+      <Tabs value={selectedTab} onChange={handleTabClick}>
+        <Tab
+          icon={<HomeIcon />}
+          label={<Hidden xsDown>Startseite</Hidden>}
+          href="/"
+          
+        />
+        <Tab
+          icon={<LocationOnIcon />}
+          label={<Hidden xsDown>Anfahrt</Hidden>}
+          href="/anfahrt"
+          
+        />
+          <Tab
+              icon={<TodayIcon />}
+              label={<Hidden xsDown>Buchungen</Hidden>}
+              href="/meine-Buchungen"
+
+          /> 
+          <Tab
+>>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
               icon={
                 <Badge
                   color="secondary"
@@ -81,6 +153,7 @@ const NavBar = (props) => {
                 </Badge>
               }
               label={<Hidden xsDown>Warenkorb</Hidden>}
+<<<<<<< HEAD
               value={"/mein-warenkorb"}
             />
           </Tabs>
@@ -88,11 +161,20 @@ const NavBar = (props) => {
 
         <Grid item>
           <IconButton
+=======
+              href="/mein-warenkorb"
+              
+            />    
+      </Tabs>      
+      
+      <IconButton
+>>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenuOpen}
             color="inherit"
+<<<<<<< HEAD
           >
             <ArrowDropDownIcon />
           </IconButton>
@@ -117,3 +199,35 @@ const NavBar = (props) => {
 };
 
 export default NavBar;
+=======
+          ><ArrowDropDownIcon />
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem
+                onClick={(e) => {
+                  handleMenuClose();
+                  dispatch({ type: "logout" });
+                }}
+              >
+                Logout
+              </MenuItem>
+            </Menu>
+          </IconButton>
+    </AppBar>
+  );
+}
+/** 
+ * {auth.authenticated} ? (
+        
+          
+          
+            
+       
+        )
+*/
+>>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
