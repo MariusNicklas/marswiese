@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -14,29 +14,33 @@ import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import { login } from "../../APIUtils";
 import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
+import { UserContext } from "../../userContext";
 
 const useStyles = makeStyles(campsStyle);
 
-const SignIn = props => {
+const SignIn = (props) => {
   const classes = useStyles();
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
+  const [setUser] = useContext(UserContext);
+
   // Handle fields change
-  const handleChange = input => e => {
+  const handleChange = (input) => (e) => {
     input(e.target.value);
   };
 
-  async function handleClick(e) {
+  async function submitLogin(e) {
     e.preventDefault();
     const response = await login(email, password);
     const {
       history,
-      location: { state }
+      location: { state },
     } = props;
 
     if (response.status === 200) {
+      setUser(email);
       if (state && state.next) {
         return history.push(state.next);
       } else {
@@ -92,7 +96,7 @@ const SignIn = props => {
               fullWidth
               variant="contained"
               color="primary"
-              onClick={handleClick}
+              onClick={submitLogin}
               className={classes.submit}
             >
               Anmelden
@@ -116,4 +120,4 @@ const SignIn = props => {
     </React.Fragment>
   );
 };
-export default withRouter(SignIn);
+export default SignIn;

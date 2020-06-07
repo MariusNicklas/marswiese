@@ -8,12 +8,13 @@ import "assets/scss/material-kit-pro-react.scss?v=1.8.0";
 import { MuiThemeProvider } from "@material-ui/core";
 import createMarsTheme from "./createMarsTheme";
 import { ShoppingCartContextProvider } from "./myComponents/NavBar/ShoppingCartContext";
+import { UserProvider } from "./userContext";
 
 import MainPage from "./myViews/MainPage/MainPage";
 import CampsPage from "./myViews/CampsPage/CampsPage";
 import CampCreationPage from "./myViews/CampCreationPage/CampCreationPage";
 import AuthRoute from "myViews/AuthRoute";
-import SignInPage from "myViews/SignIn/SignIn";
+import SignIn from "myViews/SignIn/SignIn";
 import SignUp from "myViews/SignUp/SignUp.component.jsx";
 import SuccessPage from "myViews/SuccessPage";
 import CancelPage from "myViews/CancelPage";
@@ -25,52 +26,35 @@ import NavBar from "myComponents/NavBar/NavBar";
 
 var hist = createBrowserHistory();
 
-const theme = createMarsTheme;
-
-const LoginContainer = () => (
-  <div className="container">
-    <Route exact path="/registrierung" component={SignUp} />
-    <Route exact path="/login" component={SignInPage} />
-  </div>
-);
-
-function DefaultContainer() {
+const App = () => {
+  const theme = createMarsTheme;
   return (
-    <React.Fragment>
-      {/*<Header
-        links={<NavBarItems dropdownHoverColor="info" />}
-        fixed
-        color="transparent"
-        changeColorOnScroll={{
-          height: 400,
-          color: "primary",
-        }}
-      />*/}
-      <NavBar />
-      <Route path="/anfahrt" component={LocationPage} />
-      <Route path="/camps" component={CampsPage} />
-      <AuthRoute path="/gestalte-dein-camp" component={CampCreationPage} />
-      <AuthRoute path="/meine-buchungen" component={BookingsPage} />
-      <Route exact path="/" component={MainPage} />
-      <Route path="/payment/success" component={SuccessPage} />
-      <Route path="/payment/cancel" component={CancelPage} />
-      <Route path="/payment/fail" component={FailurePage} />
-      <AuthRoute path="/mein-warenkorb" component={CartPage} />
-    </React.Fragment>
+    <MuiThemeProvider theme={theme}>
+      <UserProvider>
+        <ShoppingCartContextProvider>
+          <Router history={hist}>
+            <NavBar />
+            <Switch>
+              <Route exact path="/registrierung" component={SignUp} />
+              <Route exact path="/login" component={SignIn} />
+              <Route path="/anfahrt" component={LocationPage} />
+              <Route path="/camps" component={CampsPage} />
+              <AuthRoute
+                path="/gestalte-dein-camp"
+                component={CampCreationPage}
+              />
+              <AuthRoute path="/meine-buchungen" component={BookingsPage} />
+              <Route exact path="/" component={MainPage} />
+              <Route path="/payment/success" component={SuccessPage} />
+              <Route path="/payment/cancel" component={CancelPage} />
+              <Route path="/payment/fail" component={FailurePage} />
+              <AuthRoute path="/mein-warenkorb" component={CartPage} />
+            </Switch>
+          </Router>
+        </ShoppingCartContextProvider>
+      </UserProvider>
+    </MuiThemeProvider>
   );
-}
+};
 
-ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <ShoppingCartContextProvider>
-      <Router history={hist}>
-        <Switch>
-          <Route exact path="/registrierung" component={LoginContainer} />
-          <Route exact path="/login" component={LoginContainer} />
-          <Route component={DefaultContainer} />
-        </Switch>
-      </Router>
-    </ShoppingCartContextProvider>
-  </MuiThemeProvider>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));

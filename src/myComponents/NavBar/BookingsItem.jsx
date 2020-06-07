@@ -22,7 +22,7 @@ const BookingsItem = (props) => {
     <React.Fragment>
       <Link to="/meine-buchungen">
         <IconButton
-          classes={{ root: classes.button, label: classes.label }}
+          classes={{ label: classes.label }}
           edge="start"
           aria-controls="menu-appbar"
           aria-label="loction-navbar-item"

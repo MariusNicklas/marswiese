@@ -1,9 +1,27 @@
-import React from "react";
+import React, { createContext, useEffect, useState } from "react";
+import { getMe, isLoggedIn } from "./APIUtils";
 
-const userContext = React.createContext();
+export const UserContext = createContext();
 
-export const userProvider = userContext.Provider;
+export const UserProvider = (props) => {
+  const [user, setUser] = useState(null);
 
-export const userConsumer = userContext.Consumer;
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await isLoggedIn();
+        if (response) {
+          const response = await getMe();
+          const username = response.firstName + " " + response.lastName;
+          setUser(username);
+        }
+      } catch {}
+    })();
+  }, []);
 
-export default userContext;
+  return (
+    <UserContext.Provider value={[user, setUser]}>
+      {props.children}
+    </UserContext.Provider>
+  );
+};
