@@ -1,233 +1,93 @@
-import React, { useContext, useEffect, useState } from "react";
-// material-ui core components
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import AppBar from "@material-ui/core/AppBar";
-import Hidden from "@material-ui/core/Hidden";
-import Badge from "@material-ui/core/Badge";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import IconButton from "@material-ui/core/IconButton";
-// material-ui icons
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import TodayIcon from "@material-ui/icons/Today";
-import HomeIcon from "@material-ui/icons/Home";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import React from "react";
+// core components
+import Header from "components/Header/Header.js";
+// @material-ui/core components
+import { makeStyles } from "@material-ui/core/styles";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+// own components
+import LocationItem from "./LocationItem";
+import HomeItem from "./HomeItem";
+import BookingsItem from "./BookingsItem";
+import ShoppingCartItem from "./ShoppingCartItem";
 
-import { ShoppingCartContext } from "./ShoppingCartContext";
-import { getShoppingCart } from "../../APIUtils";
-import { Grid } from "@material-ui/core";
-import { UserContext } from "../../userContext";
+import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
-const NavBar = (props) => {
-  const [cart, setCart, cartChangedToggle] = useContext(ShoppingCartContext);
-<<<<<<< HEAD
-  const [selectedTab, setSelectedTab] = useState("/");
-  const [user] = useContext(UserContext);
-  const [anchorEl, setAnchorEl] = useState(null);
+const useStyles = makeStyles(styles);
 
-=======
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [auth, dispatch] = useReducer(reducer, {
-    user: "",
-    password: "",
-    authenticated: false,
-  });
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isSending, setIsSending] = useState(false);
-  /*
-  const postLogin = useCallback(() => {
-    (async () => {
-      // don't send again while we are sending
-      if (isSending) return;
-      // update state
-      setIsSending(true);
-      try {
-        // send the actual request
-        const response = await login(auth.user, auth.password);
-        if (response.status === 200) {
-          try {
-            const userResponse = await getMe();
-            const userName = `${userResponse.firstName} ${userResponse.lastName}`;
-            console.log(userName);
-            dispatch({
-              type: "field-change",
-              field: "user",
-              value: userName,
-            });
-          } catch (err) {
-            console.log(err);
-          }
-          dispatch({ type: "login" });
-        }
-      } catch (err) {
-        console.log(err);
+const HeaderLinks = (props) => {
+  const easeInOutQuad = (t, b, c, d) => {
+    t /= d / 2;
+    if (t < 1) return (c / 2) * t * t + b;
+    t--;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
+  };
+
+  const smoothScroll = (e, target) => {
+    if (window.location.pathname === "/sections") {
+      var isMobile = navigator.userAgent.match(
+        /(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i
+      );
+      if (isMobile) {
+        // if we are on mobile device the scroll into view will be managed by the browser
+      } else {
+        e.preventDefault();
+        var targetScroll = document.getElementById(target);
+        scrollGo(document.documentElement, targetScroll.offsetTop, 1250);
       }
-      // once the request is sent, update state again
-      setIsSending(false);
-    })();
-  }, [auth.password, auth.user, isSending]);
-*/
->>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    }
   };
+  const scrollGo = (element, to, duration) => {
+    var start = element.scrollTop,
+      change = to - start,
+      currentTime = 0,
+      increment = 20;
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+    var animateScroll = function() {
+      currentTime += increment;
+      var val = easeInOutQuad(currentTime, start, change, duration);
+      element.scrollTop = val;
+      if (currentTime < duration) {
+        setTimeout(animateScroll, increment);
+      }
+    };
+    animateScroll();
   };
+  var onClickSections = {};
 
-  useEffect(() => {
-    (async (getCart) => {
-      try {
-        const response = await getShoppingCart();
-        setCart(response);
-      } catch {}
-    })();
-  }, [cartChangedToggle, setCart]);
-
-  const handleTabClick = (event,value) => {
-    setSelectedTab(value);
-<<<<<<< HEAD
-    props.history.push(value);
-=======
-
->>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
-  };
-
+  const { dropdownHoverColor } = props;
+  const classes = useStyles();
   return (
-    <AppBar position="static">
-<<<<<<< HEAD
-      <Grid container justify="center">
-        <Grid item>
-          <Tabs value={selectedTab} onChange={handleTabClick}>
-            <Tab
-              icon={<HomeIcon />}
-              label={<Hidden xsDown>Startseite</Hidden>}
-              value={"/"}
-            />
+    <List className={classes.list + " " + classes.mlAuto}>
+      <ListItem className={classes.listItem}>
+        <HomeItem />
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <LocationItem />
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <BookingsItem />
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <ShoppingCartItem />
+      </ListItem>
+    </List>
+  );
+};
 
-            <Tab
-              icon={<LocationOnIcon />}
-              label={<Hidden xsDown>Anfahrt</Hidden>}
-              value={"/anfahrt"}
-            />
-
-            <Tab
-              icon={<TodayIcon />}
-              label={<Hidden xsDown>Buchungen</Hidden>}
-              value={"/meine-Buchungen"}
-            />
-
-            <Tab
-=======
-
-      <Tabs value={selectedTab} onChange={handleTabClick}>
-        <Tab
-          icon={<HomeIcon />}
-          label={<Hidden xsDown>Startseite</Hidden>}
-          href="/"
-          
-        />
-        <Tab
-          icon={<LocationOnIcon />}
-          label={<Hidden xsDown>Anfahrt</Hidden>}
-          href="/anfahrt"
-          
-        />
-          <Tab
-              icon={<TodayIcon />}
-              label={<Hidden xsDown>Buchungen</Hidden>}
-              href="/meine-Buchungen"
-
-          /> 
-          <Tab
->>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
-              icon={
-                <Badge
-                  color="secondary"
-                  badgeContent={cart ? cart.shopItemCount : 0}
-                >
-                  <ShoppingCartIcon />
-                </Badge>
-              }
-              label={<Hidden xsDown>Warenkorb</Hidden>}
-<<<<<<< HEAD
-              value={"/mein-warenkorb"}
-            />
-          </Tabs>
-        </Grid>
-
-        <Grid item>
-          <IconButton
-=======
-              href="/mein-warenkorb"
-              
-            />    
-      </Tabs>      
-      
-      <IconButton
->>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenuOpen}
-            color="inherit"
-<<<<<<< HEAD
-          >
-            <ArrowDropDownIcon />
-          </IconButton>
-
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem
-              onClick={() => console.log("TO DO: delete JWT cookie backend")}
-            >
-              {user} abmelden
-            </MenuItem>
-          </Menu>
-        </Grid>
-      </Grid>
-    </AppBar>
+const NavBar = () => {
+  return (
+    <Header
+      brand="Marswiese"
+      links={<HeaderLinks dropdownHoverColor="secondary" />}
+      fixed
+      color="transparent"
+      changeColorOnScroll={{
+        height: 100,
+        color: "primary",
+      }}
+    />
   );
 };
 
 export default NavBar;
-=======
-          ><ArrowDropDownIcon />
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <MenuItem
-                onClick={(e) => {
-                  handleMenuClose();
-                  dispatch({ type: "logout" });
-                }}
-              >
-                Logout
-              </MenuItem>
-            </Menu>
-          </IconButton>
-    </AppBar>
-  );
-}
-/** 
- * {auth.authenticated} ? (
-        
-          
-          
-            
-       
-        )
-*/
->>>>>>> 4f27d01981818e975463c5f7b5a89fc5c4ca10a7

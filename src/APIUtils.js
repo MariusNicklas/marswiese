@@ -27,7 +27,6 @@ const catchAxiosError = (error) => {
  * @returns {Promise<JSON>}
  */
 export const login = (email, password) => {
-  console.log(`${url}/api/v1/users/login`);
   try {
     return axios({
       method: "POST",
@@ -265,5 +264,66 @@ export const getMyCampBookings = () => {
     url: `${url}api/v1/campbookings/my`,
   })
     .then((response) => response.data.data)
+    .catch((err) => catchAxiosError(err));
+};
+
+export const getAllCourses = () => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}api/v1/courses`,
+  })
+    .then((response) => response.data.data)
+    .catch((err) => catchAxiosError(err));
+};
+
+export const logout = () => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}/api/v1/users/logout`,
+  })
+    .then((response) => response)
+    .catch((err) => catchAxiosError(err));
+};
+
+export const getCourse = (id) => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v1/courses/${id}`,
+  })
+    .then((response) => response.data.data.data)
+    .catch((err) => catchAxiosError(err));
+};
+
+export const getCategory = (id) => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v1/categories/${id}`,
+  })
+    .then((response) => response.data.data.data)
+    .catch((err) => catchAxiosError(err));
+};
+
+export const postCoursePseudoBooking = (input) => {
+  return axios({
+    method: "POST",
+    withCredentials: true,
+    url: `${url}/api/v1/coursepseudobookings`,
+    data: input,
+  })
+    .then((response) => response)
+    .catch((err) => catchAxiosError(err));
+};
+
+export const getCoursesByCategory = () => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v1/courses/by-category`,
+  })
+    .then((response) => response.data.data.data)
     .catch((err) => catchAxiosError(err));
 };

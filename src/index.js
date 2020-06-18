@@ -23,6 +23,8 @@ import LocationPage from "myViews/LocationPage/LocationPage";
 import BookingsPage from "myViews/BookingsPage/BookingsPage";
 import CartPage from "myViews/CartPage/CartPage";
 import NavBar from "myComponents/NavBar/NavBar";
+import CoursesPage from "myViews/CoursesPage/CoursesPage";
+import CoursePage from "myViews/CoursePage/CoursePage";
 
 var hist = createBrowserHistory();
 
@@ -35,20 +37,25 @@ const App = () => {
           <Router history={hist}>
             <NavBar />
             <Switch>
-              <Route exact path="/registrierung" component={SignUp} />
-              <Route exact path="/login" component={SignIn} />
-              <Route path="/anfahrt" component={LocationPage} />
-              <Route path="/camps" component={CampsPage} />
+              {/* Auth Routes*/}
               <AuthRoute
                 path="/gestalte-dein-camp"
                 component={CampCreationPage}
               />
               <AuthRoute path="/meine-buchungen" component={BookingsPage} />
+              <AuthRoute path="/mein-warenkorb" component={CartPage} />
+
+              {/* Public Routes*/}
               <Route exact path="/" component={MainPage} />
-              <Route path="/payment/success" component={SuccessPage} />
+              <Route path="/Anfahrt" component={LocationPage} />
+              <Route path="/Camps" component={CampsPage} />
+              <Route exact path="/Kurse" component={CoursesPage} />
+              <Route path="/Kurs/:id" component={CoursePage} />
+              <Route exact path="/login" component={SignIn} />
               <Route path="/payment/cancel" component={CancelPage} />
               <Route path="/payment/fail" component={FailurePage} />
-              <AuthRoute path="/mein-warenkorb" component={CartPage} />
+              <Route path="/payment/success" component={SuccessPage} />
+              <Route exact path="/Registrierung" component={SignUp} />
             </Switch>
           </Router>
         </ShoppingCartContextProvider>

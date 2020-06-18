@@ -1,0 +1,123 @@
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+//@material-ui/core components
+import { makeStyles } from "@material-ui/core/styles";
+import contactUsStyle from "assets/jss/material-kit-pro-react/views/contactUsStyle.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import GridItem from "components/Grid/GridItem.js";
+import InfoArea from "components/InfoArea/InfoArea.js";
+// nodejs library that concatenates classes
+import classNames from "classnames";
+// @material-ui/icons
+import PeopleIcon from "@material-ui/icons/People";
+import EuroSymbolIcon from "@material-ui/icons/EuroSymbol";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+// core components
+import Parallax from "components/Parallax/Parallax.js";
+import Button from "components/CustomButtons/Button.js";
+import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
+
+import { getCourse, getCategory } from "../../APIUtils";
+
+const useStyles = makeStyles(contactUsStyle);
+
+const CoursePage = () => {
+  let { id } = useParams();
+
+  const classes = useStyles();
+
+  const [course, setCourse] = useState({});
+  const [category, setCategory] = useState({});
+  const [isSending, setIsSending] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const course = await getCourse(id);
+        setCourse(course);
+        const category = await getCategory(course.category);
+        console.log(category);
+        setCategory(category);
+      } catch {}
+    })();
+  }, [id]);
+
+  return (
+    <div>
+      <Parallax
+        image={
+          "https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+        }
+        filter="dark"
+        small
+      />
+      <div className={classNames(classes.main, classes.mainRaised)}>
+        <div className={classes.container}>
+          <GridContainer>
+            <GridItem md={6} sm={6}>
+              <h3 className={classes.title}>
+                {category.label} {course.courseName}
+              </h3>
+
+              <h4>
+                <i>{category.defaultShortDescriptionCamps}</i>
+              </h4>
+              <p>{category.defaultLongDescriptionCamps}</p>
+            </GridItem>
+
+            <GridItem md={4} sm={4} className={classes.mlAuto}>
+              <InfoArea
+                className={classes.info}
+                title="Teilnehmer"
+                description={
+                  <p>
+                    {course.numParticipants + course.numPseudoParticipants}/
+                    {course.maxParticipants}
+                  </p>
+                }
+                icon={PeopleIcon}
+                iconColor="primary"
+              />
+              <InfoArea
+                className={classes.info}
+                title="Preis"
+                description={<p>{course.price}</p>}
+                icon={EuroSymbolIcon}
+                iconColor="primary"
+              />
+              <CustomDropdown
+                noLiPadding
+                navDropdown
+                buttonText="Kurs buchen"
+                buttonProps={{
+                  round: true,
+                  block: true,
+                  color: "primary",
+                }}
+                buttonIcon={ShoppingCartIcon}
+                dropdownList={[
+                  <Button
+                    key="book-for-myself-button"
+                    color="primary"
+                    onClick={console.log("für mich buchen")}
+                  >
+                    Für mich buchen
+                  </Button>,
+                  <Button
+                    key="book-for-someone-else-button"
+                    color="primary"
+                    onClick={console.log("für mich buchen")}
+                  >
+                    Für jemand anderen buchen
+                  </Button>,
+                ]}
+              />
+            </GridItem>
+          </GridContainer>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CoursePage;

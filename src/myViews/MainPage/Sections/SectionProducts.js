@@ -15,7 +15,7 @@ import campsImg from "assets/myImg/Camp_Sternkreis.JPG";
 
 const useStyles = makeStyles(sectionPillsStyle);
 
-const SectionProducts = props => {
+const SectionProducts = (props) => {
   const classes = useStyles();
 
   return (
@@ -25,14 +25,12 @@ const SectionProducts = props => {
         {/* GRID ITEM 1 KURSE*/}
         <GridItem xs={12} sm={12} md={12}>
           <Card
-            onClick={() =>
-              (window.location.href = "https://www.marswiese.at/buchung/kurse/")
-            }
+            onClick={() => props.history.push("/Kurse")}
             raised
             background
             style={{
               backgroundImage:
-                "url('https://www.marswiese.at/wordpress/wp-content/uploads/Banner1.jpg')"
+                "url('https://www.marswiese.at/wordpress/wp-content/uploads/Banner1.jpg')",
             }}
           >
             <CardBody background>
@@ -44,11 +42,11 @@ const SectionProducts = props => {
         {/* GRID ITEM 2 FERIENCAMPS*/}
         <GridItem xs={12} sm={6} md={6}>
           <Card
-            onClick={() => props.history.push("/camps")}
+            onClick={() => props.history.push("/Camps")}
             raised
             background
             style={{
-              backgroundImage: `url(${campsImg})`
+              backgroundImage: `url(${campsImg})`,
             }}
           >
             <CardBody background>
@@ -68,7 +66,7 @@ const SectionProducts = props => {
             background
             style={{
               backgroundImage:
-                "url('https://www.marswiese.at/buchung/images/kurse/wildnis2.jpg')"
+                "url('https://www.marswiese.at/buchung/images/kurse/wildnis2.jpg')",
             }}
           >
             <CardBody background>
@@ -87,7 +85,7 @@ const SectionProducts = props => {
             raised
             background
             style={{
-              backgroundImage: "url()"
+              backgroundImage: "url()",
             }}
           >
             <CardBody background>

@@ -1,6 +1,6 @@
 import React from "react";
 // @material-ui/icons
-import TodayIcon from "@material-ui/icons/Today";
+import HomeIcon from "@material-ui/icons/Home";
 import IconButton from "@material-ui/core/IconButton";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,23 +11,23 @@ import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyl
 
 const useStyles = makeStyles(styles);
 
-const LocationItem = (props) => {
+const HomeItem = (props) => {
   const classes = useStyles();
   return (
-    <Link to="/meine-buchungen">
+    <Link to="/">
       <IconButton
         className={classes.navLink}
         edge="start"
         aria-controls="menu-appbar"
-        aria-label="loction-navbar-item"
-        onClick={() => props.history.push("/meine-buchungen")}
+        aria-label="home-navbar-item"
+        onClick={() => props.history.push("/")}
         style={{ fontSize: "12px", color: "white" }}
       >
-        <TodayIcon />
-        Buchungen
+        <HomeIcon />
+        Startseite
       </IconButton>
     </Link>
   );
 };
 
-export default withRouter(LocationItem);
+export default withRouter(HomeItem);

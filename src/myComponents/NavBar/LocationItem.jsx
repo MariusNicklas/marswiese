@@ -7,12 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 
-const styles = (theme) => ({
-  label: {
-    // Aligns the content of the button vertically.
-    flexDirection: "column",
-  },
-});
+import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
 const useStyles = makeStyles(styles);
 
@@ -21,7 +16,7 @@ const LocationItem = (props) => {
   return (
     <Link to="/anfahrt">
       <IconButton
-        classes={{ label: classes.label }}
+        className={classes.navLink}
         edge="start"
         aria-controls="menu-appbar"
         aria-label="loction-navbar-item"

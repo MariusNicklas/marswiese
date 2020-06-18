@@ -1,6 +1,6 @@
 import React from "react";
 // @material-ui/icons
-import TodayIcon from "@material-ui/icons/Today";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import IconButton from "@material-ui/core/IconButton";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,17 +14,17 @@ const useStyles = makeStyles(styles);
 const LocationItem = (props) => {
   const classes = useStyles();
   return (
-    <Link to="/meine-buchungen">
+    <Link to="/mein-warenkorb">
       <IconButton
         className={classes.navLink}
         edge="start"
         aria-controls="menu-appbar"
-        aria-label="loction-navbar-item"
-        onClick={() => props.history.push("/meine-buchungen")}
+        aria-label="cart-navbar-item"
+        onClick={() => props.history.push("/mein-warenkorb")}
         style={{ fontSize: "12px", color: "white" }}
       >
-        <TodayIcon />
-        Buchungen
+        <ShoppingCartIcon />
+        Warenkorb
       </IconButton>
     </Link>
   );

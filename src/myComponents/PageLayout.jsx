@@ -1,36 +1,24 @@
-/*eslint-disable*/
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
 import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Parallax from "components/Parallax/Parallax.js";
-// sections for this page
-import SectionSports from "./Sections/SectionSports.js";
-import SectionProducts from "./Sections/SectionProducts.js";
-import SubscribeLine from "./Sections/SubscribeLine.js";
 
-import MainPageStyle from "../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js";
+import MainPageStyle from "../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js";
 
-const useStyles = makeStyles(MainPageStyle);
-
-const MainPage = () => {
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-  });
+const PageLayout = (props) => {
+  const useStyles = makeStyles(MainPageStyle);
   const classes = useStyles();
+
   return (
     <div>
       <Parallax
         image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
-        filter="dark"
         small
       >
         <div className={classes.container}>
@@ -44,15 +32,7 @@ const MainPage = () => {
         </div>
       </Parallax>
 
-      <div className={classes.main}>
-        <div className={classes.container}>
-          <SectionSports />
-        </div>
-        <div className={classes.container}>
-          <SectionProducts />
-        </div>
-        <SubscribeLine />
-      </div>
+      <div className={classes.main}>{props.children}</div>
 
       <Footer
         content={
@@ -85,4 +65,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default PageLayout;
