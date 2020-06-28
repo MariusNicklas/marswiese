@@ -40,13 +40,20 @@ const CartPage = () => {
     (async () => {
       try {
         const response = await getShoppingCart();
+        console.log("cart:")
+        console.log(response)
         setCart(response);
       } catch {}
     })();
   }, [cartChangedToggle, setCart]);
 
-  const handleDeleteItem = async (id) => {
+  const handleDeleteCampBooking = async (id) => {
     await deleteCampPseudoBooking(id);
+    setCartChangedToggle(!cartChangedToggle);
+  };
+
+  const handleDeleteCourseBooking = async (id) => {
+    console.log("TO DO: delete course booking")
     setCartChangedToggle(!cartChangedToggle);
   };
 
@@ -109,6 +116,7 @@ const CartPage = () => {
           <TableHead>
             <TableRow>
               <TableCell>Item</TableCell>
+              <TableCell>Teilnehmer</TableCell>
               <TableCell>Preis</TableCell>
               <TableCell>Löschen</TableCell>
             </TableRow>
@@ -116,19 +124,35 @@ const CartPage = () => {
 
           <TableBody>
             {cart.campPseudoBookings.map((booking) => (
-              <TableRow key={booking._id}>
-                <TableCell>Feriencamp für {booking.kid.name}</TableCell>
-
+              <TableRow key={booking.id}>
+                <TableCell>Feriencamp</TableCell>
+                <TableCell>{booking.kid.name}</TableCell>
                 <TableCell>EUR {booking.totalPrice}</TableCell>
 
                 <TableCell>
-                  <Button onClick={() => handleDeleteItem(booking._id)}>
+                  <Button onClick={() => handleDeleteCampBooking(booking.id)}>
                     <DeleteOutlinedIcon />
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
+
+          <TableBody>
+            {cart.coursePseudoBookings.map((booking) => (
+              <TableRow key={booking.id}>
+                <TableCell>{booking.course.description} {booking.course.courseName}</TableCell>
+                <TableCell>{booking.participant.name}</TableCell>
+                <TableCell>EUR {booking.totalPrice}</TableCell>
+
+                <TableCell>
+                  <Button onClick={() => handleDeleteCourseBooking(booking.id)}>
+                    <DeleteOutlinedIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+            </TableBody>
 
           <TableHead>
             <TableRow>

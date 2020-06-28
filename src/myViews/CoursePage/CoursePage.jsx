@@ -21,11 +21,14 @@ import { getCourse, getCategory } from "../../APIUtils";
 
 const useStyles = makeStyles(contactUsStyle);
 
-const CoursePage = () => {
-  let { id } = useParams();
+const CoursePage = (props) => {
+  const { history } = props;
+
+  const { id } = useParams();
 
   const classes = useStyles();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [course, setCourse] = useState({});
   const [category, setCategory] = useState({});
   const [isSending, setIsSending] = useState(false);
@@ -33,91 +36,76 @@ const CoursePage = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const course = await getCourse(id);
         setCourse(course);
-        const category = await getCategory(course.category);
-        console.log(category);
-        setCategory(category);
+        setIsLoading(false);
       } catch {}
     })();
   }, [id]);
 
-  return (
-    <div>
-      <Parallax
-        image={
-          "https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
-        }
-        filter="dark"
-        small
-      />
-      <div className={classNames(classes.main, classes.mainRaised)}>
-        <div className={classes.container}>
-          <GridContainer>
-            <GridItem md={6} sm={6}>
-              <h3 className={classes.title}>
-                {category.label} {course.courseName}
-              </h3>
+  if (isLoading) {
+    return <div>Lade Daten...</div>;
+  } else {
+    return (
+      <div>
+        <Parallax
+          image={
+            "https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+          }
+          filter="dark"
+          small
+        />
+        <div className={classNames(classes.main, classes.mainRaised)}>
+          <div className={classes.container}>
+            <GridContainer>
+              <GridItem md={6} sm={6}>
+                <h3 className={classes.title}>
+                  {course.description} {course.courseName}
+                </h3>
 
-              <h4>
-                <i>{category.defaultShortDescriptionCamps}</i>
-              </h4>
-              <p>{category.defaultLongDescriptionCamps}</p>
-            </GridItem>
+                <h4>
+                  <i>{course.category.defaultShortDescriptionCamps}</i>
+                </h4>
+                <p>{course.category.defaultLongDescriptionCamps}</p>
+              </GridItem>
 
-            <GridItem md={4} sm={4} className={classes.mlAuto}>
-              <InfoArea
-                className={classes.info}
-                title="Teilnehmer"
-                description={
-                  <p>
-                    {course.numParticipants + course.numPseudoParticipants}/
-                    {course.maxParticipants}
-                  </p>
-                }
-                icon={PeopleIcon}
-                iconColor="primary"
-              />
-              <InfoArea
-                className={classes.info}
-                title="Preis"
-                description={<p>{course.price}</p>}
-                icon={EuroSymbolIcon}
-                iconColor="primary"
-              />
-              <CustomDropdown
-                noLiPadding
-                navDropdown
-                buttonText="Kurs buchen"
-                buttonProps={{
-                  round: true,
-                  block: true,
-                  color: "primary",
-                }}
-                buttonIcon={ShoppingCartIcon}
-                dropdownList={[
-                  <Button
-                    key="book-for-myself-button"
-                    color="primary"
-                    onClick={console.log("für mich buchen")}
-                  >
-                    Für mich buchen
-                  </Button>,
-                  <Button
-                    key="book-for-someone-else-button"
-                    color="primary"
-                    onClick={console.log("für mich buchen")}
-                  >
-                    Für jemand anderen buchen
-                  </Button>,
-                ]}
-              />
-            </GridItem>
-          </GridContainer>
+              <GridItem md={4} sm={4} className={classes.mlAuto}>
+                <InfoArea
+                  className={classes.info}
+                  title="Teilnehmer"
+                  description={
+                    <p>
+                      {course.numParticipants + course.numPseudoParticipants}/
+                      {course.maxParticipants}
+                    </p>
+                  }
+                  icon={PeopleIcon}
+                  iconColor="primary"
+                />
+                <InfoArea
+                  className={classes.info}
+                  title="Preis"
+                  description={<p>{course.price}</p>}
+                  icon={EuroSymbolIcon}
+                  iconColor="primary"
+                />
+                <Button
+                  key="book-course-button"
+                  color="primary"
+                  onClick={() =>
+                    history.push(props.location.pathname + "/buchen")
+                  }
+                >
+                  Kurs buchen
+                </Button>
+              </GridItem>
+            </GridContainer>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default CoursePage;

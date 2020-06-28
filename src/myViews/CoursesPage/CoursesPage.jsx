@@ -118,9 +118,11 @@ const CoursesPage = (props) => {
                 )
                 .map((category) =>
                   category.courses.map((course) => (
-                    <GridItem key={course.id} xs={12} sm={6} md={3}>
+                    <GridItem key={course._id} xs={12} sm={6} md={3}>
                       <Card
-                        onClick={() => props.history.push("/Kurs/" + course.id)}
+                        onClick={() =>
+                          props.history.push("/Kurs/" + course._id)
+                        }
                         raised
                         background
                         style={{

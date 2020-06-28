@@ -4,7 +4,11 @@ import { getMe, isLoggedIn } from "./APIUtils";
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    id: "",
+  });
 
   useEffect(() => {
     (async () => {
@@ -12,8 +16,11 @@ export const UserProvider = (props) => {
         const response = await isLoggedIn();
         if (response) {
           const response = await getMe();
-          const username = response.firstName + " " + response.lastName;
-          setUser(username);
+          setUser({
+            firstName: response.firstName,
+            lastName: response.lastName,
+            id: response._id,
+          });
         }
       } catch {}
     })();

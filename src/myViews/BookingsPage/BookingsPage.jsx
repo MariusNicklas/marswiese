@@ -22,25 +22,35 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Table from "components/Table/Table.js";
 
-import { getMyCampBookings, getCampById } from "../../APIUtils";
+import {
+  getMyCampBookings,
+  getCampById,
+  getMyCourseBookings,
+  getCourseById,
+} from "../../APIUtils";
 
 import MainPageStyle from "../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js";
+import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
 
-const useStyles = makeStyles(MainPageStyle);
+const useMainPageStyles = makeStyles(MainPageStyle);
+const useSectionPillsStyles = makeStyles(sectionPillsStyle);
 
 const BookingsPage = () => {
-  const classes = useStyles();
+  const mainPageClasses = useMainPageStyles();
+  const sectionPillsClasses = useSectionPillsStyles();
 
   const [isLoading, setIsLoading] = useState(true);
   const [myCampBookings, setMyCampBookings] = useState([]);
+  const [myCourseBookings, setMyCourseBookings] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
         setIsLoading(true);
-        const response = await getMyCampBookings();
-        const newResponse = await Promise.all(
-          response.map(async (campBooking) => {
+        // get booked camps
+        const campBookings = await getMyCampBookings();
+        const campBookingsWithNames = await Promise.all(
+          campBookings.map(async (campBooking) => {
             const campIds = campBooking.camps;
             const camp1 = await getCampById(campIds[0]);
             const camp2 = await getCampById(campIds[1]);
@@ -51,7 +61,23 @@ const BookingsPage = () => {
             return campBooking;
           })
         );
-        setMyCampBookings(newResponse);
+        setMyCampBookings(campBookingsWithNames);
+
+        // get booked courses
+        const courseBookings = await getMyCourseBookings();
+        const courseBookingsWithNames = await Promise.all(
+          courseBookings.map(async (courseBooking) => {
+            const courseId = courseBooking.course;
+            const course = await getCourseById(courseId);
+            courseBooking = {
+              courseName: course,
+              ...courseBooking,
+            };
+            return courseBooking;
+          })
+        );
+        setMyCourseBookings(courseBookingsWithNames);
+        console.log(courseBookingsWithNames);
         setIsLoading(false);
       } catch (err) {
         console.log(err);
@@ -71,56 +97,119 @@ const BookingsPage = () => {
           filter="dark"
           small
         >
-          <div className={classes.container}>
+          <div className={mainPageClasses.container}>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
-                <h2 className={classes.title}>Meine Buchungen</h2>
+              <GridItem
+                xs={12}
+                sm={12}
+                md={8}
+                className={mainPageClasses.textCenter}
+              >
+                <h2 className={mainPageClasses.title}>Meine Buchungen</h2>
               </GridItem>
             </GridContainer>
           </div>
         </Parallax>
-        <div className={classes.main}>
-          <div className={classes.container}>
-            <div className={classNames(classes.main, classes.mainRaised)}>
+        <div
+          className={classNames(
+            mainPageClasses.main,
+            mainPageClasses.mainRaised,
+            mainPageClasses.container
+          )}
+        >
+          <div className={sectionPillsClasses.section}>
+            {/* CAMP BOOKINGS TABLE */}
+            <h2>Gebuchte Camps</h2>
+            <Table
+              tableHead={["", "PRODUKT", "TEILNEHMER", "ERSTELLT AM", "DETAILS", "AKTIONEN"]}
+              tableData={myCampBookings.map((campBooking) => [
+                <div
+                  className={mainPageClasses.imgContainer}
+                  key={campBooking.id}
+                ></div>,
+                <div key={campBooking.id}>
+                  Feriencamp
+                </div>,
+                <div key={campBooking.id}>
+                {campBooking.kid.name}
+              </div>,
+                <div key={campBooking.id}>{campBooking.createdAt}</div>,
+                <div key={campBooking.id}>
+                  {campBooking.campNames[0]}, {campBooking.campNames[1]}
+                </div>,
+                <Tooltip
+                  key={campBooking.id}
+                  id="close1"
+                  title="Buchung stornieren"
+                  placement="left"
+                  classes={{ tooltip: mainPageClasses.tooltip }}
+                >
+                  <Button link className={mainPageClasses.actionButton}>
+                    <Close />
+                  </Button>
+                </Tooltip>,
+              ])}
+              tableShopping
+              customHeadCellClasses={[
+                mainPageClasses.textCenter,
+                mainPageClasses.description,
+                mainPageClasses.textRight,
+                mainPageClasses.textRight,
+              ]}
+              customHeadClassesForCells={[0, 1, 3, 4]}
+              customCellClasses={[
+                mainPageClasses.tdName,
+                mainPageClasses.customFont,
+                mainPageClasses.customFont,
+                mainPageClasses.tdNumber,
+              ]}
+              customClassesForCells={[1, 2, 3, 4]}
+            />
+          </div>
+
+          {/* COURSE BOOKINGS TABLE */}
+          <div className={mainPageClasses.container}>
+            <div className={sectionPillsClasses.section}>
+              <h2>Gebuchte Kurse</h2>
               <Table
-                tableHead={["", "PRODUKT", "ERSTELLT AM", "DETAILS", ""]}
-                tableData={myCampBookings.map((campBooking) => [
+                tableHead={["", "PRODUKT", "TEILNEHMER", "ERSTELLT AM", "AKTIONEN"]}
+                tableData={myCourseBookings.map((courseBooking) => [
                   <div
-                    className={classes.imgContainer}
-                    key={campBooking.id}
+                    className={mainPageClasses.imgContainer}
+                    key={courseBooking._id}
                   ></div>,
-                  <div key={campBooking.id}>
-                    Feriencamp für {campBooking.kid.name}
+                  <div key={courseBooking._id}>
+                    {courseBooking.courseName.description}{" "}
+                    {courseBooking.courseName.courseName}
                   </div>,
-                  <div key={campBooking.id}>{campBooking.createdAt}</div>,
-                  <div key={campBooking.id}>
-                    {campBooking.campNames[0]}, {campBooking.campNames[1]}
-                  </div>,
+                  <div key={courseBooking._id}>{courseBooking.participant.name}</div>,
+                  <div key={courseBooking._id}>{courseBooking.createdAt}</div>,
+                  
                   <Tooltip
-                    key={campBooking.id}
+                    key={courseBooking._id}
                     id="close1"
                     title="Buchung stornieren"
                     placement="left"
-                    classes={{ tooltip: classes.tooltip }}
+                    classes={{ tooltip: mainPageClasses.tooltip }}
                   >
-                    <Button link className={classes.actionButton}>
+                    <Button link className={mainPageClasses.actionButton}>
                       <Close />
                     </Button>
                   </Tooltip>,
                 ])}
                 tableShopping
                 customHeadCellClasses={[
-                  classes.textCenter,
-                  classes.description,
-                  classes.textRight,
-                  classes.textRight,
+                  mainPageClasses.textCenter,
+                  mainPageClasses.description,
+                  mainPageClasses.textRight,
+                  mainPageClasses.textRight,
                 ]}
                 customHeadClassesForCells={[0, 1, 3, 4]}
                 customCellClasses={[
-                  classes.tdName,
-                  classes.customFont,
-                  classes.customFont,
-                  classes.tdNumber,
+                  mainPageClasses.tdName,
+                  mainPageClasses.customFont,
+                  mainPageClasses.customFont,
+                  mainPageClasses.tdNumber,
                 ]}
                 customClassesForCells={[1, 2, 3, 4]}
               />

@@ -327,3 +327,23 @@ export const getCoursesByCategory = () => {
     .then((response) => response.data.data.data)
     .catch((err) => catchAxiosError(err));
 };
+
+export const getMyCourseBookings = () => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}api/v1/coursebookings/my`,
+  })
+    .then((response) => response.data.data)
+    .catch((err) => catchAxiosError(err));
+};
+
+export const getCourseById = (id) => {
+  return axios({
+    method: "GET",
+    withCredentials: true,
+    url: `${url}/api/v1/courses/${id}`,
+  })
+    .then((response) => response.data.data.data)
+    .catch((err) => catchAxiosError(err));
+};
