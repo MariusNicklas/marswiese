@@ -3,13 +3,6 @@ import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-/*import {
-  Table,
-  TableRow,
-  TableCell,
-  TableHead,
-  TableBody,
-} from "@material-ui/core";*/
 import Tooltip from "@material-ui/core/Tooltip";
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
@@ -110,6 +103,7 @@ const BookingsPage = () => {
             </GridContainer>
           </div>
         </Parallax>
+
         <div
           className={classNames(
             mainPageClasses.main,
@@ -121,18 +115,21 @@ const BookingsPage = () => {
             {/* CAMP BOOKINGS TABLE */}
             <h2>Gebuchte Camps</h2>
             <Table
-              tableHead={["", "PRODUKT", "TEILNEHMER", "ERSTELLT AM", "DETAILS", "AKTIONEN"]}
+              tableHead={[
+                "",
+                "PRODUKT",
+                "TEILNEHMER",
+                "ERSTELLT AM",
+                "DETAILS",
+                "AKTIONEN",
+              ]}
               tableData={myCampBookings.map((campBooking) => [
                 <div
                   className={mainPageClasses.imgContainer}
                   key={campBooking.id}
                 ></div>,
-                <div key={campBooking.id}>
-                  Feriencamp
-                </div>,
-                <div key={campBooking.id}>
-                {campBooking.kid.name}
-              </div>,
+                <div key={campBooking.id}>Feriencamp</div>,
+                <div key={campBooking.id}>{campBooking.kid.name}</div>,
                 <div key={campBooking.id}>{campBooking.createdAt}</div>,
                 <div key={campBooking.id}>
                   {campBooking.campNames[0]}, {campBooking.campNames[1]}
@@ -172,7 +169,13 @@ const BookingsPage = () => {
             <div className={sectionPillsClasses.section}>
               <h2>Gebuchte Kurse</h2>
               <Table
-                tableHead={["", "PRODUKT", "TEILNEHMER", "ERSTELLT AM", "AKTIONEN"]}
+                tableHead={[
+                  "",
+                  "PRODUKT",
+                  "TEILNEHMER",
+                  "ERSTELLT AM",
+                  "AKTIONEN",
+                ]}
                 tableData={myCourseBookings.map((courseBooking) => [
                   <div
                     className={mainPageClasses.imgContainer}
@@ -182,9 +185,11 @@ const BookingsPage = () => {
                     {courseBooking.courseName.description}{" "}
                     {courseBooking.courseName.courseName}
                   </div>,
-                  <div key={courseBooking._id}>{courseBooking.participant.name}</div>,
+                  <div key={courseBooking._id}>
+                    {courseBooking.participant.name}
+                  </div>,
                   <div key={courseBooking._id}>{courseBooking.createdAt}</div>,
-                  
+
                   <Tooltip
                     key={courseBooking._id}
                     id="close1"

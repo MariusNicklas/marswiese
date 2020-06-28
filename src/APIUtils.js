@@ -347,3 +347,13 @@ export const getCourseById = (id) => {
     .then((response) => response.data.data.data)
     .catch((err) => catchAxiosError(err));
 };
+
+export const deleteCoursePseudoBooking = (id) => {
+  return axios({
+    method: "DELETE",
+    withCredentials: true,
+    url: `${url}/api/v1/coursepseudobookings/${id}`,
+  })
+    .then((response) => response)
+    .catch((err) => catchAxiosError(err));
+};
