@@ -16,14 +16,14 @@ import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyl
 const useStyles = makeStyles(styles);
 
 const HeaderLinks = (props) => {
-  const easeInOutQuad = (t, b, c, d) => {
+  /*const easeInOutQuad = (t, b, c, d) => {
     t /= d / 2;
     if (t < 1) return (c / 2) * t * t + b;
     t--;
     return (-c / 2) * (t * (t - 2) - 1) + b;
-  };
+  };*/
 
-  const smoothScroll = (e, target) => {
+  /*const smoothScroll = (e, target) => {
     if (window.location.pathname === "/sections") {
       var isMobile = navigator.userAgent.match(
         /(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i
@@ -36,8 +36,9 @@ const HeaderLinks = (props) => {
         scrollGo(document.documentElement, targetScroll.offsetTop, 1250);
       }
     }
-  };
-  const scrollGo = (element, to, duration) => {
+  };*/
+
+  /*const scrollGo = (element, to, duration) => {
     var start = element.scrollTop,
       change = to - start,
       currentTime = 0,
@@ -52,11 +53,10 @@ const HeaderLinks = (props) => {
       }
     };
     animateScroll();
-  };
-  var onClickSections = {};
+  };*/
 
-  const { dropdownHoverColor } = props;
   const classes = useStyles();
+
   return (
     <List className={classes.list + " " + classes.mlAuto}>
       <ListItem className={classes.listItem}>

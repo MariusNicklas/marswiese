@@ -11,13 +11,11 @@ import classNames from "classnames";
 // @material-ui/icons
 import PeopleIcon from "@material-ui/icons/People";
 import EuroSymbolIcon from "@material-ui/icons/EuroSymbol";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 // core components
 import Parallax from "components/Parallax/Parallax.js";
 import Button from "components/CustomButtons/Button.js";
-import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 
-import { getCourse, getCategory } from "../../APIUtils";
+import { getCourse } from "../../APIUtils";
 
 const useStyles = makeStyles(contactUsStyle);
 
@@ -30,8 +28,6 @@ const CoursePage = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [course, setCourse] = useState({});
-  const [category, setCategory] = useState({});
-  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     (async () => {

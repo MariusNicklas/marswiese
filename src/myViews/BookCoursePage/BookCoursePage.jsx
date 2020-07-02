@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
 import Parallax from "components/Parallax/Parallax.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -18,6 +17,8 @@ const useStyles = makeStyles(campsStyle);
 
 const BookCoursePage = (props) => {
   const classes = useStyles();
+
+  const { history } = props;
 
   const [user] = useContext(UserContext);
   const [participant, setParticipant] = useState({
@@ -42,16 +43,14 @@ const BookCoursePage = (props) => {
   const submitBooking = async (e) => {
     e.preventDefault();
     try {
-      console.log(courseId);
-      console.log(user.id);
-      console.log(participant.firstName + " " + participant.lastName);
-      const response = await postCoursePseudoBooking({
+      await postCoursePseudoBooking({
         course: courseId,
         user: user.id,
         participant: {
           name: participant.firstName + " " + participant.lastName,
         },
       });
+      history.push("/mein-warenkorb");
     } catch {}
   };
 

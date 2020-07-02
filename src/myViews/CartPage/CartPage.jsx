@@ -147,12 +147,13 @@ const CartPage = () => {
         <div
           className={classNames(
             mainPageClasses.main,
-            mainPageClasses.mainRaised,
-            mainPageClasses.container
+            mainPageClasses.mainRaised
           )}
         >
-          <div className={sectionPillsClasses.section}>
-            <h2>Der Warenkorb ist leer</h2>
+          <div className={mainPageClasses.container}>
+            <div className={sectionPillsClasses.section}>
+              <h3>Der Warenkorb ist leer</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -185,8 +186,7 @@ const CartPage = () => {
         <div
           className={classNames(
             mainPageClasses.main,
-            mainPageClasses.mainRaised,
-            mainPageClasses.container
+            mainPageClasses.mainRaised
           )}
         >
           <div className={sectionPillsClasses.section}>
@@ -241,6 +241,7 @@ const CartPage = () => {
               <TableHead>
                 <TableRow>
                   <TableCell />
+                  <TableCell />
                   <TableCell>Total</TableCell>
                   <TableCell />
                 </TableRow>
@@ -248,6 +249,7 @@ const CartPage = () => {
 
               <TableBody>
                 <TableRow>
+                  <TableCell />
                   <TableCell />
                   <TableCell>EUR {cart.totalPrice}</TableCell>
                   <TableCell />

@@ -24,7 +24,7 @@ const SignIn = (props) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const [user, setUser] = useContext(UserContext);
+  const [{ setUser }] = useContext(UserContext);
 
   // Handle fields change
   const handleChange = (input) => (e) => {
