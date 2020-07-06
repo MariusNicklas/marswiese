@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 // core components
-import Header from "components/Header/Header.js";
+import Header from 'components/Header/Header.js';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 // own components
-import LocationItem from "./LocationItem";
-import HomeItem from "./HomeItem";
-import BookingsItem from "./BookingsItem";
-import ShoppingCartItem from "./ShoppingCartItem";
-
-import styles from "assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
+import LocationItem from './LocationItem';
+import HomeItem from './HomeItem';
+import BookingsItem from './BookingsItem';
+import ShoppingCartItem from './ShoppingCartItem';
+import AccountItem from './AccountItem';
+import styles from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.js';
 
 const useStyles = makeStyles(styles);
 
-const HeaderLinks = (props) => {
+const HeaderLinks = props => {
   /*const easeInOutQuad = (t, b, c, d) => {
     t /= d / 2;
     if (t < 1) return (c / 2) * t * t + b;
@@ -58,7 +58,7 @@ const HeaderLinks = (props) => {
   const classes = useStyles();
 
   return (
-    <List className={classes.list + " " + classes.mlAuto}>
+    <List className={classes.list + ' ' + classes.mlAuto}>
       <ListItem className={classes.listItem}>
         <HomeItem />
       </ListItem>
@@ -70,6 +70,9 @@ const HeaderLinks = (props) => {
       </ListItem>
       <ListItem className={classes.listItem}>
         <ShoppingCartItem />
+      </ListItem>
+      <ListItem className={classes.listItem}>
+        <AccountItem />
       </ListItem>
     </List>
   );
@@ -84,7 +87,7 @@ const NavBar = () => {
       color="transparent"
       changeColorOnScroll={{
         height: 100,
-        color: "primary",
+        color: 'primary'
       }}
     />
   );

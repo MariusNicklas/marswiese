@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import classNames from 'classnames';
 // own components and functionality
 import {
   getShoppingCart,
@@ -9,15 +9,15 @@ import {
   getPayPalPaymentSession,
   getVisaPaymentSession,
   getKlarnaPaymentSession,
-  getEpsPaymentSession,
-} from "../../APIUtils";
-import { ShoppingCartContext } from "../../myComponents/NavBar/ShoppingCartContext";
+  getEpsPaymentSession
+} from '../../APIUtils';
+import { ShoppingCartContext } from '../../myComponents/NavBar/ShoppingCartContext';
 // @material-ui/icons
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import IconButton from '@material-ui/core/IconButton';
+import Close from '@material-ui/icons/Close';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
   Drawer,
@@ -25,18 +25,18 @@ import {
   TableRow,
   TableCell,
   TableHead,
-  TableBody,
-} from "@material-ui/core";
+  TableBody
+} from '@material-ui/core';
 // payment icons
-import PaymentIcon from "react-payment-icons";
-import EpsLogo from "../../assets/img/epsLogo.png";
+import PaymentIcon from 'react-payment-icons';
+import EpsLogo from '../../assets/img/epsLogo.png';
 // core components
-import Parallax from "components/Parallax/Parallax.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
+import Parallax from 'components/Parallax/Parallax.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
 
-import MainPageStyle from "../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js";
-import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
+import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 
 const useMainPageStyles = makeStyles(MainPageStyle);
 const useSectionPillsStyles = makeStyles(sectionPillsStyle);
@@ -56,19 +56,19 @@ const CartPage = () => {
     (async () => {
       try {
         const response = await getShoppingCart();
-        console.log("cart:");
+        console.log('cart:');
         console.log(response);
         setCart(response);
       } catch {}
     })();
   }, [cartChangedToggle, setCart]);
 
-  const handleDeleteCampBooking = async (id) => {
+  const handleDeleteCampBooking = async id => {
     await deleteCampPseudoBooking(id);
     setCartChangedToggle(!cartChangedToggle);
   };
 
-  const handleDeleteCourseBooking = async (id) => {
+  const handleDeleteCourseBooking = async id => {
     await deleteCoursePseudoBooking(id);
     setCartChangedToggle(!cartChangedToggle);
   };
@@ -87,18 +87,18 @@ const CartPage = () => {
     const response = await getPayPalPaymentSession();
 
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
   const handleVisaPayment = async () => {
-    console.log("visa");
+    console.log('visa');
     const response = await getVisaPaymentSession();
     console.log(response);
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
@@ -106,8 +106,8 @@ const CartPage = () => {
     const response = await getKlarnaPaymentSession();
 
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
@@ -115,8 +115,8 @@ const CartPage = () => {
     const response = await getEpsPaymentSession();
 
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
@@ -125,7 +125,7 @@ const CartPage = () => {
       <div>
         <Parallax
           image={
-            "https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+            'https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg'
           }
           filter="dark"
           small
@@ -164,7 +164,7 @@ const CartPage = () => {
       <div>
         <Parallax
           image={
-            "https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+            'https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg'
           }
           filter="dark"
           small
@@ -201,7 +201,7 @@ const CartPage = () => {
               </TableHead>
 
               <TableBody>
-                {cart.campPseudoBookings.map((booking) => (
+                {cart.campPseudoBookings.map(booking => (
                   <TableRow key={booking.id}>
                     <TableCell>Feriencamp</TableCell>
                     <TableCell>{booking.kid.name}</TableCell>
@@ -219,7 +219,7 @@ const CartPage = () => {
               </TableBody>
 
               <TableBody>
-                {cart.coursePseudoBookings.map((booking) => (
+                {cart.coursePseudoBookings.map(booking => (
                   <TableRow key={booking.id}>
                     <TableCell>
                       {booking.course.description} {booking.course.courseName}
@@ -266,7 +266,7 @@ const CartPage = () => {
               {loadingPayment && (
                 <i
                   className="fa fa-refresh fa-spin"
-                  style={{ color: "primary", marginRight: "5px" }}
+                  style={{ color: 'primary', marginRight: '5px' }}
                 />
               )}
               {loadingPayment && <span>Daten werden übermittelt</span>}
@@ -275,7 +275,7 @@ const CartPage = () => {
 
             <Drawer
               variant="temporary"
-              anchor={"right"}
+              anchor={'right'}
               open={servicesDrawerOpen}
               onClose={handleServicesDrawerToggle}
               width="75%"

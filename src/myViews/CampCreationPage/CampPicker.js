@@ -1,44 +1,44 @@
-import React, { useContext, useState, useReducer } from "react";
-import { ShoppingCartContext } from "../../myComponents/NavBar/ShoppingCartContext";
-import { makeStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
-import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import CampCreateChildPersonalData from "./CampPickerComponents/CampCreateChildPersonalData";
-import CampCreateChildAdressData from "./CampPickerComponents/CampCreateChildAdressData";
-import PickChildAllergies from "./PickChildAllergies";
-import CampPickWeek from "./CampPickerComponents/CampPickWeek";
-import CampPickFinish from "./CampPickerComponents/CampPickFinish";
-import CampPickCamp from "./CampPickerComponents/CampPickCamp";
-import CampPickChildCare from "./CampPickerComponents/CampPickChildCare";
-import CampCreationContext from "./CampCreationContext";
-import UserContext from "./UserContext";
-import { Box } from "@material-ui/core";
-import { postCampPseudoBooking } from "../../APIUtils";
+import React, { useContext, useState, useReducer } from 'react';
+import { ShoppingCartContext } from '../../myComponents/NavBar/ShoppingCartContext';
+import { makeStyles } from '@material-ui/core/styles';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Button from '@material-ui/core/Button';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import CampCreateChildPersonalData from './CampPickerComponents/CampCreateChildPersonalData';
+import CampCreateChildAdressData from './CampPickerComponents/CampCreateChildAdressData';
+import PickChildAllergies from './PickChildAllergies';
+import CampPickWeek from './CampPickerComponents/CampPickWeek';
+import CampPickFinish from './CampPickerComponents/CampPickFinish';
+import CampPickCamp from './CampPickerComponents/CampPickCamp';
+import CampPickChildCare from './CampPickerComponents/CampPickChildCare';
+import CampCreationContext from './CampCreationContext';
+import UserContext from './UserContext';
+import { Box } from '@material-ui/core';
+import { postCampPseudoBooking } from '../../APIUtils';
 
-import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
+import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
 
 const useStyles = makeStyles(campsStyle);
 
 function reducer(state, action) {
   switch (action.type) {
-    case "field-change": {
+    case 'field-change': {
       return {
         ...state,
         [action.field]: action.value
       };
     }
-    case "login": {
+    case 'login': {
       return {
         ...state,
         authenticated: true
       };
     }
-    case "logout": {
+    case 'logout': {
       return {
         ...state,
         authenticated: false
@@ -52,13 +52,13 @@ function reducer(state, action) {
 
 function getSteps() {
   return [
-    "Wer nimmt teil?",
-    "Kontakt",
-    "Krankheiten/Allergien",
-    "Welche Woche?",
-    "Camps wählen",
-    "Randbetreuung",
-    "Abschließen"
+    'Wer nimmt teil?',
+    'Kontakt',
+    'Krankheiten/Allergien',
+    'Welche Woche?',
+    'Camps wählen',
+    'Randbetreuung',
+    'Abschließen'
   ];
 }
 
@@ -107,7 +107,7 @@ function getStepContent(stepIndex) {
         </Box>
       );
     default:
-      return "Unknown stepIndex";
+      return 'Unknown stepIndex';
   }
 }
 
@@ -117,19 +117,19 @@ const CampPicker = ({ width }) => {
 
   const [state, dispatch] = useReducer(reducer, {
     authenticated: false,
-    firstName: "",
-    lastName: "",
-    birthday: "",
-    emergencyNumber: "",
-    address: "",
-    zip: "",
-    city: "",
+    firstName: '',
+    lastName: '',
+    birthday: '',
+    emergencyNumber: '',
+    address: '',
+    zip: '',
+    city: '',
     allergies: [],
-    diseases: "",
-    measures: "",
+    diseases: '',
+    measures: '',
     week: [],
-    campMorning: "",
-    campAfternoon: "",
+    campMorning: '',
+    campAfternoon: '',
     morningCare: false,
     afternoonCare: false
   });
@@ -181,7 +181,7 @@ const CampPicker = ({ width }) => {
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map(label => (
             <Step key={label}>
-              <StepLabel>{isWidthUp("sm", width) ? label : ""}</StepLabel>
+              <StepLabel>{isWidthUp('sm', width) ? label : ''}</StepLabel>
             </Step>
           ))}
         </Stepper>
@@ -202,7 +202,7 @@ const CampPicker = ({ width }) => {
             ) : (
               <div>
                 <h3>
-                  {isWidthUp("sm", width)
+                  {isWidthUp('sm', width)
                     ? steps[activeStep]
                     : `Schritt ${activeStep + 1}: ${steps[activeStep]}`}
                 </h3>
@@ -223,8 +223,8 @@ const CampPicker = ({ width }) => {
                     className={classes.nextButton}
                   >
                     {activeStep === steps.length - 1
-                      ? "Fertigstellen"
-                      : "Weiter"}
+                      ? 'Fertigstellen'
+                      : 'Weiter'}
                   </Button>
                 </div>
               </div>

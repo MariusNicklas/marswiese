@@ -1,42 +1,46 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Parallax from "components/Parallax/Parallax.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Parallax from 'components/Parallax/Parallax.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import classNames from 'classnames';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import { login } from "../../APIUtils";
-import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
-import { UserContext } from "../../userContext";
+import { makeStyles } from '@material-ui/core/styles';
+import { login } from '../../APIUtils';
+import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
+import signInStyles from './SignInStyles';
+import { UserContext } from '../../userContext';
 
-const useStyles = makeStyles(campsStyle);
+const useCampStyles = makeStyles(campsStyle);
+const useSignInStyles = makeStyles(signInStyles);
 
-const SignIn = (props) => {
-  const classes = useStyles();
+const SignIn = props => {
+  const campStyleClasses = useCampStyles();
+  const signInClasses = useSignInStyles();
 
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [inputError, setInputError] = useState(false);
 
-  const [{ setUser }] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
 
   // Handle fields change
-  const handleChange = (input) => (e) => {
+  const handleChange = input => e => {
     input(e.target.value);
   };
 
-  async function submitLogin(e) {
+  const submitLogin = async e => {
     e.preventDefault();
     const response = await login(email, password);
     const {
       history,
-      location: { state },
+      location: { state }
     } = props;
 
     if (response.status === 200) {
@@ -44,28 +48,39 @@ const SignIn = (props) => {
       if (state && state.next) {
         return history.push(state.next);
       } else {
-        return history.push("/");
+        return history.push('/');
       }
     }
-  }
+
+    // response status 'unauthorized'
+    if (response.status === 401) {
+      setInputError(true);
+    }
+  };
 
   return (
     <React.Fragment>
-      <Parallax image={require("assets/img/K1600_mars.JPG")} small>
-        <div className={classes.container}>
+      <Parallax image={require('assets/img/K1600_mars.JPG')} small>
+        <div className={campStyleClasses.container}>
           <GridContainer>
             <GridItem>
-              <div className={classes.brand}>
+              <div className={campStyleClasses.brand}>
                 <h1>Anmeldung</h1>
               </div>
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
-      <form className={classes.form} noValidate>
-        <div className={classNames(classes.main, classes.mainRaised)}>
-          <div className={classes.container}>
+      <form className={campStyleClasses.form} noValidate>
+        <div
+          className={classNames(
+            campStyleClasses.main,
+            campStyleClasses.mainRaised
+          )}
+        >
+          <div className={campStyleClasses.container}>
             <TextField
+              className={inputError ? '' : signInClasses.error}
               variant="outlined"
               margin="normal"
               required
@@ -97,7 +112,7 @@ const SignIn = (props) => {
               variant="contained"
               color="primary"
               onClick={submitLogin}
-              className={classes.submit}
+              className={campStyleClasses.submit}
             >
               Anmelden
             </Button>

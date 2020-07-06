@@ -1,22 +1,22 @@
 /*eslint-disable*/
-import React from "react";
+import React from 'react';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import Footer from "components/Footer/Footer.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Parallax from "components/Parallax/Parallax.js";
+import Header from 'components/Header/Header.js';
+import HeaderLinks from 'components/Header/HeaderLinks.js';
+import Footer from 'components/Footer/Footer.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import Parallax from 'components/Parallax/Parallax.js';
 // sections for this page
-import SectionSports from "./Sections/SectionSports.js";
-import SectionProducts from "./Sections/SectionProducts.js";
-import SubscribeLine from "./Sections/SubscribeLine.js";
+import SectionSports from './Sections/SectionSports.js';
+import SectionProducts from './Sections/SectionProducts.js';
+import SubscribeLine from './Sections/SubscribeLine.js';
 
-import MainPageStyle from "../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js";
+import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 
 const useStyles = makeStyles(MainPageStyle);
 
@@ -30,7 +30,10 @@ const MainPage = () => {
     <div>
       <Parallax
         image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
-        filter="dark"
+        style={{
+          backgroundImage:
+            'linear-gradient(#6eb63e, transparent, transparent, transparent)'
+        }}
         small
       >
         <div className={classes.container}>
