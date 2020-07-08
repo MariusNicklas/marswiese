@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 // own components and functionality
 import {
   getShoppingCart,
@@ -6,16 +6,16 @@ import {
   getPayPalPaymentSession,
   getVisaPaymentSession,
   getKlarnaPaymentSession,
-  getEpsPaymentSession,
-} from "../../APIUtils";
-import { ShoppingCartContext } from "./ShoppingCartContext";
+  getEpsPaymentSession
+} from '../../APIUtils';
+import { ShoppingCartContext } from './ShoppingCartContext';
 // @material-ui/core
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 // @material-ui/icons
-import IconButton from "@material-ui/core/IconButton";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import Close from "@material-ui/icons/Close";
-import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import IconButton from '@material-ui/core/IconButton';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Close from '@material-ui/icons/Close';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 // @material-ui/core components
 import {
   Badge,
@@ -26,40 +26,40 @@ import {
   TableCell,
   TableHead,
   Typography,
-  TableBody,
-} from "@material-ui/core";
+  TableBody
+} from '@material-ui/core';
 // payment icons
-import PaymentIcon from "react-payment-icons";
-import EpsLogo from "../../assets/img/epsLogo.png";
+import PaymentIcon from 'react-payment-icons';
+import EpsLogo from '../../assets/img/epsLogo.png';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   label: {
     // Aligns the content of the button vertically.
-    flexDirection: "column",
+    flexDirection: 'column'
   },
   drawer: {
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      flexShrink: 0,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      flexShrink: 0
     },
-    [theme.breakpoints.up("md")]: {
-      width: "30%",
-      flexShrink: 0,
-    },
+    [theme.breakpoints.up('md')]: {
+      width: '30%',
+      flexShrink: 0
+    }
   },
   drawerPaper: {
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-      flexShrink: 0,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      flexShrink: 0
     },
-    [theme.breakpoints.up("md")]: {
-      width: "30%",
-      flexShrink: 0,
-    },
-  },
+    [theme.breakpoints.up('md')]: {
+      width: '30%',
+      flexShrink: 0
+    }
+  }
 }));
 
-const ShoppingCart = (props) => {
+const ShoppingCart = props => {
   const classes = useStyles();
 
   const [cart, setCart, cartChangedToggle, setCartChangedToggle] = useContext(
@@ -70,7 +70,7 @@ const ShoppingCart = (props) => {
   const [loadingPayment, setLoadingPayment] = useState(false);
 
   useEffect(() => {
-    (async (getCart) => {
+    (async getCart => {
       try {
         const response = await getShoppingCart();
         setCart(response);
@@ -86,7 +86,7 @@ const ShoppingCart = (props) => {
     setServicesDrawerOpen(!servicesDrawerOpen);
   };
 
-  const handleDeleteItem = async (id) => {
+  const handleDeleteItem = async id => {
     await deleteCampPseudoBooking(id);
     setCartChangedToggle(!cartChangedToggle);
   };
@@ -108,8 +108,8 @@ const ShoppingCart = (props) => {
     const response = await getPayPalPaymentSession();
 
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
@@ -117,8 +117,8 @@ const ShoppingCart = (props) => {
     const response = await getVisaPaymentSession();
 
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
@@ -126,8 +126,8 @@ const ShoppingCart = (props) => {
     const response = await getKlarnaPaymentSession();
 
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
@@ -135,8 +135,8 @@ const ShoppingCart = (props) => {
     const response = await getEpsPaymentSession();
 
     if (response.status === 200) {
-      const url = response.data.data["payment-redirect-url"];
-      window.open(url, "_self");
+      const url = response.data.data['payment-redirect-url'];
+      window.open(url, '_self');
     }
   };
 
@@ -144,10 +144,10 @@ const ShoppingCart = (props) => {
     <Drawer
       className={classes.drawer}
       classes={{
-        paper: classes.drawerPaper,
+        paper: classes.drawerPaper
       }}
       variant="temporary"
-      anchor={"right"}
+      anchor={'right'}
       open={cartDrawerOpen || servicesDrawerOpen}
       onClose={handleCartDrawerToggle}
       width="75%"
@@ -176,14 +176,14 @@ const ShoppingCart = (props) => {
             </TableHead>
 
             <TableBody>
-              {cart.campPseudoBookings.map((booking) => (
+              {cart.campPseudoBookings.map(booking => (
                 <TableRow key={booking._id}>
                   <TableCell>Feriencamp für {booking.kid.name}</TableCell>
 
                   <TableCell>EUR {booking.totalPrice}</TableCell>
 
                   <TableCell>
-                    <Button onClick={(e) => handleDeleteItem(booking._id)}>
+                    <Button onClick={e => handleDeleteItem(booking._id)}>
                       <DeleteOutlinedIcon />
                     </Button>
                   </TableCell>
@@ -212,12 +212,12 @@ const ShoppingCart = (props) => {
             disabled={loadingPayment}
             color="primary"
             variant="contained"
-            onClick={(e) => checkOutCart()}
+            onClick={e => checkOutCart()}
           >
             {loadingPayment && (
               <i
                 className="fa fa-refresh fa-spin"
-                style={{ color: "primary", marginRight: "5px" }}
+                style={{ color: 'primary', marginRight: '5px' }}
               />
             )}
             {loadingPayment && <span>Daten werden übermittelt</span>}
@@ -276,7 +276,7 @@ const ShoppingCart = (props) => {
     <React.Fragment>
       <Drawer
         variant="temporary"
-        anchor={"right"}
+        anchor={'right'}
         open={cartDrawerOpen}
         onClose={handleCartDrawerToggle}
       >
@@ -312,7 +312,7 @@ const ShoppingCart = (props) => {
           aria-controls="menu-appbar"
           aria-haspopup="true"
           onClick={handleCartDrawerToggle}
-          style={{ fontSize: "12px", color: "white" }}
+          style={{ fontSize: '12px', color: 'white' }}
         >
           <Badge color="secondary" badgeContent={0}>
             <ShoppingCartIcon />
@@ -332,7 +332,7 @@ const ShoppingCart = (props) => {
           aria-controls="menu-appbar"
           aria-haspopup="true"
           onClick={handleCartDrawerToggle}
-          style={{ fontSize: "12px", color: "white" }}
+          style={{ fontSize: '12px', color: 'white' }}
         >
           <Badge color="secondary" badgeContent={0}>
             <ShoppingCartIcon />
