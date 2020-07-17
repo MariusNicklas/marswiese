@@ -9,6 +9,7 @@ import { MuiThemeProvider } from '@material-ui/core';
 import createMarsTheme from './createMarsTheme';
 import { ShoppingCartContextProvider } from './myComponents/NavBar/ShoppingCartContext';
 import { UserProvider } from './userContext';
+import ErrorHandler from './myComponents/ErrorHandler/ErrorHandler';
 
 import MainPage from './myViews/MainPage/MainPage';
 import CampsPage from './myViews/CampsPage/CampsPage';
@@ -37,28 +38,34 @@ const App = () => {
         <ShoppingCartContextProvider>
           <Router history={hist}>
             <NavBar />
-            <Switch>
-              {/* Auth Routes*/}
-              <AuthRoute
-                path="/gestalte-dein-camp"
-                component={CampCreationPage}
-              />
-              <AuthRoute path="/meine-buchungen" component={BookingsPage} />
-              <AuthRoute path="/mein-warenkorb" component={CartPage} />
+            <ErrorHandler>
+              <Switch>
+                {/* Auth Routes*/}
+                <AuthRoute
+                  path="/gestalte-dein-camp"
+                  component={CampCreationPage}
+                />
+                <AuthRoute path="/meine-buchungen" component={BookingsPage} />
+                <AuthRoute path="/mein-warenkorb" component={CartPage} />
 
-              {/* Public Routes*/}
-              <Route exact path="/" component={MainPage} />
-              <Route path="/Anfahrt" component={LocationPage} />
-              <Route path="/Camps" component={CampsPage} />
-              <Route exact path="/Kurse" component={CoursesPage} />
-              <Route exact path="/Kurs/:id/buchen" component={BookCoursePage} />
-              <Route path="/Kurs/:id" component={CoursePage} />
-              <Route exact path="/login" component={SignIn} />
-              <Route path="/Zahlung/Abbruch" component={CancelPage} />
-              <Route path="/Zahlung/Fehler" component={FailurePage} />
-              <Route path="/Zahlung/Erfolg" component={SuccessPage} />
-              <Route exact path="/Registrierung" component={SignUp} />
-            </Switch>
+                {/* Public Routes*/}
+                <Route exact path="/" component={MainPage} />
+                <Route path="/Anfahrt" component={LocationPage} />
+                <Route path="/Camps" component={CampsPage} />
+                <Route exact path="/Kurse" component={CoursesPage} />
+                <Route
+                  exact
+                  path="/Kurs/:id/buchen"
+                  component={BookCoursePage}
+                />
+                <Route path="/Kurs/:id" component={CoursePage} />
+                <Route exact path="/login" component={SignIn} />
+                <Route path="/Zahlung/Abbruch" component={CancelPage} />
+                <Route path="/Zahlung/Fehler" component={FailurePage} />
+                <Route path="/Zahlung/Erfolg" component={SuccessPage} />
+                <Route exact path="/Registrierung" component={SignUp} />
+              </Switch>
+            </ErrorHandler>
           </Router>
         </ShoppingCartContextProvider>
       </UserProvider>

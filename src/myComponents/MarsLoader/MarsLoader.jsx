@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './MarsLoaderStyles.css';
 
 const MarsLoader = () => {
-  const [speed, setSpeed] = useState(3);
-
   return (
     <img
       className="rotate"

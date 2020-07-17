@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 // nodejs library that concatenates classes
 import classNames from 'classnames';
 // own components and functionality
@@ -35,6 +35,8 @@ import Parallax from 'components/Parallax/Parallax.js';
 import GridContainer from 'components/Grid/GridContainer.js';
 import GridItem from 'components/Grid/GridItem.js';
 
+import { useQuery } from '../../myComponents/ErrorHandler/useQuery';
+
 import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 
@@ -52,14 +54,20 @@ const CartPage = () => {
 
   const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     (async () => {
       try {
         const response = await getShoppingCart();
         setCart(response);
       } catch {}
     })();
-  }, [cartChangedToggle, setCart]);
+  }, [cartChangedToggle, setCart]);*/
+
+  const { data } = useQuery({ APIfunction: getShoppingCart });
+  console.log('setting cart to:');
+  console.log(data);
+  //console.log(cartQuery.data.data.shoppingCart);
+  //setCart(data.data.data.shoppingCart);
 
   const handleDeleteCampBooking = async id => {
     await deleteCampPseudoBooking(id);

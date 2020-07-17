@@ -68,7 +68,6 @@ const BookingsPage = () => {
           })
         );
         setMyCourseBookings(courseBookingsWithNames);
-        console.log(courseBookingsWithNames);
         setIsLoading(false);
       } catch (err) {
         console.log(err);
@@ -104,7 +103,12 @@ const BookingsPage = () => {
         <div className={mainPageClasses.container}>
           <div className={sectionPillsClasses.section}>
             {(() => {
-              if (isLoading) return <MarsLoader />;
+              if (isLoading)
+                return (
+                  <GridContainer justify="center">
+                    <MarsLoader />
+                  </GridContainer>
+                );
               else {
                 return (
                   <div>
