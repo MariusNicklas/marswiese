@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // core components
 import Header from 'components/Header/Header.js';
 // @material-ui/core components
@@ -10,8 +10,11 @@ import LocationItem from './LocationItem';
 import HomeItem from './HomeItem';
 import BookingsItem from './BookingsItem';
 import ShoppingCartItem from './ShoppingCartItem';
+import LoginItem from './LoginItem';
 import AccountItem from './AccountItem';
 import styles from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.js';
+
+import { UserContext } from '../../userContext';
 
 const useStyles = makeStyles(styles);
 
@@ -57,6 +60,8 @@ const HeaderLinks = props => {
 
   const classes = useStyles();
 
+  const [user, setUser] = useContext(UserContext);
+
   return (
     <List className={classes.list + ' ' + classes.mlAuto}>
       <ListItem className={classes.listItem}>
@@ -65,15 +70,26 @@ const HeaderLinks = props => {
       <ListItem className={classes.listItem}>
         <LocationItem />
       </ListItem>
-      <ListItem className={classes.listItem}>
-        <BookingsItem />
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <ShoppingCartItem />
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <AccountItem />
-      </ListItem>
+
+      {user.id == null ? (
+        <ListItem className={classes.listItem}>
+          <LoginItem />
+        </ListItem>
+      ) : null}
+      
+      {user.id !== null ? (
+        <React.Fragment>
+          <ListItem className={classes.listItem}>
+            <BookingsItem />
+          </ListItem>
+          <ListItem className={classes.listItem}>
+            <ShoppingCartItem />
+          </ListItem>
+          <ListItem className={classes.listItem}>
+            <AccountItem />
+          </ListItem>
+        </React.Fragment>
+      ) : null}
     </List>
   );
 };

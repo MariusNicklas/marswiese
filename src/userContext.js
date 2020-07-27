@@ -1,13 +1,13 @@
-import React, { createContext, useEffect, useState } from "react";
-import { getMe, isLoggedIn } from "./APIUtils";
+import React, { createContext, useEffect, useState } from 'react';
+import { getMe, isLoggedIn } from './APIUtils';
 
 export const UserContext = createContext();
 
-export const UserProvider = (props) => {
+export const UserProvider = props => {
   const [user, setUser] = useState({
-    firstName: "",
-    lastName: "",
-    id: "",
+    firstName: '',
+    lastName: '',
+    id: null
   });
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export const UserProvider = (props) => {
           setUser({
             firstName: response.firstName,
             lastName: response.lastName,
-            id: response._id,
+            id: response._id
           });
         }
       } catch {}

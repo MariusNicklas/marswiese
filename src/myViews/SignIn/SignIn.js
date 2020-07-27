@@ -16,6 +16,7 @@ import { login } from '../../APIUtils';
 import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
 import signInStyles from './SignInStyles';
 import { UserContext } from '../../userContext';
+import { DivWithErrorHandling } from '../../myComponents/ErrorHandler/ErrorHandler';
 
 const useCampStyles = makeStyles(campsStyle);
 const useSignInStyles = makeStyles(signInStyles);
@@ -26,40 +27,52 @@ const SignIn = props => {
 
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [inputError, setInputError] = useState(false);
+  const [errorCode, setErrorCode] = useState(null);
 
   const [user, setUser] = useContext(UserContext);
 
   // Handle fields change
   const handleChange = input => e => {
+    setErrorCode(null);
     input(e.target.value);
   };
 
   const submitLogin = async e => {
     e.preventDefault();
-    const response = await login(email, password);
-    const {
-      history,
-      location: { state }
-    } = props;
+    try {
+      const response = await login(email, password);
+      setUser({
+        firstName: response.data.data.user.firstName,
+        lastName: response.data.data.user.firstName,
+        id: response.data.data.user._id
+      });
 
-    if (response.status === 200) {
-      setUser(email);
-      if (state && state.next) {
-        return history.push(state.next);
-      } else {
-        return history.push('/');
+      const {
+        history,
+        location: { state }
+      } = props;
+
+      if (response.status === 200) {
+        setUser(email);
+        if (state && state.next) {
+          return history.push(state.next);
+        } else {
+          return history.push('/');
+        }
       }
+    } catch (error) {
+      setErrorCode(error.response.data.error.statusCode);
     }
 
     // response status 'unauthorized'
-    if (response.status === 401) {
+    /*if (response.status === 401) {
       setInputError(true);
-    }
+      console.log(response);
+    }*/
   };
 
   return (
-    <React.Fragment>
+    <DivWithErrorHandling errorMessage={errorCode}>
       <Parallax image={require('assets/img/K1600_mars.JPG')} small>
         <div className={campStyleClasses.container}>
           <GridContainer>
@@ -80,7 +93,7 @@ const SignIn = props => {
         >
           <div className={campStyleClasses.container}>
             <TextField
-              className={inputError ? '' : signInClasses.error}
+              className={errorCode ? '' : signInClasses.error}
               variant="outlined"
               margin="normal"
               required
@@ -132,7 +145,7 @@ const SignIn = props => {
           </div>
         </div>
       </form>
-    </React.Fragment>
+    </DivWithErrorHandling>
   );
 };
 export default SignIn;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // @material-ui/icons
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
@@ -8,16 +8,21 @@ import { Link, withRouter } from 'react-router-dom';
 // core components
 import CustomDropdown from '../../components/CustomDropdown/CustomDropdown';
 
+import { logout } from '../../APIUtils';
+import { UserContext } from '../../userContext';
+
 import styles from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.js';
 
 const useStyles = makeStyles(styles);
 
 const HomeItem = props => {
   const classes = useStyles();
+  const [user, setUser] = useContext(UserContext);
+
   return (
     <CustomDropdown
       //dropdownHeader="Dropdown header"
-      buttonText="KONTO"
+      buttonText={user.firstName + ' ' + user.lastName}
       buttonProps={{
         round: true,
         color: 'transparent'
@@ -33,11 +38,7 @@ const HomeItem = props => {
         </Link>,
 
         { divider: true },
-        <Link
-          to="/"
-          className={classes.dropdownLink}
-          onClick={e => console.log('in HomeItem: onClick event ' + e)}
-        >
+        <Link to="/" className={classes.dropdownLink} onClick={() => logout()}>
           <LogoutIcon className={classes.dropdownIcons} /> Abmelden
         </Link>
       ]}

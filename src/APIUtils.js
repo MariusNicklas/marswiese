@@ -27,20 +27,27 @@ const catchAxiosError = error => {
  * @returns {Promise<JSON>}
  */
 export const login = (email, password) => {
-  try {
-    return axios({
-      method: 'POST',
-      withCredentials: true,
-      url: `${url}/api/v1/users/login`,
-      data: {
-        email: email,
-        password: password
-      }
-    });
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+  return axios({
+    method: 'POST',
+    withCredentials: true,
+    url: `${url}/api/v1/users/login`,
+    data: {
+      email: email,
+      password: password
+    }
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
+};
+
+export const logout = (email, password) => {
+  return axios({
+    method: 'POST',
+    withCredentials: true,
+    url: `${url}/api/v1/users/logout`
+  })
+    .then(response => response)
+    .catch(err => catchAxiosError(err));
 };
 
 export const getAllUsers = () => {
@@ -277,16 +284,6 @@ export const getAllCourses = () => {
     url: `${url}api/v1/courses`
   })
     .then(response => response.data.data)
-    .catch(err => catchAxiosError(err));
-};
-
-export const logout = () => {
-  return axios({
-    method: 'POST',
-    withCredentials: true,
-    url: `${url}/api/v1/users/logout`
-  })
-    .then(response => response)
     .catch(err => catchAxiosError(err));
 };
 
