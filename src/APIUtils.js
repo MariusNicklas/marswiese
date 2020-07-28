@@ -40,7 +40,7 @@ export const login = (email, password) => {
     .catch(err => catchAxiosError(err));
 };
 
-export const logout = (email, password) => {
+export const logout = () => {
   return axios({
     method: 'POST',
     withCredentials: true,
@@ -205,16 +205,13 @@ export const getMe = () => {
 };
 
 export const getShoppingCart = () => {
-  return (
-    axios({
-      method: 'GET',
-      withCredentials: true,
-      url: `${url}/api/v1/shoppingcarts`
-    })
-      //.then(response => response.data.data.shoppingCart)
-      .then(response => response)
-      .catch(err => catchAxiosError(err))
-  );
+  return axios({
+    method: 'GET',
+    withCredentials: true,
+    url: `${url}/api/v1/shoppingcarts`
+  })
+    .then(response => response.data.data.shoppingCart)
+    .catch(err => catchAxiosError(err));
 };
 
 export const deleteCampPseudoBooking = id => {
