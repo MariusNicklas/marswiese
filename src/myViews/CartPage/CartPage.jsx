@@ -36,8 +36,9 @@ import GridContainer from 'components/Grid/GridContainer.js';
 import GridItem from 'components/Grid/GridItem.js';
 // own components
 import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
+import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
 
-import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+import MainPageStyle from 'assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 
 const useMainPageStyles = makeStyles(MainPageStyle);
@@ -127,7 +128,7 @@ const CartPage = () => {
 
   return (
     <div>
-      <Parallax
+      {/*<Parallax
         image={
           'https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg'
         }
@@ -149,6 +150,10 @@ const CartPage = () => {
 
       <div
         className={classNames(mainPageClasses.main, mainPageClasses.mainRaised)}
+      >*/}
+      <DivWithParallaxPaper
+        title="Mein Warenkorb"
+        image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
       >
         <div className={sectionPillsClasses.section}>
           {(() => {
@@ -309,7 +314,8 @@ const CartPage = () => {
             }
           })()}
         </div>
-      </div>
+        )
+      </DivWithParallaxPaper>
     </div>
   );
 };

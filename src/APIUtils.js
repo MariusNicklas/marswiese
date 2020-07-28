@@ -26,7 +26,7 @@ const catchAxiosError = error => {
  * @param {String} password
  * @returns {Promise<JSON>}
  */
-export const login = (email, password) => {
+/*export const login = (email, password) => {
   return axios({
     method: 'POST',
     withCredentials: true,
@@ -38,16 +38,52 @@ export const login = (email, password) => {
   })
     .then(response => response)
     .catch(err => catchAxiosError(err));
+};*/
+
+export const login = async (email, password) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      withCredentials: true,
+      url: `${url}/api/v1/users/login`,
+      data: {
+        email: email,
+        password: password
+      }
+    });
+    if (res.data.status === 'success') {
+      window.location.reload(true);
+    }
+  } catch (err) {
+    catchAxiosError(err);
+  }
 };
 
-export const logout = () => {
+/*export const logout = () => {
   return axios({
-    method: 'POST',
+    method: 'GET',
     withCredentials: true,
-    url: `${url}/api/v1/users/logout`
+    url: 
   })
-    .then(response => response)
+    .then(response =>
+      response.data.status === 'success'
+        ? location.reload(true)
+    )
     .catch(err => catchAxiosError(err));
+};*/
+
+export const logout = async () => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: `${url}/api/v1/users/logout`
+    });
+    if (res.data.status === 'success') {
+      window.location.reload(true);
+    }
+  } catch (err) {
+    catchAxiosError(err);
+  }
 };
 
 export const getAllUsers = () => {

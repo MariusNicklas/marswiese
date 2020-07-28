@@ -17,6 +17,7 @@ import SectionProducts from './Sections/SectionProducts.js';
 import SubscribeLine from './Sections/SubscribeLine.js';
 
 import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+import { DivWithParallaxPaper } from 'myComponents/withParallaxPaper.jsx';
 
 const useStyles = makeStyles(MainPageStyle);
 
@@ -27,26 +28,10 @@ const MainPage = () => {
   });
   const classes = useStyles();
   return (
-    <div>
-      <Parallax
-        image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
-        style={{
-          backgroundImage:
-            'linear-gradient(#6eb63e, transparent, transparent, transparent)'
-        }}
-        small
-      >
-        <div className={classes.container}>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={8} className={classes.textCenter}>
-              <h2 className={classes.title}>
-                Herzlich Willkommen im Sportzentrum Marswiese
-              </h2>
-            </GridItem>
-          </GridContainer>
-        </div>
-      </Parallax>
-
+    <DivWithParallaxPaper
+      title="Herzlich Willkommen im Sportzentrum Marswiese"
+      image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+    >
       <div className={classes.main}>
         <div className={classes.container}>
           <SectionSports />
@@ -84,7 +69,7 @@ const MainPage = () => {
           </div>
         }
       />
-    </div>
+    </DivWithParallaxPaper>
   );
 };
 

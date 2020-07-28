@@ -22,6 +22,7 @@ import {
 import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
+import { DivWithParallaxPaper } from 'myComponents/withParallaxPaper';
 
 const useMainPageStyles = makeStyles(MainPageStyle);
 const useSectionPillsStyles = makeStyles(sectionPillsStyle);
@@ -76,156 +77,155 @@ const BookingsPage = () => {
   }, [setMyCampBookings, setIsLoading]);
 
   return (
-    <div>
-      <Parallax
-        image={
-          'https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg'
-        }
-        small
-      >
-        <div className={mainPageClasses.container}>
-          <GridContainer justify="center">
-            <GridItem
-              xs={12}
-              sm={12}
-              md={8}
-              className={mainPageClasses.textCenter}
-            >
-              <h2 className={mainPageClasses.title}>Meine Buchungen</h2>
-            </GridItem>
-          </GridContainer>
-        </div>
-      </Parallax>
+    <DivWithParallaxPaper
+      title="Meine Buchungen"
+      image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+    >
+      <div className={mainPageClasses.container}>
+        <div className={sectionPillsClasses.section}>
+          {(() => {
+            if (isLoading)
+              return (
+                <GridContainer justify="center">
+                  <MarsLoader />
+                </GridContainer>
+              );
+            else {
+              return (
+                <div>
+                  {/* CAMP BOOKINGS TABLE */}
+                  {myCampBookings.length > 0 ? (
+                    <div>
+                      <h2>Gebuchte Camps</h2>
+                      <Table
+                        striped
+                        tableHead={[
+                          '',
+                          'PRODUKT',
+                          'TEILNEHMER',
+                          'ERSTELLT AM',
+                          'DETAILS',
+                          'AKTIONEN'
+                        ]}
+                        tableData={myCampBookings.map(campBooking => [
+                          <div
+                            className={mainPageClasses.imgContainer}
+                            key={campBooking.id}
+                          ></div>,
+                          <div key={campBooking.id}>Feriencamp</div>,
+                          <div key={campBooking.id}>
+                            {campBooking.kid.name}
+                          </div>,
+                          <div key={campBooking.id}>
+                            {campBooking.createdAt}
+                          </div>,
+                          <div key={campBooking.id}>
+                            {campBooking.campNames[0]},{' '}
+                            {campBooking.campNames[1]}
+                          </div>,
+                          <Tooltip
+                            key={campBooking.id}
+                            id="close1"
+                            title="Buchung stornieren"
+                            placement="left"
+                            classes={{ tooltip: mainPageClasses.tooltip }}
+                          >
+                            <Button
+                              link
+                              className={mainPageClasses.actionButton}
+                            >
+                              <DeleteOutlinedIcon />
+                            </Button>
+                          </Tooltip>
+                        ])}
+                        tableShopping
+                        customHeadCellClasses={[
+                          mainPageClasses.textCenter,
+                          mainPageClasses.description,
+                          mainPageClasses.textRight,
+                          mainPageClasses.textRight
+                        ]}
+                        customHeadClassesForCells={[0, 1, 3, 4]}
+                        customCellClasses={[
+                          mainPageClasses.tdName,
+                          mainPageClasses.customFont,
+                          mainPageClasses.customFont,
+                          mainPageClasses.tdNumber
+                        ]}
+                        customClassesForCells={[1, 2, 3, 4]}
+                      />
+                    </div>
+                  ) : null}
 
-      <div
-        className={classNames(mainPageClasses.main, mainPageClasses.mainRaised)}
-      >
-        <div className={mainPageClasses.container}>
-          <div className={sectionPillsClasses.section}>
-            {(() => {
-              if (isLoading)
-                return (
-                  <GridContainer justify="center">
-                    <MarsLoader />
-                  </GridContainer>
-                );
-              else {
-                return (
-                  <div>
-                    {/* CAMP BOOKINGS TABLE */}
-                    <Table
-                      striped
-                      tableHead={[
-                        '',
-                        'PRODUKT',
-                        'TEILNEHMER',
-                        'ERSTELLT AM',
-                        'DETAILS',
-                        'AKTIONEN'
-                      ]}
-                      tableData={myCampBookings.map(campBooking => [
-                        <div
-                          className={mainPageClasses.imgContainer}
-                          key={campBooking.id}
-                        ></div>,
-                        <div key={campBooking.id}>Feriencamp</div>,
-                        <div key={campBooking.id}>{campBooking.kid.name}</div>,
-                        <div key={campBooking.id}>{campBooking.createdAt}</div>,
-                        <div key={campBooking.id}>
-                          {campBooking.campNames[0]}, {campBooking.campNames[1]}
-                        </div>,
-                        <Tooltip
-                          key={campBooking.id}
-                          id="close1"
-                          title="Buchung stornieren"
-                          placement="left"
-                          classes={{ tooltip: mainPageClasses.tooltip }}
-                        >
-                          <Button link className={mainPageClasses.actionButton}>
-                            <DeleteOutlinedIcon />
-                          </Button>
-                        </Tooltip>
-                      ])}
-                      tableShopping
-                      customHeadCellClasses={[
-                        mainPageClasses.textCenter,
-                        mainPageClasses.description,
-                        mainPageClasses.textRight,
-                        mainPageClasses.textRight
-                      ]}
-                      customHeadClassesForCells={[0, 1, 3, 4]}
-                      customCellClasses={[
-                        mainPageClasses.tdName,
-                        mainPageClasses.customFont,
-                        mainPageClasses.customFont,
-                        mainPageClasses.tdNumber
-                      ]}
-                      customClassesForCells={[1, 2, 3, 4]}
-                    />
+                  {/* COURSE BOOKINGS TABLE */}
+                  {myCourseBookings.length > 0 ? (
+                    <div>
+                      <h2>Gebuchte Kurse</h2>
+                      <Table
+                        striped
+                        tableHead={[
+                          '',
+                          'PRODUKT',
+                          'TEILNEHMER',
+                          'ERSTELLT AM',
+                          'AKTIONEN'
+                        ]}
+                        tableData={myCourseBookings.map(courseBooking => [
+                          <div
+                            className={mainPageClasses.imgContainer}
+                            key={courseBooking._id}
+                          ></div>,
+                          <div key={courseBooking._id}>
+                            {courseBooking.courseName.description}{' '}
+                            {courseBooking.courseName.courseName}
+                          </div>,
+                          <div key={courseBooking._id}>
+                            {courseBooking.participant.name}
+                          </div>,
+                          <div key={courseBooking._id}>
+                            {courseBooking.createdAt}
+                          </div>,
 
-                    {/* COURSE BOOKINGS TABLE */}
-                    <h2>Gebuchte Kurse</h2>
-                    <Table
-                      striped
-                      tableHead={[
-                        '',
-                        'PRODUKT',
-                        'TEILNEHMER',
-                        'ERSTELLT AM',
-                        'AKTIONEN'
-                      ]}
-                      tableData={myCourseBookings.map(courseBooking => [
-                        <div
-                          className={mainPageClasses.imgContainer}
-                          key={courseBooking._id}
-                        ></div>,
-                        <div key={courseBooking._id}>
-                          {courseBooking.courseName.description}{' '}
-                          {courseBooking.courseName.courseName}
-                        </div>,
-                        <div key={courseBooking._id}>
-                          {courseBooking.participant.name}
-                        </div>,
-                        <div key={courseBooking._id}>
-                          {courseBooking.createdAt}
-                        </div>,
-
-                        <Tooltip
-                          key={courseBooking._id}
-                          id="close1"
-                          title="Buchung stornieren"
-                          placement="left"
-                          classes={{ tooltip: mainPageClasses.tooltip }}
-                        >
-                          <Button link className={mainPageClasses.actionButton}>
-                            <DeleteOutlinedIcon />
-                          </Button>
-                        </Tooltip>
-                      ])}
-                      tableShopping
-                      customHeadCellClasses={[
-                        mainPageClasses.textCenter,
-                        mainPageClasses.description,
-                        mainPageClasses.textRight,
-                        mainPageClasses.textRight
-                      ]}
-                      customHeadClassesForCells={[0, 1, 3, 4]}
-                      customCellClasses={[
-                        mainPageClasses.tdName,
-                        mainPageClasses.customFont,
-                        mainPageClasses.customFont,
-                        mainPageClasses.tdNumber
-                      ]}
-                      customClassesForCells={[1, 2, 3, 4]}
-                    />
-                  </div>
-                );
-              }
-            })()}
-          </div>
+                          <Tooltip
+                            key={courseBooking._id}
+                            id="close1"
+                            title="Buchung stornieren"
+                            placement="left"
+                            classes={{ tooltip: mainPageClasses.tooltip }}
+                          >
+                            <Button
+                              link
+                              className={mainPageClasses.actionButton}
+                            >
+                              <DeleteOutlinedIcon />
+                            </Button>
+                          </Tooltip>
+                        ])}
+                        tableShopping
+                        customHeadCellClasses={[
+                          mainPageClasses.textCenter,
+                          mainPageClasses.description,
+                          mainPageClasses.textRight,
+                          mainPageClasses.textRight
+                        ]}
+                        customHeadClassesForCells={[0, 1, 3, 4]}
+                        customCellClasses={[
+                          mainPageClasses.tdName,
+                          mainPageClasses.customFont,
+                          mainPageClasses.customFont,
+                          mainPageClasses.tdNumber
+                        ]}
+                        customClassesForCells={[1, 2, 3, 4]}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
+          })()}
         </div>
       </div>
-    </div>
+    </DivWithParallaxPaper>
   );
 };
 

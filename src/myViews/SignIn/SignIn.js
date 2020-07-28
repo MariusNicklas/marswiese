@@ -52,10 +52,12 @@ const SignIn = props => {
         location: { state }
       } = props;
 
+      console.log('submit login: ', response);
       if (response.status === 200) {
-        setUser(email);
         if (state && state.next) {
-          return history.push(state.next);
+          //return history.push(state.next);
+          console.log('login success');
+          history.push('/');
         } else {
           return history.push('/');
         }
@@ -63,12 +65,6 @@ const SignIn = props => {
     } catch (error) {
       setErrorCode(error.response.data.error.statusCode);
     }
-
-    // response status 'unauthorized'
-    /*if (response.status === 401) {
-      setInputError(true);
-      console.log(response);
-    }*/
   };
 
   return (
