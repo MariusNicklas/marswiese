@@ -13,7 +13,7 @@ import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
 import { DivWithErrorHandling } from '../../myComponents/ErrorHandler/ErrorHandler';
 import { DivWithParallaxPaper } from 'myComponents/withParallaxPaper';
 
-import UserContext from '../../context/userContext';
+import UserContext from '../../context/UserContext';
 
 import ParallaxImage from 'assets/img/K1600_mars.JPG';
 

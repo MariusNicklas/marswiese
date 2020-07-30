@@ -32,15 +32,13 @@ const MainPage = () => {
       title="Herzlich Willkommen im Sportzentrum Marswiese"
       image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
     >
-      <div className={classes.main}>
-        <div className={classes.container}>
-          <SectionSports />
-        </div>
-        <div className={classes.container}>
-          <SectionProducts />
-        </div>
-        <SubscribeLine />
+      <div className={classes.container}>
+        <SectionSports />
       </div>
+      <div className={classes.container}>
+        <SectionProducts />
+      </div>
+      <SubscribeLine />
 
       <Footer
         content={

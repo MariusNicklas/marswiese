@@ -11,13 +11,14 @@ import classNames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import { postCoursePseudoBooking } from '../../APIUtils';
 import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
+import UserContext from '../../context/UserContext';
 
 const useStyles = makeStyles(campsStyle);
 
 const BookCoursePage = props => {
   const classes = useStyles();
 
-  const [user] = props.value;
+  const { userData } = useContext(UserContext);
   const { history } = props;
 
   const [participant, setParticipant] = useState({
@@ -28,8 +29,8 @@ const BookCoursePage = props => {
   let { id: courseId } = useParams();
 
   useEffect(() => {
-    setParticipant(user);
-  }, [user]);
+    setParticipant(userData);
+  }, [userData]);
 
   // Handle fields change
   const updateField = e => {
@@ -44,7 +45,7 @@ const BookCoursePage = props => {
     try {
       await postCoursePseudoBooking({
         course: courseId,
-        user: user.id,
+        user: userData.id,
         participant: {
           name: participant.firstName + ' ' + participant.lastName
         }
@@ -81,7 +82,7 @@ const BookCoursePage = props => {
               fullWidth
               onChange={updateField}
               id="firstName"
-              defaultValue={user.firstName}
+              defaultValue={userData.firstName}
               value={participant.firstName}
               label="Vorname Teilnehmer"
               name="firstName"
@@ -94,7 +95,7 @@ const BookCoursePage = props => {
               fullWidth
               onChange={updateField}
               id="lastName"
-              defaultValue={user.lastName}
+              defaultValue={userData.lastName}
               value={participant.lastName}
               label="Nachname Teilnehmer"
               name="lastName"

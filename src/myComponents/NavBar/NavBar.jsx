@@ -14,7 +14,7 @@ import LoginItem from './LoginItem';
 import AccountItem from './AccountItem';
 import styles from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.js';
 
-import UserContext from '../../context/userContext';
+import UserContext from '../../context/UserContext';
 
 const useStyles = makeStyles(styles);
 
@@ -60,7 +60,7 @@ const HeaderLinks = props => {
 
   const classes = useStyles();
 
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   return (
     <List className={classes.list + ' ' + classes.mlAuto}>

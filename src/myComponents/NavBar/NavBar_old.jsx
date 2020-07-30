@@ -19,7 +19,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { ShoppingCartContext } from "./ShoppingCartContext";
 import { getShoppingCart, logout } from "../../APIUtils";
 import { Grid } from "@material-ui/core";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../context/UserContext";
 
 const NavBar = (props) => {
   const [cart, setCart, cartChangedToggle] = useContext(ShoppingCartContext);

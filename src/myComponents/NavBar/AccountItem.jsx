@@ -9,7 +9,7 @@ import { Link, withRouter } from 'react-router-dom';
 import CustomDropdown from '../../components/CustomDropdown/CustomDropdown';
 
 import { logout } from '../../APIUtils';
-import UserContext from '../../context/userContext';
+import UserContext from '../../context/UserContext';
 
 import styles from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.js';
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles(styles);
 
 const HomeItem = props => {
   const classes = useStyles();
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   return (
     <CustomDropdown

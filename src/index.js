@@ -8,7 +8,7 @@ import 'assets/scss/material-kit-pro-react.scss?v=1.8.0';
 import { MuiThemeProvider } from '@material-ui/core';
 import createMarsTheme from './createMarsTheme';
 import { ShoppingCartContextProvider } from './myComponents/NavBar/ShoppingCartContext';
-import UserContext from './context/userContext';
+import UserContext from './context/UserContext';
 
 import MainPage from './myViews/MainPage/MainPage';
 import CampsPage from './myViews/CampsPage/CampsPage';
@@ -40,10 +40,18 @@ const App = () => {
     id: null
   });
 
-  useEffect(async () => {
-    const isLoggedInRes = await isLoggedIn();
+  useEffect(() => {
+    async function fetchIsLoggedIn() {
+      return await isLoggedIn();
+    }
+    const isLoggedInRes = fetchIsLoggedIn();
+
+    async function fetchGetMe() {
+      return await getMe();
+    }
+
     if (isLoggedInRes) {
-      const user = await getMe();
+      const user = fetchGetMe();
       setUserData({
         firstName: user.firstName,
         lastName: user.lastName,
