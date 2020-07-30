@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { Router, Route, Switch } from 'react-router';
@@ -8,7 +8,7 @@ import 'assets/scss/material-kit-pro-react.scss?v=1.8.0';
 import { MuiThemeProvider } from '@material-ui/core';
 import createMarsTheme from './createMarsTheme';
 import { ShoppingCartContextProvider } from './myComponents/NavBar/ShoppingCartContext';
-import { UserProvider } from './userContext';
+import UserContext from './context/userContext';
 
 import MainPage from './myViews/MainPage/MainPage';
 import CampsPage from './myViews/CampsPage/CampsPage';
@@ -26,14 +26,35 @@ import NavBar from 'myComponents/NavBar/NavBar';
 import CoursesPage from 'myViews/CoursesPage/CoursesPage';
 import CoursePage from 'myViews/CoursePage/CoursePage';
 import BookCoursePage from 'myViews/BookCoursePage/BookCoursePage';
+import { isLoggedIn } from 'APIUtils';
+import { getMe } from 'APIUtils';
 
 var hist = createBrowserHistory();
 
 const App = () => {
   const theme = createMarsTheme;
+
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    id: null
+  });
+
+  useEffect(async () => {
+    const isLoggedInRes = await isLoggedIn();
+    if (isLoggedInRes) {
+      const user = await getMe();
+      setUserData({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user._id
+      });
+    }
+  }, []);
+
   return (
     <MuiThemeProvider theme={theme}>
-      <UserProvider>
+      <UserContext.Provider value={{ userData, setUserData }}>
         <ShoppingCartContextProvider>
           <Router history={hist}>
             <NavBar />
@@ -61,7 +82,7 @@ const App = () => {
             </Switch>
           </Router>
         </ShoppingCartContextProvider>
-      </UserProvider>
+      </UserContext.Provider>
     </MuiThemeProvider>
   );
 };

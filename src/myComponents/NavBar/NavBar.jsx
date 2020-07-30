@@ -14,7 +14,7 @@ import LoginItem from './LoginItem';
 import AccountItem from './AccountItem';
 import styles from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.js';
 
-import { UserContext } from '../../userContext';
+import UserContext from '../../context/userContext';
 
 const useStyles = makeStyles(styles);
 
@@ -60,7 +60,7 @@ const HeaderLinks = props => {
 
   const classes = useStyles();
 
-  const [user, setUser] = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
 
   return (
     <List className={classes.list + ' ' + classes.mlAuto}>
@@ -71,13 +71,11 @@ const HeaderLinks = props => {
         <LocationItem />
       </ListItem>
 
-      {user.id == null ? (
+      {!userData.id ? (
         <ListItem className={classes.listItem}>
           <LoginItem />
         </ListItem>
-      ) : null}
-      
-      {user.id !== null ? (
+      ) : (
         <React.Fragment>
           <ListItem className={classes.listItem}>
             <BookingsItem />
@@ -89,7 +87,7 @@ const HeaderLinks = props => {
             <AccountItem />
           </ListItem>
         </React.Fragment>
-      ) : null}
+      )}
     </List>
   );
 };

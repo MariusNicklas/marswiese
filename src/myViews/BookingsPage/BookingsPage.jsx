@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// nodejs library that concatenates classes
-import classNames from 'classnames';
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 // @material-ui/icons
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 // core components
-import Parallax from 'components/Parallax/Parallax.js';
 import GridContainer from 'components/Grid/GridContainer.js';
-import GridItem from 'components/Grid/GridItem.js';
 import Button from 'components/CustomButtons/Button.js';
 import Table from 'components/Table/Table.js';
 import {

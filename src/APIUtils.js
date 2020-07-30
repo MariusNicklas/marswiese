@@ -51,9 +51,7 @@ export const login = async (email, password) => {
         password: password
       }
     });
-    if (res.data.status === 'success') {
-      window.location.reload(true);
-    }
+    return res;
   } catch (err) {
     catchAxiosError(err);
   }

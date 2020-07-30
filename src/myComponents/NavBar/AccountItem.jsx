@@ -9,7 +9,7 @@ import { Link, withRouter } from 'react-router-dom';
 import CustomDropdown from '../../components/CustomDropdown/CustomDropdown';
 
 import { logout } from '../../APIUtils';
-import { UserContext } from '../../userContext';
+import UserContext from '../../context/userContext';
 
 import styles from 'assets/jss/material-kit-pro-react/components/headerLinksStyle.js';
 
@@ -17,12 +17,12 @@ const useStyles = makeStyles(styles);
 
 const HomeItem = props => {
   const classes = useStyles();
-  const [user, setUser] = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
 
   return (
     <CustomDropdown
       //dropdownHeader="Dropdown header"
-      buttonText={user.firstName + ' ' + user.lastName}
+      buttonText={userData.firstName + ' ' + userData.lastName}
       buttonProps={{
         round: true,
         color: 'transparent'

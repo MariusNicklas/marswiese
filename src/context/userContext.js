@@ -1,4 +1,8 @@
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext } from 'react';
+
+export default createContext(null);
+
+/*import React, { createContext, useEffect, useState } from 'react';
 import { getMe, isLoggedIn } from './APIUtils';
 
 export const UserContext = createContext();
@@ -7,7 +11,8 @@ export const UserProvider = props => {
   const [user, setUser] = useState({
     firstName: '',
     lastName: '',
-    id: null
+    id: null,
+    isAuthenticated: false
   });
 
   useEffect(() => {
@@ -19,8 +24,9 @@ export const UserProvider = props => {
           setUser({
             firstName: response.firstName,
             lastName: response.lastName,
-            id: response._id
-          });
+            id: response._id,
+            isAuthenticated: true
+          }); 
         }
       } catch {}
     })();
@@ -31,4 +37,4 @@ export const UserProvider = props => {
       {props.children}
     </UserContext.Provider>
   );
-};
+};*/

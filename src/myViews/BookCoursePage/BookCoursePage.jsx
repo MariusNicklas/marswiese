@@ -1,29 +1,28 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Parallax from "components/Parallax/Parallax.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
+import React, { useContext, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Parallax from 'components/Parallax/Parallax.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import classNames from 'classnames';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import { postCoursePseudoBooking } from "../../APIUtils";
-import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
-import { UserContext } from "../../userContext";
+import { makeStyles } from '@material-ui/core/styles';
+import { postCoursePseudoBooking } from '../../APIUtils';
+import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
 
 const useStyles = makeStyles(campsStyle);
 
-const BookCoursePage = (props) => {
+const BookCoursePage = props => {
   const classes = useStyles();
 
+  const [user] = props.value;
   const { history } = props;
 
-  const [user] = useContext(UserContext);
   const [participant, setParticipant] = useState({
-    firstName: "",
-    lastName: "",
+    firstName: '',
+    lastName: ''
   });
 
   let { id: courseId } = useParams();
@@ -33,35 +32,35 @@ const BookCoursePage = (props) => {
   }, [user]);
 
   // Handle fields change
-  const updateField = (e) => {
+  const updateField = e => {
     setParticipant({
       ...participant,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
-  const submitBooking = async (e) => {
+  const submitBooking = async e => {
     e.preventDefault();
     try {
       await postCoursePseudoBooking({
         course: courseId,
         user: user.id,
         participant: {
-          name: participant.firstName + " " + participant.lastName,
-        },
+          name: participant.firstName + ' ' + participant.lastName
+        }
       });
-      history.push("/mein-warenkorb");
+      history.push('/mein-warenkorb');
     } catch {}
   };
 
   return (
     <React.Fragment>
       <Parallax
-        image={require("assets/img/K1600_mars.JPG")}
+        image={require('assets/img/K1600_mars.JPG')}
         small
         filter="dark"
       >
-        {" "}
+        {' '}
         <div className={classes.container}>
           <GridContainer>
             <GridItem>

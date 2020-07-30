@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-// nodejs library that concatenates classes
-import classNames from 'classnames';
 // own components and functionality
 import {
   getShoppingCart,
@@ -31,21 +29,16 @@ import {
 import PaymentIcon from 'react-payment-icons';
 import EpsLogo from '../../assets/img/epsLogo.png';
 // core components
-import Parallax from 'components/Parallax/Parallax.js';
 import GridContainer from 'components/Grid/GridContainer.js';
-import GridItem from 'components/Grid/GridItem.js';
 // own components
 import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
 import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
 
-import MainPageStyle from 'assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 
-const useMainPageStyles = makeStyles(MainPageStyle);
 const useSectionPillsStyles = makeStyles(sectionPillsStyle);
 
 const CartPage = () => {
-  const mainPageClasses = useMainPageStyles();
   const sectionPillsClasses = useSectionPillsStyles();
 
   const [loadingPayment, setLoadingPayment] = useState(false);
@@ -128,29 +121,6 @@ const CartPage = () => {
 
   return (
     <div>
-      {/*<Parallax
-        image={
-          'https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg'
-        }
-        small
-      >
-        <div className={mainPageClasses.container}>
-          <GridContainer justify="center">
-            <GridItem
-              xs={12}
-              sm={12}
-              md={8}
-              className={mainPageClasses.textCenter}
-            >
-              <h2 className={mainPageClasses.title}>Mein Warenkorb</h2>
-            </GridItem>
-          </GridContainer>
-        </div>
-      </Parallax>
-
-      <div
-        className={classNames(mainPageClasses.main, mainPageClasses.mainRaised)}
-      >*/}
       <DivWithParallaxPaper
         title="Mein Warenkorb"
         image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
