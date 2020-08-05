@@ -26,6 +26,7 @@ import NavBar from 'myComponents/NavBar/NavBar';
 import CoursesPage from 'myViews/CoursesPage/CoursesPage';
 import CoursePage from 'myViews/CoursePage/CoursePage';
 import BookCoursePage from 'myViews/BookCoursePage/BookCoursePage';
+import CoursesOverviewPage from 'myViews/CoursesOverviewPage/CoursesOverviewPage';
 import { isLoggedIn } from 'APIUtils';
 import { getMe } from 'APIUtils';
 
@@ -75,7 +76,8 @@ const App = () => {
               <Route exact path="/" component={MainPage} />
               <Route path="/Anfahrt" component={LocationPage} />
               <Route path="/Camps" component={CampsPage} />
-              <Route exact path="/Kurse" component={CoursesPage} />
+              <Route exact path="/Kurse" component={CoursesOverviewPage} />
+              <Route exact path="/Kurse/alle" component={CoursesPage} />
               <Route exact path="/Kurs/:id/buchen" component={BookCoursePage} />
               <Route path="/Kurs/:id" component={CoursePage} />
               <Route exact path="/login" component={SignIn} />
