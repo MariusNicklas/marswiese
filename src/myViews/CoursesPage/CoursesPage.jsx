@@ -7,9 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Grid from '@material-ui/core/Grid';
 // core components
-import Parallax from 'components/Parallax/Parallax.js';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
+// own components
+import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
 
 import { getCoursesByCategory } from '../../APIUtils';
 
@@ -65,28 +66,10 @@ const CoursesPage = props => {
   } else {
     return (
       <div>
-        <Parallax
-          image={
-            'https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg'
-          }
-          small
+        <DivWithParallaxPaper
+          title="Kurse"
+          image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
         >
-          <div className={mainPageClasses.container}>
-            <Grid container justify="center">
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={8}
-                className={mainPageClasses.textCenter}
-              >
-                <h2 className={mainPageClasses.title}>Kurse</h2>
-              </Grid>
-            </Grid>
-          </div>
-        </Parallax>
-
-        <div className={mainPageClasses.main}>
           <div className={mainPageClasses.container}>
             <Grid container spacing={2}>
               {/* CATEGORY SELECT */}
@@ -190,7 +173,7 @@ const CoursesPage = props => {
                 )}
             </Grid>
           </div>
-        </div>
+        </DivWithParallaxPaper>
       </div>
     );
   }

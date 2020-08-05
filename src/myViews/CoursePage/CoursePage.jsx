@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 //@material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import contactUsStyle from "assets/jss/material-kit-pro-react/views/contactUsStyle.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import InfoArea from "components/InfoArea/InfoArea.js";
-// nodejs library that concatenates classes
-import classNames from "classnames";
+import { makeStyles } from '@material-ui/core/styles';
+import contactUsStyle from 'assets/jss/material-kit-pro-react/views/contactUsStyle.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import InfoArea from 'components/InfoArea/InfoArea.js';
 // @material-ui/icons
-import PeopleIcon from "@material-ui/icons/People";
-import EuroSymbolIcon from "@material-ui/icons/EuroSymbol";
+import PeopleIcon from '@material-ui/icons/People';
+import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 // core components
-import Parallax from "components/Parallax/Parallax.js";
-import Button from "components/CustomButtons/Button.js";
+import Button from 'components/CustomButtons/Button.js';
+// own components
+import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
 
-import { getCourse } from "../../APIUtils";
+import { getCourse } from '../../APIUtils';
 
 const useStyles = makeStyles(contactUsStyle);
 
-const CoursePage = (props) => {
+const CoursePage = props => {
   const { history } = props;
 
   const { id } = useParams();
@@ -45,20 +44,14 @@ const CoursePage = (props) => {
   } else {
     return (
       <div>
-        <Parallax
-          image={
-            "https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
-          }
-          filter="dark"
-          small
-        />
-        <div className={classNames(classes.main, classes.mainRaised)}>
+        <DivWithParallaxPaper
+          title={course.description}
+          image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+        >
           <div className={classes.container}>
             <GridContainer>
               <GridItem md={6} sm={6}>
-                <h3 className={classes.title}>
-                  {course.description} {course.courseName}
-                </h3>
+                <h3 className={classes.title}>{course.courseName}</h3>
 
                 <h4>
                   <i>{course.category.defaultShortDescriptionCamps}</i>
@@ -90,7 +83,7 @@ const CoursePage = (props) => {
                   key="book-course-button"
                   color="primary"
                   onClick={() =>
-                    history.push(props.location.pathname + "/buchen")
+                    history.push(props.location.pathname + '/buchen')
                   }
                 >
                   Kurs buchen
@@ -98,7 +91,7 @@ const CoursePage = (props) => {
               </GridItem>
             </GridContainer>
           </div>
-        </div>
+        </DivWithParallaxPaper>
       </div>
     );
   }

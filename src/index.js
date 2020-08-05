@@ -41,23 +41,19 @@ const App = () => {
   });
 
   useEffect(() => {
-    async function fetchIsLoggedIn() {
-      return await isLoggedIn();
-    }
-    const isLoggedInRes = fetchIsLoggedIn();
+    (async () => {
+      const loggedIn = await isLoggedIn();
 
-    async function fetchGetMe() {
-      return await getMe();
-    }
+      if (loggedIn) {
+        const userData = await getMe();
 
-    if (isLoggedInRes) {
-      const user = fetchGetMe();
-      setUserData({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        id: user._id
-      });
-    }
+        setUserData({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          id: userData._id
+        });
+      }
+    })();
   }, []);
 
   return (

@@ -194,7 +194,12 @@ export const isLoggedIn = () => {
     .then(response => {
       return response.data.status === 'success';
     })
-    .catch(err => catchAxiosError(err));
+    .catch(
+      /*err => catchAxiosError(err)*/
+      () => {
+        return false;
+      }
+    );
 };
 
 export const getAllCamps = () => {

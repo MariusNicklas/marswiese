@@ -51,8 +51,8 @@ const SignIn = props => {
         }
       }
     } catch (error) {
-      //setErrorCode(error.response.data.error.statusCode);
-      console.log(error);
+      setErrorCode(error.response.data.error.statusCode);
+      //console.log(error);
     }
   };
 
@@ -66,7 +66,10 @@ const SignIn = props => {
               margin="normal"
               required
               fullWidth
-              onChange={e => setEmail(e.target.value)}
+              onChange={e => {
+                setEmail(e.target.value);
+                setErrorCode(null);
+              }}
               id="email"
               value={email}
               label="Email"
@@ -78,7 +81,10 @@ const SignIn = props => {
               margin="normal"
               required
               fullWidth
-              onChange={e => setPassword(e.target.value)}
+              onChange={e => {
+                setPassword(e.target.value);
+                setErrorCode(null);
+              }}
               value={password}
               name="password"
               label="Passwort"
