@@ -192,14 +192,17 @@ export const isLoggedIn = () => {
     url: `${url}/api/v1/users/isLoggedIn`
   })
     .then(response => {
-      return response.data.status === 'success';
-    })
-    .catch(
-      /*err => catchAxiosError(err)*/
-      () => {
+      if (response.data.status === 'success') {
+        return true;
+      }
+      if (response.data.status === 'fail') {
         return false;
       }
-    );
+    })
+    .catch(err => {
+      //catchAxiosError(err);
+      return false;
+    });
 };
 
 export const getAllCamps = () => {

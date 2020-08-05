@@ -284,7 +284,6 @@ const CartPage = () => {
             }
           })()}
         </div>
-        )
       </DivWithParallaxPaper>
     </div>
   );

@@ -7,6 +7,8 @@ const getErrorMessage = errorCode => {
   switch (errorCode) {
     case 401:
       return 'Benutzername und/oder Passwort falsch!';
+    default:
+      return null;
   }
 };
 

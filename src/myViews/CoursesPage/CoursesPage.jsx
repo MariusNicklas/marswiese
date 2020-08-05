@@ -7,22 +7,27 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Grid from '@material-ui/core/Grid';
 // core components
+import GridContainer from 'components/Grid/GridContainer.js';
 import Card from 'components/Card/Card.js';
 import CardBody from 'components/Card/CardBody.js';
 // own components
+import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
 import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
-
+// API utils
 import { getCoursesByCategory } from '../../APIUtils';
-
+// styles
 import basicsStyle from 'assets/jss/material-kit-pro-react/views/componentsSections/basicsStyle.js';
 import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 
 const useBasicStyles = makeStyles(basicsStyle);
 const useMainPageStyles = makeStyles(MainPageStyle);
+const useSectionPillsStyles = makeStyles(sectionPillsStyle);
 
 const CoursesPage = props => {
   const basicClasses = useBasicStyles();
   const mainPageClasses = useMainPageStyles();
+  const sectionPillsClasses = useSectionPillsStyles();
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -61,122 +66,135 @@ const CoursesPage = props => {
     setMultipleSelect(event.target.value);
   };
 
-  if (isLoading) {
-    return <div>Lade Daten...</div>;
-  } else {
-    return (
-      <div>
-        <DivWithParallaxPaper
-          title="Kurse"
-          image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
-        >
-          <div className={mainPageClasses.container}>
-            <Grid container spacing={2}>
-              {/* CATEGORY SELECT */}
-              <Grid item lg={6} md={6} xs={12}>
-                <Typography id="category-select-label" gutterBottom>
-                  Kategorie
-                </Typography>
-                <Select
-                  multiple
-                  fullWidth
-                  value={multipleSelect}
-                  onChange={handleMultiple}
-                  MenuProps={{
-                    className: basicClasses.selectMenu,
-                    classes: { paper: basicClasses.selectPaper }
-                  }}
-                  classes={{ select: basicClasses.select }}
-                  inputProps={{
-                    name: 'multipleSelect',
-                    id: 'multiple-select'
-                  }}
-                >
-                  <MenuItem
-                    disabled
-                    classes={{
-                      root: basicClasses.selectMenuItem
-                    }}
-                  >
-                    Mehrfachauswahl
-                  </MenuItem>
-
-                  {categories.map(category =>
-                    category.numCourses > 0 ? (
-                      <MenuItem
-                        classes={{
-                          root: basicClasses.selectMenuItem,
-                          selected: basicClasses.selectMenuItemSelectedMultiple
+  return (
+    <DivWithParallaxPaper
+      title="Kurse"
+      image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
+    >
+      <div className={mainPageClasses.container}>
+        <div className={sectionPillsClasses.section}>
+          {(() => {
+            if (isLoading) {
+              return (
+                <GridContainer justify="center">
+                  <MarsLoader />
+                </GridContainer>
+              );
+            } else {
+              return (
+                <div className={mainPageClasses.container}>
+                  <Grid container spacing={2}>
+                    {/* CATEGORY SELECT */}
+                    <Grid item lg={6} md={6} xs={12}>
+                      <Typography id="category-select-label" gutterBottom>
+                        Kategorie
+                      </Typography>
+                      <Select
+                        multiple
+                        fullWidth
+                        value={multipleSelect}
+                        onChange={handleMultiple}
+                        MenuProps={{
+                          className: basicClasses.selectMenu,
+                          classes: { paper: basicClasses.selectPaper }
                         }}
-                        key={category.id}
-                        value={category.categoryLabel}
+                        classes={{ select: basicClasses.select }}
+                        inputProps={{
+                          name: 'multipleSelect',
+                          id: 'multiple-select'
+                        }}
                       >
-                        {category.categoryLabel}
-                      </MenuItem>
-                    ) : null
-                  )}
-                </Select>
-              </Grid>
-
-              {/* AGE SLIDER */}
-              <Grid item lg={6} md={6} xs={12}>
-                <div>
-                  <Typography id="age-slider-label" gutterBottom>
-                    Alter
-                  </Typography>
-                  <Slider
-                    value={ageSliderValue}
-                    onChange={handleAgeSliderChange}
-                    valueLabelDisplay="auto"
-                    aria-labelledby="range-slider"
-                  />
-                </div>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2}>
-              {categories
-                .filter(category =>
-                  multipleSelect.includes(category.categoryLabel)
-                )
-                .map(category =>
-                  category.courses
-                    .filter(
-                      course =>
-                        course.minAge >= ageSliderValue[0] &&
-                        course.maxAge <= ageSliderValue[1]
-                    )
-                    .map(course => (
-                      <Grid item key={course._id} xs={12} sm={6} md={3}>
-                        <Card
-                          onClick={() =>
-                            props.history.push('/Kurs/' + course._id)
-                          }
-                          raised
-                          background
-                          style={{
-                            backgroundImage:
-                              "url('https://www.marswiese.at/wordpress/wp-content/uploads/boulderbereich.jpg')"
+                        <MenuItem
+                          disabled
+                          classes={{
+                            root: basicClasses.selectMenuItem
                           }}
                         >
-                          <CardBody background>
-                            <h3>{course.courseName}</h3>
-                            <h4>
-                              {course.minAge}
-                              {course.maxAge ? ' - ' + course.maxAge : '+'}
-                              {' Jahre'}
-                            </h4>
-                          </CardBody>
-                        </Card>
-                      </Grid>
-                    ))
-                )}
-            </Grid>
-          </div>
-        </DivWithParallaxPaper>
+                          Mehrfachauswahl
+                        </MenuItem>
+
+                        {categories.map(category =>
+                          category.numCourses > 0 ? (
+                            <MenuItem
+                              classes={{
+                                root: basicClasses.selectMenuItem,
+                                selected:
+                                  basicClasses.selectMenuItemSelectedMultiple
+                              }}
+                              key={category.id}
+                              value={category.categoryLabel}
+                            >
+                              {category.categoryLabel}
+                            </MenuItem>
+                          ) : null
+                        )}
+                      </Select>
+                    </Grid>
+
+                    {/* AGE SLIDER */}
+                    <Grid item lg={6} md={6} xs={12}>
+                      <div>
+                        <Typography id="age-slider-label" gutterBottom>
+                          Alter
+                        </Typography>
+                        <Slider
+                          value={ageSliderValue}
+                          onChange={handleAgeSliderChange}
+                          valueLabelDisplay="auto"
+                          aria-labelledby="range-slider"
+                        />
+                      </div>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container spacing={2}>
+                    {categories
+                      .filter(category =>
+                        multipleSelect.includes(category.categoryLabel)
+                      )
+                      .map(category =>
+                        category.courses
+                          .filter(
+                            course =>
+                              course.minAge >= ageSliderValue[0] &&
+                              course.maxAge <= ageSliderValue[1]
+                          )
+                          .map(course => (
+                            <Grid item key={course._id} xs={12} sm={6} md={3}>
+                              <Card
+                                onClick={() =>
+                                  props.history.push('/Kurs/' + course._id)
+                                }
+                                raised
+                                background
+                                style={{
+                                  backgroundImage:
+                                    "url('https://www.marswiese.at/wordpress/wp-content/uploads/boulderbereich.jpg')"
+                                }}
+                              >
+                                <CardBody background>
+                                  <h3>{course.courseName}</h3>
+                                  <h4>
+                                    {course.minAge}
+                                    {course.maxAge
+                                      ? ' - ' + course.maxAge
+                                      : '+'}
+                                    {' Jahre'}
+                                  </h4>
+                                </CardBody>
+                              </Card>
+                            </Grid>
+                          ))
+                      )}
+                  </Grid>
+                </div>
+              );
+            }
+          })()}
+        </div>
       </div>
-    );
-  }
+    </DivWithParallaxPaper>
+  );
 };
 
 export default CoursesPage;

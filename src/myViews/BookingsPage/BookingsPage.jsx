@@ -14,11 +14,12 @@ import {
   getMyCourseBookings,
   getCourseById
 } from '../../APIUtils';
-
-import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
-import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
+// own components
 import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
 import { DivWithParallaxPaper } from 'myComponents/withParallaxPaper';
+// styles
+import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 
 const useMainPageStyles = makeStyles(MainPageStyle);
 const useSectionPillsStyles = makeStyles(sectionPillsStyle);

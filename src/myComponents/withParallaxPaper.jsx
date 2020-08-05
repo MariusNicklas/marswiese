@@ -9,6 +9,7 @@ import GridItem from 'components/Grid/GridItem.js';
 import { makeStyles } from '@material-ui/core/styles';
 
 import MainPageStyle from '../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+import MarswieseFooter from './Footer/Footer.jsx';
 
 export const useMainPageStyles = makeStyles(MainPageStyle);
 
@@ -47,6 +48,8 @@ export const withParallaxPaper = WrappedComponent => ({
       >
         <WrappedComponent>{children}</WrappedComponent>
       </div>
+
+      <MarswieseFooter />
     </div>
   );
 };
