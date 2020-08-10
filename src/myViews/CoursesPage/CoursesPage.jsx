@@ -50,7 +50,6 @@ const CoursesPage = props => {
       try {
         setIsLoading(true);
         const response = await getCoursesByCategory();
-        console.log(response);
         setCategories(response);
         setMultipleSelect(response.map(c => c.categoryLabel));
         // calculate min and max age for double slider

@@ -63,34 +63,36 @@ const CoursesOverviewPage = props => {
               </Carousel>
             </GridItem>
             <GridItem md={6} sm={6}>
-              <h4 className={contactUsClasses.title}>
+              <h2 className={contactUsClasses.title}>
                 Die Marswiese als Veranstaltungsort
-              </h4>
-              <p>
+              </h2>
+              <h5>
                 Das Sportzentrum Marswiese ist aufgrund seiner Infrastruktur
                 perfekt für Kurse verschiedener Sportarten geeignet! Je nach
                 Sportart finden die Kurse in der Kletterhalle, der Tennishalle,
                 der Ballspielhalle oder wenn es das Wetter zulässt auch auf dem
                 Gelände draußen statt. Der Wienerwald rundherum sorgt für
                 angenehme Luft und ladet auf einen Spaziergang danach ein!
-              </p>
+              </h5>
             </GridItem>
           </GridContainer>
-          <h4 className={contactUsClasses.title}>
+          <h2 className={contactUsClasses.title}>
             Wir bieten Kurse in verschiedenen Sportarten
-          </h4>
-          <p>
+          </h2>
+          <h5>
             Ob Klettern, Parkour, Selbstverteidigung, Tanzen, Tennis, Wildnis,
             wir bieten verschiedenste Kurse für Personen jeden Alters! Die
             Termine findet ihr bei den jeweiligen Kursen.
-          </p>
-          <Button
-            key="navigate-to-courses-button"
-            color="primary"
-            onClick={() => history.push(props.location.pathname + '/alle')}
-          >
-            Zu den Kursen
-          </Button>
+          </h5>
+          <GridContainer justify="center">
+            <Button
+              key="navigate-to-courses-button"
+              color="primary"
+              onClick={() => history.push(props.location.pathname + '/alle')}
+            >
+              Zu den Kursen
+            </Button>
+          </GridContainer>
         </div>
       </div>
     </DivWithParallaxPaper>

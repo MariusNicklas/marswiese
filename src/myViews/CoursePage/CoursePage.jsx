@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 //@material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,9 +6,11 @@ import contactUsStyle from 'assets/jss/material-kit-pro-react/views/contactUsSty
 import GridContainer from 'components/Grid/GridContainer.js';
 import GridItem from 'components/Grid/GridItem.js';
 import InfoArea from 'components/InfoArea/InfoArea.js';
+import Tooltip from '@material-ui/core/Tooltip';
 // @material-ui/icons
 import PeopleIcon from '@material-ui/icons/People';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 // core components
 import Button from 'components/CustomButtons/Button.js';
 // own components
@@ -25,14 +27,75 @@ const CoursePage = props => {
 
   const classes = useStyles();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [course, setCourse] = useState({});
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [course, setCourse] = React.useState({});
+  const [startDate, setStartDate] = React.useState('');
+  const [endDate, setEndDate] = React.useState('');
+  const [dates, setDates] = React.useState([]);
+
+  const formatDay = num => {
+    switch (num) {
+      case 1:
+        return 'Mo';
+      case 2:
+        return 'Di';
+      case 3:
+        return 'Mi';
+      case 4:
+        return 'Do';
+      case 5:
+        return 'Fr';
+      case 6:
+        return 'Sa';
+      case 7:
+        return 'So';
+      default:
+        return '';
+    }
+  };
+
+  const formatDate = date => {
+    const d = new Date(date);
+    const formattedDate =
+      formatDay(d.getDay()) +
+      ', ' +
+      d.getDate() +
+      '.' +
+      (d.getMonth() + 1) +
+      '.' +
+      d.getFullYear() +
+      ' ' +
+      d.getHours();
+    return formattedDate;
+  };
+
+  const formatHour = date => {
+    const d = new Date(date);
+    const formattedDate = d.getHours();
+    return formattedDate;
+  };
 
   useEffect(() => {
     (async () => {
       try {
         setIsLoading(true);
         const course = await getCourse(id);
+        console.log(course);
+        const start = formatDate(course.timeUnits[0].startDate);
+        setStartDate(start);
+        const end = course.timeUnits[course.timeUnits.length - 1].endDate;
+        setEndDate(formatDate(end));
+
+        setDates(
+          course.timeUnits.map(
+            tu =>
+              formatDate(tu.startDate) +
+              ' bis ' +
+              formatHour(tu.endDate) +
+              ' Uhr'
+          )
+        );
+
         setCourse(course);
         setIsLoading(false);
       } catch {}
@@ -79,6 +142,15 @@ const CoursePage = props => {
                   icon={EuroSymbolIcon}
                   iconColor="primary"
                 />
+
+                <InfoArea
+                  className={classes.info}
+                  title="Termine"
+                  description={<p>{dates}</p>}
+                  icon={DateRangeIcon}
+                  iconColor="primary"
+                />
+
                 <Button
                   key="book-course-button"
                   color="primary"
