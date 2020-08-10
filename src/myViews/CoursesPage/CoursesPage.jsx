@@ -6,6 +6,11 @@ import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Grid from '@material-ui/core/Grid';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 // core components
 import GridContainer from 'components/Grid/GridContainer.js';
 import Card from 'components/Card/Card.js';
@@ -33,6 +38,8 @@ const CoursesPage = props => {
   const [categories, setCategories] = useState([]);
   const [multipleSelect, setMultipleSelect] = React.useState([]);
   const [ageSliderValue, setAgeSliderValue] = React.useState([]);
+  const [selectedStartDate, setSelectedStartDate] = React.useState(Date.now());
+  const [selectedEndDate, setSelectedEndDate] = React.useState(Date.now());
 
   const handleAgeSliderChange = (event, newValue) => {
     setAgeSliderValue(newValue);
@@ -43,6 +50,7 @@ const CoursesPage = props => {
       try {
         setIsLoading(true);
         const response = await getCoursesByCategory();
+        console.log(response);
         setCategories(response);
         setMultipleSelect(response.map(c => c.categoryLabel));
         // calculate min and max age for double slider
@@ -64,6 +72,14 @@ const CoursesPage = props => {
 
   const handleMultiple = event => {
     setMultipleSelect(event.target.value);
+  };
+
+  const handleStartDateChange = newDate => {
+    setSelectedStartDate(newDate);
+  };
+
+  const handleEndDateChange = newDate => {
+    setSelectedEndDate(newDate);
   };
 
   return (
@@ -145,6 +161,46 @@ const CoursesPage = props => {
                         />
                       </div>
                     </Grid>
+
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <Grid item lg={3} md={3} xs={6}>
+                        {/* START DATE*/}
+                        <Typography id="courses-start-date-label" gutterBottom>
+                          Kurse vom
+                        </Typography>
+                        <KeyboardDatePicker
+                          disableToolbar
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          margin="normal"
+                          id="courses-start-date-picker"
+                          value={selectedStartDate}
+                          onChange={handleStartDateChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date'
+                          }}
+                        />
+                      </Grid>
+
+                      <Grid item lg={3} md={3} xs={6}>
+                        {/* END DATE*/}
+                        <Typography id="courses-end-date-label" gutterBottom>
+                          Kurse bis
+                        </Typography>
+                        <KeyboardDatePicker
+                          disableToolbar
+                          variant="inline"
+                          format="dd/MM/yyyy"
+                          margin="normal"
+                          id="courses-end-date-picker"
+                          value={selectedEndDate}
+                          onChange={handleEndDateChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date'
+                          }}
+                        />
+                      </Grid>
+                    </MuiPickersUtilsProvider>
                   </Grid>
 
                   <Grid container spacing={2}>
