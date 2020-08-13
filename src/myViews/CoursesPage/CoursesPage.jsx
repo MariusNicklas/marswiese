@@ -20,6 +20,7 @@ import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
 import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
 // API utils
 import { getCoursesByCategory } from '../../APIUtils';
+import { formatDateWithHours, formatHour } from '../../DateUtils';
 // styles
 import basicsStyle from 'assets/jss/material-kit-pro-react/views/componentsSections/basicsStyle.js';
 import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
@@ -36,10 +37,10 @@ const CoursesPage = props => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [multipleSelect, setMultipleSelect] = React.useState([]);
-  const [ageSliderValue, setAgeSliderValue] = React.useState([]);
-  const [selectedStartDate, setSelectedStartDate] = React.useState(Date.now());
-  const [selectedEndDate, setSelectedEndDate] = React.useState(Date.now());
+  const [multipleSelect, setMultipleSelect] = useState([]);
+  const [ageSliderValue, setAgeSliderValue] = useState([]);
+  const [selectedStartDate, setSelectedStartDate] = useState(Date.now());
+  const [selectedEndDate, setSelectedEndDate] = useState(Date.now());
 
   const handleAgeSliderChange = (event, newValue) => {
     setAgeSliderValue(newValue);
@@ -51,7 +52,9 @@ const CoursesPage = props => {
         setIsLoading(true);
         const response = await getCoursesByCategory();
         setCategories(response);
-        setMultipleSelect(response.map(c => c.categoryLabel));
+        setMultipleSelect(
+          response.filter(cat => cat.courses.length > 0).map(cat => cat.label)
+        );
         // calculate min and max age for double slider
         const minAgeArray = response.map(r => r.courses.map(c => c.minAge));
         const ageMin = Math.min(...[].concat(...minAgeArray));
@@ -67,9 +70,9 @@ const CoursesPage = props => {
         setIsLoading(false);
       } catch {}
     })();
-  }, [setCategories]);
+  }, []);
 
-  const handleMultiple = event => {
+  const handleMultipleSelect = event => {
     setMultipleSelect(event.target.value);
   };
 
@@ -79,6 +82,21 @@ const CoursesPage = props => {
 
   const handleEndDateChange = newDate => {
     setSelectedEndDate(newDate);
+  };
+
+  const filterCategories = () => {
+    const byCategory = categories.filter(category =>
+      multipleSelect.includes(category.label)
+    );
+
+    const byAge = byCategory
+      .map(category => category.courses)
+      .filter(
+        course =>
+          course.minAge >= ageSliderValue[0] &&
+          course.maxAge <= ageSliderValue[1]
+      );
+    return byAge;
   };
 
   return (
@@ -108,7 +126,7 @@ const CoursesPage = props => {
                         multiple
                         fullWidth
                         value={multipleSelect}
-                        onChange={handleMultiple}
+                        onChange={handleMultipleSelect}
                         MenuProps={{
                           className: basicClasses.selectMenu,
                           classes: { paper: basicClasses.selectPaper }
@@ -129,7 +147,7 @@ const CoursesPage = props => {
                         </MenuItem>
 
                         {categories.map(category =>
-                          category.numCourses > 0 ? (
+                          category.courses.length > 0 ? (
                             <MenuItem
                               classes={{
                                 root: basicClasses.selectMenuItem,
@@ -137,9 +155,9 @@ const CoursesPage = props => {
                                   basicClasses.selectMenuItemSelectedMultiple
                               }}
                               key={category.id}
-                              value={category.categoryLabel}
+                              value={category.label}
                             >
-                              {category.categoryLabel}
+                              {category.label}
                             </MenuItem>
                           ) : null
                         )}
@@ -203,44 +221,32 @@ const CoursesPage = props => {
                   </Grid>
 
                   <Grid container spacing={2}>
-                    {categories
-                      .filter(category =>
-                        multipleSelect.includes(category.categoryLabel)
-                      )
-                      .map(category =>
-                        category.courses
-                          .filter(
-                            course =>
-                              course.minAge >= ageSliderValue[0] &&
-                              course.maxAge <= ageSliderValue[1]
-                          )
-                          .map(course => (
-                            <Grid item key={course._id} xs={12} sm={6} md={3}>
-                              <Card
-                                onClick={() =>
-                                  props.history.push('/Kurs/' + course._id)
-                                }
-                                raised
-                                background
-                                style={{
-                                  backgroundImage:
-                                    "url('https://www.marswiese.at/wordpress/wp-content/uploads/boulderbereich.jpg')"
-                                }}
-                              >
-                                <CardBody background>
-                                  <h3>{course.courseName}</h3>
-                                  <h4>
-                                    {course.minAge}
-                                    {course.maxAge
-                                      ? ' - ' + course.maxAge
-                                      : '+'}
-                                    {' Jahre'}
-                                  </h4>
-                                </CardBody>
-                              </Card>
-                            </Grid>
-                          ))
-                      )}
+                    {filterCategories()
+                      .map(cat => cat.courses)
+                      .map(course => (
+                        <Grid item key={course._id} xs={12} sm={6} md={3}>
+                          <Card
+                            onClick={() =>
+                              props.history.push('/Kurs/' + course._id)
+                            }
+                            raised
+                            background
+                            style={{
+                              backgroundImage:
+                                "url('https://www.marswiese.at/wordpress/wp-content/uploads/boulderbereich.jpg')"
+                            }}
+                          >
+                            <CardBody background>
+                              <h3>{course.courseName}</h3>
+                              <h4>
+                                {course.minAge}
+                                {course.maxAge ? ' - ' + course.maxAge : '+'}
+                                {' Jahre'}
+                              </h4>
+                            </CardBody>
+                          </Card>
+                        </Grid>
+                      ))}
                   </Grid>
                 </div>
               );

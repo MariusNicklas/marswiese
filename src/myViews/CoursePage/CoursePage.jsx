@@ -17,6 +17,7 @@ import Button from 'components/CustomButtons/Button.js';
 import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
 
 import { getCourse } from '../../APIUtils';
+import { formatDateWithHours, formatHour } from '../../DateUtils';
 
 const useStyles = makeStyles(contactUsStyle);
 
@@ -33,63 +34,21 @@ const CoursePage = props => {
   const [endDate, setEndDate] = React.useState('');
   const [dates, setDates] = React.useState([]);
 
-  const formatDay = num => {
-    switch (num) {
-      case 1:
-        return 'Mo';
-      case 2:
-        return 'Di';
-      case 3:
-        return 'Mi';
-      case 4:
-        return 'Do';
-      case 5:
-        return 'Fr';
-      case 6:
-        return 'Sa';
-      case 7:
-        return 'So';
-      default:
-        return '';
-    }
-  };
-
-  const formatDate = date => {
-    const d = new Date(date);
-    const formattedDate =
-      formatDay(d.getDay()) +
-      ', ' +
-      d.getDate() +
-      '.' +
-      (d.getMonth() + 1) +
-      '.' +
-      d.getFullYear() +
-      ' ' +
-      d.getHours();
-    return formattedDate;
-  };
-
-  const formatHour = date => {
-    const d = new Date(date);
-    const formattedDate = d.getHours();
-    return formattedDate;
-  };
-
   useEffect(() => {
     (async () => {
       try {
         setIsLoading(true);
         const course = await getCourse(id);
         console.log(course);
-        const start = formatDate(course.timeUnits[0].startDate);
+        const start = formatDateWithHours(course.timeUnits[0].startDate);
         setStartDate(start);
         const end = course.timeUnits[course.timeUnits.length - 1].endDate;
-        setEndDate(formatDate(end));
+        setEndDate(formatDateWithHours(end));
 
         setDates(
           course.timeUnits.map(
             tu =>
-              formatDate(tu.startDate) +
+              formatDateWithHours(tu.startDate) +
               ' bis ' +
               formatHour(tu.endDate) +
               ' Uhr'

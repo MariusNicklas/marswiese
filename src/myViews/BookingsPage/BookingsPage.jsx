@@ -14,6 +14,7 @@ import {
   getMyCourseBookings,
   getCourseById
 } from '../../APIUtils';
+import { formatDateWithoutHours } from '../../DateUtils';
 // own components
 import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
 import { DivWithParallaxPaper } from 'myComponents/withParallaxPaper';
@@ -31,6 +32,23 @@ const BookingsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [myCampBookings, setMyCampBookings] = useState([]);
   const [myCourseBookings, setMyCourseBookings] = useState([]);
+  const [mouseOver, setMouseOver] = useState(false);
+
+  const handleMouseIn = () => {
+    setMouseOver(true);
+  };
+
+  const handleMouseOut = () => {
+    setMouseOver(false);
+  };
+
+  const tooltipStyle = {
+    display: mouseOver ? 'block' : 'none'
+  };
+
+  const divWithTooltipStyle = {
+    display: mouseOver ? 'none' : 'block'
+  };
 
   useEffect(() => {
     (async () => {
@@ -43,8 +61,12 @@ const BookingsPage = () => {
             const campIds = campBooking.camps;
             const camp1 = await getCampById(campIds[0]);
             const camp2 = await getCampById(campIds[1]);
+            console.log(camp1);
+            console.log(camp2);
             campBooking = {
               campNames: [camp1.campName, camp2.campName],
+              camp1Days: camp1.days,
+              camp2Days: camp2.days,
               ...campBooking
             };
             return campBooking;
@@ -100,8 +122,9 @@ const BookingsPage = () => {
                           '',
                           'PRODUKT',
                           'TEILNEHMER',
-                          'ERSTELLT AM',
+                          'GEBUCHTE TAGE',
                           'DETAILS',
+                          'RANDBETREUUNG',
                           'AKTIONEN'
                         ]}
                         tableData={myCampBookings.map(campBooking => [
@@ -113,12 +136,37 @@ const BookingsPage = () => {
                           <div key={campBooking.id}>
                             {campBooking.kid.name}
                           </div>,
-                          <div key={campBooking.id}>
-                            {campBooking.createdAt}
+                          <div
+                            key={campBooking.id}
+                            onMouseOver={handleMouseIn}
+                            onMouseOut={handleMouseOut}
+                          >
+                            <div style={divWithTooltipStyle}>
+                              {formatDateWithoutHours(
+                                campBooking.camp1Days[0]
+                              ) +
+                                ' bis ' +
+                                formatDateWithoutHours(
+                                  campBooking.camp1Days[
+                                    campBooking.camp1Days.length - 1
+                                  ]
+                                )}
+                            </div>
+                            <div style={tooltipStyle}>
+                              {campBooking.camp1Days.map((day, idx) => {
+                                return (
+                                  <p key={idx}>{formatDateWithoutHours(day)}</p>
+                                );
+                              })}
+                            </div>
                           </div>,
                           <div key={campBooking.id}>
-                            {campBooking.campNames[0]},{' '}
+                            VM: {campBooking.campNames[0]}, NM:
                             {campBooking.campNames[1]}
+                          </div>,
+                          <div key={campBooking.id}>
+                            {campBooking.morningChildCare && 'VM'}{' '}
+                            {campBooking.afternoonChildCare && 'NM'}
                           </div>,
                           <Tooltip
                             key={campBooking.id}
