@@ -20,7 +20,6 @@ import MarsLoader from 'myComponents/MarsLoader/MarsLoader';
 import { DivWithParallaxPaper } from '../../myComponents/withParallaxPaper';
 // API utils
 import { getCoursesByCategory } from '../../APIUtils';
-import { formatDateWithHours, formatHour } from '../../DateUtils';
 // styles
 import basicsStyle from 'assets/jss/material-kit-pro-react/views/componentsSections/basicsStyle.js';
 import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
@@ -40,7 +39,9 @@ const CoursesPage = props => {
   const [multipleSelect, setMultipleSelect] = useState([]);
   const [ageSliderValue, setAgeSliderValue] = useState([]);
   const [selectedStartDate, setSelectedStartDate] = useState(Date.now());
-  const [selectedEndDate, setSelectedEndDate] = useState(Date.now());
+  const [selectedEndDate, setSelectedEndDate] = useState(
+    new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)
+  );
 
   const handleAgeSliderChange = (event, newValue) => {
     setAgeSliderValue(newValue);
@@ -77,26 +78,49 @@ const CoursesPage = props => {
   };
 
   const handleStartDateChange = newDate => {
-    setSelectedStartDate(newDate);
+    const date = new Date(newDate);
+    date.setHours(0, 0, 0, 0);
+    setSelectedStartDate(date);
   };
 
   const handleEndDateChange = newDate => {
-    setSelectedEndDate(newDate);
+    const date = new Date(newDate);
+    date.setHours(0, 0, 0, 0);
+    setSelectedEndDate(date);
   };
 
   const filterCategories = () => {
+    // filter courses by selected categries
     const byCategory = categories.filter(category =>
       multipleSelect.includes(category.label)
     );
 
-    const byAge = byCategory
-      .map(category => category.courses)
-      .filter(
-        course =>
-          course.minAge >= ageSliderValue[0] &&
-          course.maxAge <= ageSliderValue[1]
-      );
-    return byAge;
+    // filter courses by selected age range
+    const byAge = byCategory.map(category => {
+      return {
+        ...category,
+        courses: category.courses.filter(
+          course =>
+            course.minAge >= ageSliderValue[0] &&
+            course.maxAge <= ageSliderValue[1]
+        )
+      };
+    });
+
+    const byDate = byAge.map(category => {
+      return {
+        ...category,
+        courses: category.courses.filter(
+          course =>
+            new Date(course.timeUnits[0].startDate) >=
+              new Date(selectedStartDate) &&
+            new Date(course.timeUnits[course.timeUnits.length - 1].endDate) <=
+              new Date(selectedEndDate)
+        )
+      };
+    });
+
+    return byDate;
   };
 
   return (
@@ -221,32 +245,53 @@ const CoursesPage = props => {
                   </Grid>
 
                   <Grid container spacing={2}>
-                    {filterCategories()
-                      .map(cat => cat.courses)
-                      .map(course => (
-                        <Grid item key={course._id} xs={12} sm={6} md={3}>
-                          <Card
-                            onClick={() =>
-                              props.history.push('/Kurs/' + course._id)
-                            }
-                            raised
-                            background
-                            style={{
-                              backgroundImage:
-                                "url('https://www.marswiese.at/wordpress/wp-content/uploads/boulderbereich.jpg')"
-                            }}
-                          >
-                            <CardBody background>
-                              <h3>{course.courseName}</h3>
-                              <h4>
-                                {course.minAge}
-                                {course.maxAge ? ' - ' + course.maxAge : '+'}
-                                {' Jahre'}
-                              </h4>
-                            </CardBody>
-                          </Card>
+                    {filterCategories().map(category => {
+                      return (
+                        <Grid key={category._id} container direction="column">
+                          <div key={category._id}>
+                            {/* display title only when there are actually courses */}
+                            {category.courses.length > 0 && (
+                              <h3>{category.label}</h3>
+                            )}
+
+                            {category.courses.map(course => {
+                              return (
+                                <Grid
+                                  item
+                                  key={course._id}
+                                  xs={12}
+                                  sm={6}
+                                  md={3}
+                                >
+                                  <Card
+                                    onClick={() =>
+                                      props.history.push('/Kurs/' + course._id)
+                                    }
+                                    raised
+                                    background
+                                    style={{
+                                      backgroundImage:
+                                        "url('https://www.marswiese.at/wordpress/wp-content/uploads/boulderbereich.jpg')"
+                                    }}
+                                  >
+                                    <CardBody background>
+                                      <h3>{course.courseName}</h3>
+                                      <h4>
+                                        {course.minAge}
+                                        {course.maxAge
+                                          ? ' - ' + course.maxAge
+                                          : '+'}
+                                        {' Jahre'}
+                                      </h4>
+                                    </CardBody>
+                                  </Card>
+                                </Grid>
+                              );
+                            })}
+                          </div>
                         </Grid>
-                      ))}
+                      );
+                    })}
                   </Grid>
                 </div>
               );

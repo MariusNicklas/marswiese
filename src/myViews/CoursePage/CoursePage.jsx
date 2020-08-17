@@ -6,7 +6,6 @@ import contactUsStyle from 'assets/jss/material-kit-pro-react/views/contactUsSty
 import GridContainer from 'components/Grid/GridContainer.js';
 import GridItem from 'components/Grid/GridItem.js';
 import InfoArea from 'components/InfoArea/InfoArea.js';
-import Tooltip from '@material-ui/core/Tooltip';
 // @material-ui/icons
 import PeopleIcon from '@material-ui/icons/People';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
