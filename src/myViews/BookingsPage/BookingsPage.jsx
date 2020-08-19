@@ -32,23 +32,6 @@ const BookingsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [myCampBookings, setMyCampBookings] = useState([]);
   const [myCourseBookings, setMyCourseBookings] = useState([]);
-  const [mouseOver, setMouseOver] = useState(false);
-
-  const handleMouseIn = () => {
-    setMouseOver(true);
-  };
-
-  const handleMouseOut = () => {
-    setMouseOver(false);
-  };
-
-  const tooltipStyle = {
-    display: mouseOver ? 'block' : 'none'
-  };
-
-  const divWithTooltipStyle = {
-    display: mouseOver ? 'none' : 'block'
-  };
 
   useEffect(() => {
     (async () => {
@@ -136,12 +119,18 @@ const BookingsPage = () => {
                           <div key={campBooking.id}>
                             {campBooking.kid.name}
                           </div>,
-                          <div
+                          <Tooltip
                             key={campBooking.id}
-                            onMouseOver={handleMouseIn}
-                            onMouseOut={handleMouseOut}
+                            id="close1"
+                            title={campBooking.camp1Days.map((day, idx) => {
+                              return (
+                                <p key={idx}>{formatDateWithoutHours(day)}</p>
+                              );
+                            })}
+                            placement="top"
+                            classes={{ tooltip: mainPageClasses.tooltip }}
                           >
-                            <div style={divWithTooltipStyle}>
+                            <div key={campBooking.id} className="tooltip">
                               {formatDateWithoutHours(
                                 campBooking.camp1Days[0]
                               ) +
@@ -152,14 +141,7 @@ const BookingsPage = () => {
                                   ]
                                 )}
                             </div>
-                            <div style={tooltipStyle}>
-                              {campBooking.camp1Days.map((day, idx) => {
-                                return (
-                                  <p key={idx}>{formatDateWithoutHours(day)}</p>
-                                );
-                              })}
-                            </div>
-                          </div>,
+                          </Tooltip>,
                           <div key={campBooking.id}>
                             VM: {campBooking.campNames[0]}, NM:
                             {campBooking.campNames[1]}

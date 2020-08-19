@@ -29,8 +29,6 @@ const CoursePage = props => {
 
   const [isLoading, setIsLoading] = React.useState(true);
   const [course, setCourse] = React.useState({});
-  const [startDate, setStartDate] = React.useState('');
-  const [endDate, setEndDate] = React.useState('');
   const [dates, setDates] = React.useState([]);
 
   useEffect(() => {
@@ -38,11 +36,6 @@ const CoursePage = props => {
       try {
         setIsLoading(true);
         const course = await getCourse(id);
-        console.log(course);
-        const start = formatDateWithHours(course.timeUnits[0].startDate);
-        setStartDate(start);
-        const end = course.timeUnits[course.timeUnits.length - 1].endDate;
-        setEndDate(formatDateWithHours(end));
 
         setDates(
           course.timeUnits.map(
@@ -104,7 +97,9 @@ const CoursePage = props => {
                 <InfoArea
                   className={classes.info}
                   title="Termine"
-                  description={<p>{dates}</p>}
+                  description={dates.map((date, idx) => {
+                    return <p key={idx}>{date}</p>;
+                  })}
                   icon={DateRangeIcon}
                   iconColor="primary"
                 />
