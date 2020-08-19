@@ -1,35 +1,35 @@
 /*eslint-disable*/
-import React from "react";
+import React from 'react';
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import classNames from 'classnames';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Tooltip from "@material-ui/core/Tooltip";
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Tooltip from '@material-ui/core/Tooltip';
 // @material-ui/icons
-import Favorite from "@material-ui/icons/Favorite";
-import Close from "@material-ui/icons/Close";
-import Remove from "@material-ui/icons/Remove";
-import Add from "@material-ui/icons/Add";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import Favorite from '@material-ui/icons/Favorite';
+import Close from '@material-ui/icons/Close';
+import Remove from '@material-ui/icons/Remove';
+import Add from '@material-ui/icons/Add';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import Parallax from "components/Parallax/Parallax.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Footer from "components/Footer/Footer.js";
-import Table from "components/Table/Table.js";
-import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
+import Header from 'components/Header/Header.js';
+import HeaderLinks from 'components/Header/HeaderLinks.js';
+import Parallax from 'components/Parallax/Parallax.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import Footer from 'components/Footer/Footer.js';
+import Table from 'components/Table/Table.js';
+import Button from 'components/CustomButtons/Button.js';
+import Card from 'components/Card/Card.js';
+import CardBody from 'components/Card/CardBody.js';
 
-import shoppingCartStyle from "assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
+import shoppingCartStyle from 'assets/jss/material-kit-pro-react/views/shoppingCartStyle.js';
 
-import product1 from "assets/img/product1.jpg";
-import product2 from "assets/img/product2.jpg";
-import product3 from "assets/img/product3.jpg";
+import product1 from 'assets/img/product1.jpg';
+import product2 from 'assets/img/product2.jpg';
+import product3 from 'assets/img/product3.jpg';
 
 const useStyles = makeStyles(shoppingCartStyle);
 
@@ -48,12 +48,12 @@ export default function ShoppingCartPage() {
         color="transparent"
         changeColorOnScroll={{
           height: 300,
-          color: "info"
+          color: 'info'
         }}
       />
 
       <Parallax
-        image={require("assets/img/examples/bg2.jpg")}
+        image={require('assets/img/examples/bg2.jpg')}
         filter="dark"
         small
       >
@@ -80,14 +80,14 @@ export default function ShoppingCartPage() {
               <h3 className={classes.cardTitle}>Shopping Cart</h3>
               <Table
                 tableHead={[
-                  "",
-                  "PRODUCT",
-                  "COLOR",
-                  "SIZE",
-                  "PRICE",
-                  "QTY",
-                  "AMOUNT",
-                  ""
+                  '',
+                  'PRODUCT',
+                  'COLOR',
+                  'SIZE',
+                  'PRICE',
+                  'QTY',
+                  'AMOUNT',
+                  ''
                 ]}
                 tableData={[
                   [
@@ -103,8 +103,8 @@ export default function ShoppingCartPage() {
                         by Dolce&amp;Gabbana
                       </small>
                     </span>,
-                    "Red",
-                    "M",
+                    'Red',
+                    'M',
                     <span key={1}>
                       <small className={classes.tdNumberSmall}>€</small> 549
                     </span>,
@@ -150,13 +150,13 @@ export default function ShoppingCartPage() {
                     </div>,
                     <span key={1}>
                       <a href="#jacket" className={classes.tdNameAnchor}>
-                        Short Pants{" "}
+                        Short Pants{' '}
                       </a>
                       <br />
                       <small className={classes.tdNameSmall}>by Gucci</small>
                     </span>,
-                    "Purple",
-                    "M",
+                    'Purple',
+                    'M',
                     <span key={1}>
                       <small className={classes.tdNumberSmall}>€</small> 499
                     </span>,
@@ -209,8 +209,8 @@ export default function ShoppingCartPage() {
                         by Valentino
                       </small>
                     </span>,
-                    "White",
-                    "XL",
+                    'White',
+                    'XL',
                     <span key={1}>
                       <small className={classes.tdNumberSmall}>€</small> 799
                     </span>,
@@ -252,7 +252,7 @@ export default function ShoppingCartPage() {
                   ],
                   {
                     purchase: true,
-                    colspan: "3",
+                    colspan: '3',
                     amount: (
                       <span>
                         <small>€</small>2,346
@@ -283,8 +283,8 @@ export default function ShoppingCartPage() {
                   classes.customFont,
                   classes.customFont,
                   classes.tdNumber,
-                  classes.tdNumber + " " + classes.tdNumberAndButtonGroup,
-                  classes.tdNumber + " " + classes.textCenter
+                  classes.tdNumber + ' ' + classes.tdNumberAndButtonGroup,
+                  classes.tdNumber + ' ' + classes.textCenter
                 ]}
                 customClassesForCells={[1, 2, 3, 4, 5, 6]}
               />
@@ -336,14 +336,14 @@ export default function ShoppingCartPage() {
               </List>
             </div>
             <div className={classes.right}>
-              &copy; {1900 + new Date().getYear()} , made with{" "}
-              <Favorite className={classes.icon} /> by{" "}
+              &copy; {1900 + new Date().getYear()} , made with{' '}
+              <Favorite className={classes.icon} /> by{' '}
               <a
                 href="https://www.creative-tim.com?ref=mkpr-shopping-cart"
                 target="_blank"
               >
                 Creative Tim
-              </a>{" "}
+              </a>{' '}
               for a better web.
             </div>
           </div>

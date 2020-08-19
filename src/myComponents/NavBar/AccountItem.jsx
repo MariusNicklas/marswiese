@@ -21,7 +21,6 @@ const HomeItem = props => {
 
   return (
     <CustomDropdown
-      //dropdownHeader="Dropdown header"
       buttonText={userData.firstName + ' ' + userData.lastName}
       buttonProps={{
         round: true,

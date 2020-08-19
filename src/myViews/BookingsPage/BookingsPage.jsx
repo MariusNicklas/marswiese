@@ -153,8 +153,8 @@ const BookingsPage = () => {
                           <Tooltip
                             key={campBooking.id}
                             id="close1"
-                            title="Buchung stornieren"
-                            placement="left"
+                            title={<p>Buchung stornieren</p>}
+                            placement="top"
                             classes={{ tooltip: mainPageClasses.tooltip }}
                           >
                             <Button

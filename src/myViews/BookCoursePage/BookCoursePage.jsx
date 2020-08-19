@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { postCoursePseudoBooking } from '../../APIUtils';
 import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
 import UserContext from '../../context/UserContext';
+import { DivWithParallaxPaper } from 'myComponents/withParallaxPaper';
 
 const useStyles = makeStyles(campsStyle);
 
@@ -56,24 +57,8 @@ const BookCoursePage = props => {
 
   return (
     <React.Fragment>
-      <Parallax
-        image={require('assets/img/K1600_mars.JPG')}
-        small
-        filter="dark"
-      >
-        {' '}
-        <div className={classes.container}>
-          <GridContainer>
-            <GridItem>
-              <div className={classes.brand}>
-                <h1>Buchung</h1>
-              </div>
-            </GridItem>
-          </GridContainer>
-        </div>
-      </Parallax>
-      <form className={classes.form} noValidate>
-        <div className={classNames(classes.main, classes.mainRaised)}>
+      <DivWithParallaxPaper image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg">
+        <form className={classes.form} noValidate>
           <div className={classes.container}>
             <TextField
               variant="outlined"
@@ -112,8 +97,8 @@ const BookCoursePage = props => {
               Teilnehmer anmelden
             </Button>
           </div>
-        </div>
-      </form>
+        </form>
+      </DivWithParallaxPaper>
     </React.Fragment>
   );
 };

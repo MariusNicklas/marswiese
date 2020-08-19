@@ -1,33 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 // material-ui core components
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import AppBar from "@material-ui/core/AppBar";
-import Hidden from "@material-ui/core/Hidden";
-import Badge from "@material-ui/core/Badge";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import IconButton from "@material-ui/core/IconButton";
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import AppBar from '@material-ui/core/AppBar';
+import Hidden from '@material-ui/core/Hidden';
+import Badge from '@material-ui/core/Badge';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
 // material-ui icons
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import TodayIcon from "@material-ui/icons/Today";
-import HomeIcon from "@material-ui/icons/Home";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import TodayIcon from '@material-ui/icons/Today';
+import HomeIcon from '@material-ui/icons/Home';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-import { ShoppingCartContext } from "./ShoppingCartContext";
-import { getShoppingCart, logout } from "../../APIUtils";
-import { Grid } from "@material-ui/core";
-import { UserContext } from "../../context/UserContext";
+import { ShoppingCartContext } from './ShoppingCartContext';
+import { getShoppingCart, logout } from '../../APIUtils';
+import { Grid } from '@material-ui/core';
+import UserContext from '../../context/UserContext';
 
-const NavBar = (props) => {
+const NavBar = props => {
   const [cart, setCart, cartChangedToggle] = useContext(ShoppingCartContext);
-  const [selectedTab, setSelectedTab] = useState("/");
-  const [user, setUser] = useContext(UserContext);
+  const [selectedTab, setSelectedTab] = useState('/');
+  const { userData } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -44,7 +44,7 @@ const NavBar = (props) => {
     })();
   }, [cartChangedToggle, setCart]);
 
-  const handleTabClick = (event,value) => {
+  const handleTabClick = (event, value) => {
     setSelectedTab(value);
     props.history.push(value);
   };
@@ -57,19 +57,19 @@ const NavBar = (props) => {
             <Tab
               icon={<HomeIcon />}
               label={<Hidden xsDown>Startseite</Hidden>}
-              value={"/"}
+              value={'/'}
             />
 
             <Tab
               icon={<LocationOnIcon />}
               label={<Hidden xsDown>Anfahrt</Hidden>}
-              value={"/anfahrt"}
+              value={'/anfahrt'}
             />
 
             <Tab
               icon={<TodayIcon />}
               label={<Hidden xsDown>Buchungen</Hidden>}
-              value={"/meine-Buchungen"}
+              value={'/meine-Buchungen'}
             />
 
             <Tab
@@ -82,7 +82,7 @@ const NavBar = (props) => {
                 </Badge>
               }
               label={<Hidden xsDown>Warenkorb</Hidden>}
-              value={"/mein-warenkorb"}
+              value={'/mein-warenkorb'}
             />
           </Tabs>
         </Grid>
@@ -106,9 +106,12 @@ const NavBar = (props) => {
             onClose={handleMenuClose}
           >
             <MenuItem
-              onClick={() => {logout(); props.history.push("/login")}}
+              onClick={() => {
+                logout();
+                props.history.push('/login');
+              }}
             >
-              {user} abmelden
+              {userData.firstName} {userData.lastName} abmelden
             </MenuItem>
           </Menu>
         </Grid>
