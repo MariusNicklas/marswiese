@@ -1,15 +1,15 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 // @material-ui/icons
 // core components
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import Card from 'components/Card/Card.js';
+import CardBody from 'components/Card/CardBody.js';
 
-import sectionPillsStyle from "assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js";
+import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 
 const useStyles = makeStyles(sectionPillsStyle);
 
@@ -22,7 +22,7 @@ function SectionSports() {
         <GridItem xs={12} sm={5} md={7}>
           <Card
             onClick={() =>
-              (window.location.href = "https://www.climbonmarswiese.at/")
+              (window.location.href = 'https://www.climbonmarswiese.at/')
             }
             raised
             background
@@ -40,7 +40,7 @@ function SectionSports() {
         <GridItem xs={12} sm={7} md={5}>
           <Card
             onClick={() =>
-              (window.location.href = "https://www.tennisclubs.at//")
+              (window.location.href = 'https://www.tennisclubs.at//')
             }
             raised
             background
