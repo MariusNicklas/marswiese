@@ -47,6 +47,13 @@ export const formatDateWithoutHours = date => {
   return formattedDate;
 };
 
+export const justDate = date => {
+  const d = new Date(date);
+  const formattedDate =
+    d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+  return formattedDate;
+};
+
 export const formatHour = date => {
   const d = new Date(date);
   const formattedDate = d.getHours();

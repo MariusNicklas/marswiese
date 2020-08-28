@@ -18,6 +18,13 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Drawer } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
+/*import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
+} from '@material-ui/core';*/
 // core components
 import Table from 'components/Table/Table.js';
 // payment icons
@@ -143,7 +150,7 @@ const CartPage = () => {
                           <TableCell>Item</TableCell>
                           <TableCell>Teilnehmer</TableCell>
                           <TableCell>Preis</TableCell>
-                          <TableCell>Löschen</TableCell>
+                          <TableCell>Aktion</TableCell>
                         </TableRow>
                       </TableHead>
 
@@ -175,7 +182,9 @@ const CartPage = () => {
                               {booking.course.courseName}
                             </TableCell>
                             <TableCell>{booking.participant.name}</TableCell>
-                            <TableCell>EUR {booking.totalPrice}</TableCell>
+                            <TableCell>
+                              <small>€ </small> {booking.totalPrice}
+                            </TableCell>
 
                             <TableCell>
                               <Button
@@ -190,24 +199,40 @@ const CartPage = () => {
                         ))}
                       </TableBody>
 
-                      <TableHead>
-                        <TableRow>
-                          <TableCell />
-                          <TableCell />
-                          <TableCell>Total</TableCell>
-                          <TableCell />
-                        </TableRow>
-                      </TableHead>
-
                       <TableBody>
                         <TableRow>
                           <TableCell />
-                          <TableCell />
-                          <TableCell>EUR {cart.totalPrice}</TableCell>
-                          <TableCell />
+                          <TableCell>
+                            <b>Total</b>
+                          </TableCell>
+                          <TableCell>
+                            <b>€ {cart.totalPrice}</b>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              disabled={loadingPayment}
+                              color="primary"
+                              variant="contained"
+                              onClick={() => checkOutCart()}
+                            >
+                              {loadingPayment && (
+                                <i
+                                  className="fa fa-refresh fa-spin"
+                                  style={{
+                                    color: 'primary',
+                                    marginRight: '5px'
+                                  }}
+                                />
+                              )}
+                              {loadingPayment && (
+                                <span>Daten werden übermittelt</span>
+                              )}
+                              {!loadingPayment && <span>Jetzt bezahlen</span>}
+                            </Button>
+                          </TableCell>
                         </TableRow>
                       </TableBody>
-                              </Table>*/}
+                    </Table>*/}
 
                     <Table
                       striped
@@ -266,6 +291,7 @@ const CartPage = () => {
                                 {courseBooking.participant.name}
                               </div>,
                               <div key={courseBooking._id}>
+                                <small>€ </small>
                                 {courseBooking.totalPrice}
                               </div>,
 
@@ -289,7 +315,7 @@ const CartPage = () => {
                           )
                           .concat({
                             purchase: true,
-                            colspan: '1',
+                            colspan: '2',
                             amount: (
                               <span>
                                 <small>€</small>
@@ -297,7 +323,7 @@ const CartPage = () => {
                               </span>
                             ),
                             col: {
-                              colspan: 1,
+                              colspan: 2,
                               text: (
                                 <Button
                                   disabled={loadingPayment}
