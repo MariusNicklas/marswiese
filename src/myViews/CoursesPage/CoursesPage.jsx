@@ -36,6 +36,7 @@ const useSectionPillsStyles = makeStyles(sectionPillsStyle);
 const useCoursesPageStyles = makeStyles(CoursesPageStyle);
 
 const CoursesPage = props => {
+  // styles
   const basicClasses = useBasicStyles();
   const mainPageClasses = useMainPageStyles();
   const sectionPillsClasses = useSectionPillsStyles();
@@ -45,18 +46,19 @@ const CoursesPage = props => {
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
 
+  // filter states
   const [multipleSelect, setMultipleSelect] = useState([]);
-  const [ageSliderValue, setAgeSliderValue] = useState([0, 100]);
-  const [selectedStartDate, setSelectedStartDate] = useState(Date.now());
-  const [selectedEndDate, setSelectedEndDate] = useState(
-    new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)
-  );
+  const [ageSliderValue, setAgeSliderValue] = useState([]);
+  const [selectedStartDate, setSelectedStartDate] = useState();
+  const [selectedEndDate, setSelectedEndDate] = useState();
+  const [clearFilter, setClearFilter] = useState(false);
   const [chips, setChips] = useState([]);
 
   const handleAgeSliderChange = (event, newValue) => {
     setAgeSliderValue(newValue);
   };
 
+  // SET CATEGORIES ON MOUNT
   useEffect(() => {
     (async () => {
       try {
@@ -64,13 +66,23 @@ const CoursesPage = props => {
         const response = await getCoursesByCategory();
         setCategories(response);
         setFilteredCategories(response);
+        setIsLoading(false);
+      } catch {}
+    })();
+  }, []);
+
+  // SET FILTER ON MOUNT
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
         setMultipleSelect(
-          response.filter(cat => cat.courses.length > 0).map(cat => cat.label)
+          categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
         );
         // calculate min and max age for double slider
-        const minAgeArray = response.map(r => r.courses.map(c => c.minAge));
+        const minAgeArray = categories.map(r => r.courses.map(c => c.minAge));
         const ageMin = Math.min(...[].concat(...minAgeArray));
-        let maxAgeArray = response.map(r =>
+        let maxAgeArray = categories.map(r =>
           r.courses
             .map(c => c.maxAge)
             .filter(function(x) {
@@ -79,10 +91,13 @@ const CoursesPage = props => {
         );
         const ageMax = Math.max(...[].concat(...maxAgeArray));
         setAgeSliderValue([ageMin, ageMax]);
+        setSelectedStartDate(Date.now());
+        setSelectedEndDate(new Date(Date.now() + 1000 * 60 * 60 * 24 * 365));
+        setChips([]);
         setIsLoading(false);
       } catch {}
     })();
-  }, []);
+  }, [clearFilter]);
 
   const handleMultipleSelect = event => {
     setMultipleSelect(event.target.value);
@@ -167,30 +182,29 @@ const CoursesPage = props => {
     setFilteredCategories(byDate);
   };
 
+  const resetFilter = () => {
+    setClearFilter(!clearFilter);
+  };
+
   const handleDeleteChip = key => {
     setChips(chips => chips.filter(chip => chip.key !== key));
     switch (key) {
       case 'minAge':
         setAgeSliderValue([0, ageSliderValue[1]]);
-        applyFilter();
         break;
       case 'maxAge':
         setAgeSliderValue([ageSliderValue[0], 100]);
-        applyFilter();
         break;
       case 'startDate':
         setSelectedStartDate(null);
-        applyFilter();
         break;
       case 'endDate':
         setSelectedEndDate(null);
-        applyFilter();
         break;
       default:
         setMultipleSelect(multipleSelect =>
           multipleSelect.filter(ms => ms !== key)
         );
-        applyFilter();
     }
   };
 
@@ -321,6 +335,13 @@ const CoursesPage = props => {
                         <Grid item lg={3} md={3} xs={6}>
                           <Button color="primary" onClick={applyFilter}>
                             Filter anwenden
+                          </Button>
+                        </Grid>
+
+                        {/* CLEAR FILTER BUTTON*/}
+                        <Grid item lg={3} md={3} xs={6}>
+                          <Button onClick={resetFilter}>
+                            Filter zurücksetzen
                           </Button>
                         </Grid>
                       </MuiPickersUtilsProvider>
