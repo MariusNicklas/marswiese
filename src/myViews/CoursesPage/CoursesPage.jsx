@@ -36,6 +36,7 @@ const useSectionPillsStyles = makeStyles(sectionPillsStyle);
 const useCoursesPageStyles = makeStyles(CoursesPageStyle);
 
 const CoursesPage = props => {
+  // styles
   const basicClasses = useBasicStyles();
   const mainPageClasses = useMainPageStyles();
   const sectionPillsClasses = useSectionPillsStyles();
@@ -45,18 +46,18 @@ const CoursesPage = props => {
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
 
+  // filter states
   const [multipleSelect, setMultipleSelect] = useState([]);
-  const [ageSliderValue, setAgeSliderValue] = useState([0, 100]);
-  const [selectedStartDate, setSelectedStartDate] = useState(Date.now());
-  const [selectedEndDate, setSelectedEndDate] = useState(
-    new Date(Date.now() + 1000 * 60 * 60 * 24 * 365)
-  );
+  const [ageSliderValue, setAgeSliderValue] = useState([]);
+  const [selectedStartDate, setSelectedStartDate] = useState();
+  const [selectedEndDate, setSelectedEndDate] = useState();
   const [chips, setChips] = useState([]);
 
   const handleAgeSliderChange = (event, newValue) => {
     setAgeSliderValue(newValue);
   };
 
+  // SET CATEGORIES ON MOUNT
   useEffect(() => {
     (async () => {
       try {
@@ -64,13 +65,13 @@ const CoursesPage = props => {
         const response = await getCoursesByCategory();
         setCategories(response);
         setMultipleSelect(
-          response.filter(cat => cat.courses.length > 0).map(cat => cat.label)
+          categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
         );
         applyFilter();
         // calculate min and max age for double slider
         /*const minAgeArray = response.map(r => r.courses.map(c => c.minAge));
         const ageMin = Math.min(...[].concat(...minAgeArray));
-        let maxAgeArray = response.map(r =>
+        let maxAgeArray = categories.map(r =>
           r.courses
             .map(c => c.maxAge)
             .filter(function(x) {
