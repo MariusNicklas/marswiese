@@ -63,12 +63,12 @@ const CoursesPage = props => {
         setIsLoading(true);
         const response = await getCoursesByCategory();
         setCategories(response);
-        setFilteredCategories(response);
         setMultipleSelect(
           response.filter(cat => cat.courses.length > 0).map(cat => cat.label)
         );
+        applyFilter();
         // calculate min and max age for double slider
-        const minAgeArray = response.map(r => r.courses.map(c => c.minAge));
+        /*const minAgeArray = response.map(r => r.courses.map(c => c.minAge));
         const ageMin = Math.min(...[].concat(...minAgeArray));
         let maxAgeArray = response.map(r =>
           r.courses
@@ -78,7 +78,7 @@ const CoursesPage = props => {
             })
         );
         const ageMax = Math.max(...[].concat(...maxAgeArray));
-        setAgeSliderValue([ageMin, ageMax]);
+        setAgeSliderValue([ageMin, ageMax]);*/
         setIsLoading(false);
       } catch {}
     })();
@@ -121,32 +121,32 @@ const CoursesPage = props => {
       };
     });
 
-    if (ageSliderValue[0] > 0) {
-      newChips.push({
-        key: 'minAge',
-        label: 'ab ' + ageSliderValue[0] + ' Jahre'
-      });
-    }
-
-    if (ageSliderValue[1] < 100) {
-      newChips.push({
-        key: 'maxAge',
-        label: 'bis ' + ageSliderValue[1] + ' Jahre'
-      });
-    }
-
-    const byDate = byAge.map(category => {
-      return {
-        ...category,
-        courses: category.courses.filter(
-          course =>
-            new Date(course.timeUnits[0].startDate) >=
-              new Date(selectedStartDate) &&
-            new Date(course.timeUnits[course.timeUnits.length - 1].endDate) <=
-              new Date(selectedEndDate)
-        )
-      };
+    newChips.push({
+      key: 'minAge',
+      label: 'ab ' + ageSliderValue[0] + ' Jahre'
     });
+
+    newChips.push({
+      key: 'maxAge',
+      label: 'bis ' + ageSliderValue[1] + ' Jahre'
+    });
+
+    const byDate =
+      selectedStartDate !== null && selectedEndDate !== null
+        ? byAge.map(category => {
+            return {
+              ...category,
+              courses: category.courses.filter(
+                course =>
+                  new Date(course.timeUnits[0].startDate) >=
+                    new Date(selectedStartDate) &&
+                  new Date(
+                    course.timeUnits[course.timeUnits.length - 1].endDate
+                  ) <= new Date(selectedEndDate)
+              )
+            };
+          })
+        : byAge;
 
     if (selectedStartDate !== null) {
       newChips.push({
@@ -167,30 +167,36 @@ const CoursesPage = props => {
     setFilteredCategories(byDate);
   };
 
+  const clearFilter = () => {
+    setFilteredCategories(categories);
+    setMultipleSelect(
+      categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
+    );
+    setAgeSliderValue([0, 100]);
+    setSelectedStartDate(Date.now());
+    setSelectedEndDate(new Date(Date.now() + 1000 * 60 * 60 * 24 * 365));
+    setChips([]);
+  };
+
   const handleDeleteChip = key => {
     setChips(chips => chips.filter(chip => chip.key !== key));
     switch (key) {
       case 'minAge':
         setAgeSliderValue([0, ageSliderValue[1]]);
-        applyFilter();
         break;
       case 'maxAge':
         setAgeSliderValue([ageSliderValue[0], 100]);
-        applyFilter();
         break;
       case 'startDate':
         setSelectedStartDate(null);
-        applyFilter();
         break;
       case 'endDate':
         setSelectedEndDate(null);
-        applyFilter();
         break;
       default:
         setMultipleSelect(multipleSelect =>
           multipleSelect.filter(ms => ms !== key)
         );
-        applyFilter();
     }
   };
 
@@ -316,14 +322,21 @@ const CoursesPage = props => {
                             }}
                           />
                         </Grid>
-
-                        {/* APPLY FILTER BUTTON*/}
-                        <Grid item lg={3} md={3} xs={6}>
-                          <Button color="primary" onClick={applyFilter}>
-                            Filter anwenden
-                          </Button>
-                        </Grid>
                       </MuiPickersUtilsProvider>
+
+                      {/* APPLY FILTER BUTTON*/}
+                      <Grid item lg={3} md={3} xs={6}>
+                        <Button color="primary" onClick={applyFilter}>
+                          Filter anwenden
+                        </Button>
+                      </Grid>
+
+                      {/* CLEAR FILTER BUTTON*/}
+                      <Grid item lg={3} md={3} xs={6}>
+                        <Button color="primary" onClick={clearFilter}>
+                          Filter zurücksetzen
+                        </Button>
+                      </Grid>
                     </Grid>
 
                     {/* CHIPS FOR SET FILTERS */}
@@ -358,6 +371,7 @@ const CoursesPage = props => {
                                   md={3}
                                 >
                                   <Card
+                                    small
                                     onClick={() =>
                                       props.history.push('/Kurs/' + course._id)
                                     }

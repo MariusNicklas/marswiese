@@ -15,6 +15,7 @@ export const useMainPageStyles = makeStyles(MainPageStyle);
 
 export const withParallaxPaper = WrappedComponent => ({
   title,
+  subtitle,
   image,
   children
 }) => {
@@ -38,6 +39,9 @@ export const withParallaxPaper = WrappedComponent => ({
               className={mainPageClasses.textCenter}
             >
               <h2 className={mainPageClasses.title}>{title}</h2>
+              {subtitle ? (
+                <h4 className={mainPageClasses.title}>{subtitle}</h4>
+              ) : null}
             </GridItem>
           </GridContainer>
         </div>

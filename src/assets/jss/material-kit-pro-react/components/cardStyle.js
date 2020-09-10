@@ -19,7 +19,7 @@ const cardStyle = {
     borderRadius: '6px',
     color: 'rgba(' + hexToRgb(blackColor) + ', 0.87)',
     background: whiteColor,
-    height: '150px',
+    height: '100%',
     width: '100%',
     boxShadow:
       '0 2px 2px 0 rgba(' +
@@ -43,6 +43,9 @@ const cardStyle = {
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  cardSmall: {
+    height: '150px'
   },
   cardPlain: {
     background: 'transparent',

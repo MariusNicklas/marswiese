@@ -1,35 +1,35 @@
 /*eslint-disable*/
-import React from "react";
+import React from 'react';
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import classNames from 'classnames';
 // @material-ui/core components
-import { Link } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import { Link } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 // @material-ui/icons
-import Favorite from "@material-ui/icons/Favorite";
+import Favorite from '@material-ui/icons/Favorite';
 // core components
-import Header from "components/Header/Header.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Parallax from "components/Parallax/Parallax.js";
-import Footer from "components/Footer/Footer.js";
-import Button from "components/CustomButtons/Button.js";
+import Header from 'components/Header/Header.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import Parallax from 'components/Parallax/Parallax.js';
+import Footer from 'components/Footer/Footer.js';
+import Button from 'components/CustomButtons/Button.js';
 // sections for this page
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import CampsSectionDescription from "myViews/CampsPage/Sections/CampsSectionDescription.js";
-import CampsSectionServices from "myViews/CampsPage/Sections/CampsSectionServices.js";
-import CampsSectionOffice from "myViews/CampsPage/Sections/CampsSectionOffice.js";
-import CampsSectionContact from "myViews/CampsPage/Sections/CampsSectionContact.js";
+import HeaderLinks from 'components/Header/HeaderLinks.js';
+import CampsSectionDescription from 'myViews/CampsPage/Sections/CampsSectionDescription.js';
+import CampsSectionServices from 'myViews/CampsPage/Sections/CampsSectionServices.js';
+import CampsSectionOffice from 'myViews/CampsPage/Sections/CampsSectionOffice.js';
+import CampsSectionContact from 'myViews/CampsPage/Sections/CampsSectionContact.js';
 
-import campsStyle from "assets/jss/material-kit-pro-react/views/campsStyle.js";
-import { BrowserRouter } from "react-router-dom";
+import campsStyle from 'assets/jss/material-kit-pro-react/views/campsStyle.js';
+import { BrowserRouter } from 'react-router-dom';
+import MarswieseFooter from 'myComponents/Footer/Footer';
 
 const useStyles = makeStyles(campsStyle);
 
 export default function AboutUsPage() {
-
   React.useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
@@ -37,7 +37,7 @@ export default function AboutUsPage() {
   const classes = useStyles();
   return (
     <BrowserRouter>
-      <Parallax image={require("assets/img/K1600_mars.JPG")} small>
+      <Parallax image={require('assets/img/K1600_mars.JPG')} small>
         <div className={classes.container}>
           <GridContainer justify="center">
             <GridItem
@@ -85,63 +85,7 @@ export default function AboutUsPage() {
           <CampsSectionContact />
         </div>
       </div>
-      <Footer
-        content={
-          <div>
-            <div className={classes.left}>
-              <List className={classes.list}>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="https://www.creative-tim.com/?ref=mkpr-about-us"
-                    className={classes.block}
-                    target="_blank"
-                  >
-                    Creative Tim
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="https://www.creative-tim.com/presentation?ref=mkpr-about-us"
-                    className={classes.block}
-                    target="_blank"
-                  >
-                    About us
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="//blog.creative-tim.com/"
-                    className={classes.block}
-                    target="_blank"
-                  >
-                    Blog
-                  </a>
-                </ListItem>
-                <ListItem className={classes.inlineBlock}>
-                  <a
-                    href="https://www.creative-tim.com/license?ref=mkpr-about-us"
-                    className={classes.block}
-                    target="_blank"
-                  >
-                    Licenses
-                  </a>
-                </ListItem>
-              </List>
-            </div>
-            <div className={classes.right}>
-              &copy; {1900 + new Date().getYear()} , made with{" "}
-              <Favorite className={classes.icon} /> by{" "}
-              <a
-                href="https://www.creative-tim.com?ref=mkpr-about-us"
-                target="_blank"
-              >
-                Creative Tim
-              </a>{" "}
-              for a better web.
-            </div>
-          </div>
-        }
-      />
+      <MarswieseFooter />
     </BrowserRouter>
   );
 }

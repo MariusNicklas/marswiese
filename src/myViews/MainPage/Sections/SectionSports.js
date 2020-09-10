@@ -21,6 +21,7 @@ function SectionSports() {
       <GridContainer>
         <GridItem xs={12} sm={5} md={7}>
           <Card
+            small
             onClick={() =>
               (window.location.href = 'https://www.climbonmarswiese.at/')
             }
@@ -39,6 +40,7 @@ function SectionSports() {
 
         <GridItem xs={12} sm={7} md={5}>
           <Card
+            small
             onClick={() =>
               (window.location.href = 'https://www.tennisclubs.at//')
             }
@@ -57,6 +59,7 @@ function SectionSports() {
 
         <GridItem xs={12} sm={6} md={6}>
           <Card
+            small
             raised
             background
             style={{
@@ -72,6 +75,7 @@ function SectionSports() {
 
         <GridItem xs={12} sm={6} md={6}>
           <Card
+            small
             raised
             background
             style={{

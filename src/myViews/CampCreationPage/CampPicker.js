@@ -57,8 +57,7 @@ function getSteps() {
     'Krankheiten/Allergien',
     'Welche Woche?',
     'Camps wählen',
-    'Randbetreuung',
-    'Abschließen'
+    'Randbetreuung'
   ];
 }
 
@@ -98,12 +97,6 @@ function getStepContent(stepIndex) {
       return (
         <Box minHeight="200px">
           <CampPickChildCare />
-        </Box>
-      );
-    case 6:
-      return (
-        <Box minHeight="200px">
-          <CampPickFinish />
         </Box>
       );
     default:

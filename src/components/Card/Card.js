@@ -20,7 +20,7 @@ export default function Card(props) {
     profile,
     blog,
     raised,
-    zooming,
+    small,
     background,
     pricing,
     color,
@@ -31,6 +31,7 @@ export default function Card(props) {
   const classes = useStyles();
   const cardClasses = classNames({
     [classes.card]: true,
+    [classes.cardSmall]: small,
     [classes.cardPlain]: plain,
     [classes.cardProfile]: profile || testimonial,
     [classes.cardBlog]: blog,
@@ -52,6 +53,7 @@ export default function Card(props) {
 
 Card.propTypes = {
   className: PropTypes.string,
+  small: PropTypes.bool,
   plain: PropTypes.bool,
   profile: PropTypes.bool,
   blog: PropTypes.bool,

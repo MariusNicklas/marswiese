@@ -30,9 +30,9 @@ const ShoppingCartItem = props => {
   }, [cartChangedToggle, setCart]);
 
   return (
-    <Link to="/mein-warenkorb">
+    <Link className={classes.dropdownLink} to="/mein-warenkorb">
       <IconButton
-        className={classes.navLink}
+        className={classes.navButton}
         edge="start"
         aria-controls="menu-appbar"
         aria-label="cart-navbar-item"
