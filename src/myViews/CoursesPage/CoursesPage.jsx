@@ -48,13 +48,22 @@ const CoursesPage = props => {
 
   // filter states
   const [multipleSelect, setMultipleSelect] = useState([]);
-  const [ageSliderValue, setAgeSliderValue] = useState([]);
-  const [selectedStartDate, setSelectedStartDate] = useState();
-  const [selectedEndDate, setSelectedEndDate] = useState();
+  const [ageSliderValue, setAgeSliderValue] = useState(null);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [chips, setChips] = useState([]);
 
   const handleAgeSliderChange = (event, newValue) => {
     setAgeSliderValue(newValue);
+  };
+
+  const initializeFilter = categories => {
+    setMultipleSelect(
+      categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
+    );
+    setAgeSliderValue([0, 100]);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
   };
 
   // SET CATEGORIES ON MOUNT
@@ -64,10 +73,8 @@ const CoursesPage = props => {
         setIsLoading(true);
         const response = await getCoursesByCategory();
         setCategories(response);
-        setMultipleSelect(
-          categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
-        );
-        applyFilter();
+        setFilteredCategories(response);
+        initializeFilter(response);
         // calculate min and max age for double slider
         /*const minAgeArray = response.map(r => r.courses.map(c => c.minAge));
         const ageMin = Math.min(...[].concat(...minAgeArray));
@@ -84,6 +91,60 @@ const CoursesPage = props => {
       } catch {}
     })();
   }, []);
+
+  const createChips = () => {
+    var newChips = [];
+
+    multipleSelect.map(value => newChips.push({ key: value, label: value }));
+
+    if (ageSliderValue[0] > 0) {
+      newChips.push({
+        key: 'minAge',
+        label: 'ab ' + ageSliderValue[0] + ' Jahre'
+      });
+    }
+
+    if (ageSliderValue[1] < 100) {
+      newChips.push({
+        key: 'maxAge',
+        label: 'bis ' + ageSliderValue[1] + ' Jahre'
+      });
+    }
+
+    if (selectedStartDate !== null) {
+      newChips.push({
+        key: 'startDate',
+        label: 'ab ' + justDate(selectedStartDate)
+      });
+    }
+
+    if (selectedEndDate !== null) {
+      newChips.push({
+        key: 'endDate',
+        label: 'bis ' + justDate(selectedEndDate)
+      });
+    }
+
+    setChips(newChips);
+  };
+
+  // run apply filter when chips change
+  useEffect(() => {
+    (async () => {
+      try {
+        applyFilter();
+      } catch {}
+    })();
+  }, [chips]);
+
+  // run create chips when filter options change
+  useEffect(() => {
+    (async () => {
+      try {
+        createChips();
+      } catch {}
+    })();
+  }, [multipleSelect, ageSliderValue, selectedStartDate, selectedEndDate]);
 
   const handleMultipleSelect = event => {
     setMultipleSelect(event.target.value);
@@ -107,9 +168,6 @@ const CoursesPage = props => {
       multipleSelect.includes(category.label)
     );
 
-    var newChips = [];
-    multipleSelect.map(value => newChips.push({ key: value, label: value }));
-
     // filter courses by selected age range
     const byAge = byCategory.map(category => {
       return {
@@ -120,16 +178,6 @@ const CoursesPage = props => {
             course.maxAge <= ageSliderValue[1]
         )
       };
-    });
-
-    newChips.push({
-      key: 'minAge',
-      label: 'ab ' + ageSliderValue[0] + ' Jahre'
-    });
-
-    newChips.push({
-      key: 'maxAge',
-      label: 'bis ' + ageSliderValue[1] + ' Jahre'
     });
 
     const byDate =
@@ -149,33 +197,11 @@ const CoursesPage = props => {
           })
         : byAge;
 
-    if (selectedStartDate !== null) {
-      newChips.push({
-        key: 'startDate',
-        label: 'ab ' + justDate(selectedStartDate)
-      });
-    }
-
-    if (selectedEndDate !== null) {
-      newChips.push({
-        key: 'endDate',
-        label: 'bis ' + justDate(selectedEndDate)
-      });
-    }
-
-    setChips(newChips);
-
     setFilteredCategories(byDate);
   };
 
   const clearFilter = () => {
-    setFilteredCategories(categories);
-    setMultipleSelect(
-      categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
-    );
-    setAgeSliderValue([0, 100]);
-    setSelectedStartDate(Date.now());
-    setSelectedEndDate(new Date(Date.now() + 1000 * 60 * 60 * 24 * 365));
+    initializeFilter(categories);
     setChips([]);
   };
 
