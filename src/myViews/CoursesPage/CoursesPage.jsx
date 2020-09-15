@@ -53,20 +53,18 @@ const CoursesPage = props => {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [chips, setChips] = useState([]);
 
-  const handleAgeSliderChange = (event, newValue) => {
-    setAgeSliderValue(newValue);
-  };
-
-  const initializeFilter = categories => {
+  // initialize filter options
+  const initializeFilter = (categories, callBack) => {
     setMultipleSelect(
       categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
     );
     setAgeSliderValue([0, 100]);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    setChips([], callBack);
   };
 
-  // SET CATEGORIES ON MOUNT
+  // set categories on mount
   useEffect(() => {
     (async () => {
       try {
@@ -75,23 +73,12 @@ const CoursesPage = props => {
         setCategories(response);
         setFilteredCategories(response);
         initializeFilter(response);
-        // calculate min and max age for double slider
-        /*const minAgeArray = response.map(r => r.courses.map(c => c.minAge));
-        const ageMin = Math.min(...[].concat(...minAgeArray));
-        let maxAgeArray = categories.map(r =>
-          r.courses
-            .map(c => c.maxAge)
-            .filter(function(x) {
-              return isFinite(x);
-            })
-        );
-        const ageMax = Math.max(...[].concat(...maxAgeArray));
-        setAgeSliderValue([ageMin, ageMax]);*/
         setIsLoading(false);
       } catch {}
     })();
   }, []);
 
+  // create chips array
   const createChips = () => {
     var newChips = [];
 
@@ -128,40 +115,7 @@ const CoursesPage = props => {
     setChips(newChips);
   };
 
-  // run apply filter when chips change
-  useEffect(() => {
-    (async () => {
-      try {
-        applyFilter();
-      } catch {}
-    })();
-  }, [chips]);
-
-  // run create chips when filter options change
-  useEffect(() => {
-    (async () => {
-      try {
-        createChips();
-      } catch {}
-    })();
-  }, [multipleSelect, ageSliderValue, selectedStartDate, selectedEndDate]);
-
-  const handleMultipleSelect = event => {
-    setMultipleSelect(event.target.value);
-  };
-
-  const handleStartDateChange = newDate => {
-    const date = new Date(newDate);
-    date.setHours(0, 0, 0, 0);
-    setSelectedStartDate(date);
-  };
-
-  const handleEndDateChange = newDate => {
-    const date = new Date(newDate);
-    date.setHours(0, 0, 0, 0);
-    setSelectedEndDate(date);
-  };
-
+  // apply filter to courses with selected options
   const applyFilter = () => {
     // filter courses by selected categries
     const byCategory = categories.filter(category =>
@@ -180,6 +134,7 @@ const CoursesPage = props => {
       };
     });
 
+    // filter courses by date
     const byDate =
       selectedStartDate !== null && selectedEndDate !== null
         ? byAge.map(category => {
@@ -198,11 +153,31 @@ const CoursesPage = props => {
         : byAge;
 
     setFilteredCategories(byDate);
+    createChips();
+  };
+
+  const handleMultipleSelect = event => {
+    setMultipleSelect(event.target.value);
+  };
+
+  const handleAgeSliderChange = (event, newValue) => {
+    setAgeSliderValue(newValue);
+  };
+
+  const handleStartDateChange = newDate => {
+    const date = new Date(newDate);
+    date.setHours(0, 0, 0, 0);
+    setSelectedStartDate(date);
+  };
+
+  const handleEndDateChange = newDate => {
+    const date = new Date(newDate);
+    date.setHours(0, 0, 0, 0);
+    setSelectedEndDate(date);
   };
 
   const clearFilter = () => {
-    initializeFilter(categories);
-    setChips([]);
+    initializeFilter(categories, applyFilter());
   };
 
   const handleDeleteChip = key => {
