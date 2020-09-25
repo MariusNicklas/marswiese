@@ -52,17 +52,26 @@ const CoursesPage = props => {
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [chips, setChips] = useState([]);
+  const [filtering, setFiltering] = useState(false);
 
   // initialize filter options
-  const initializeFilter = (categories, callBack) => {
+  const initializeFilter = categories => {
     setMultipleSelect(
       categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
     );
     setAgeSliderValue([0, 100]);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
-    setChips([], callBack);
+    setChips([]);
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        applyFilter();
+      } catch {}
+    })();
+  }, [filtering]);
 
   // set categories on mount
   useEffect(() => {
@@ -117,6 +126,7 @@ const CoursesPage = props => {
 
   // apply filter to courses with selected options
   const applyFilter = () => {
+    setFiltering(true);
     // filter courses by selected categries
     const byCategory = categories.filter(category =>
       multipleSelect.includes(category.label)
@@ -154,6 +164,7 @@ const CoursesPage = props => {
 
     setFilteredCategories(byDate);
     createChips();
+    setFiltering(false);
   };
 
   const handleMultipleSelect = event => {
@@ -177,7 +188,7 @@ const CoursesPage = props => {
   };
 
   const clearFilter = () => {
-    initializeFilter(categories, applyFilter());
+    initializeFilter(categories);
   };
 
   const handleDeleteChip = key => {
@@ -335,7 +346,7 @@ const CoursesPage = props => {
 
                       {/* CLEAR FILTER BUTTON*/}
                       <Grid item lg={3} md={3} xs={6}>
-                        <Button color="primary" onClick={clearFilter}>
+                        <Button onClick={clearFilter}>
                           Filter zurücksetzen
                         </Button>
                       </Grid>

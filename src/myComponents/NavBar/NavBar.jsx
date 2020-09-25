@@ -7,7 +7,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 // own components
 import LocationItem from './LocationItem';
-import HomeItem from './HomeItem';
 import BookingsItem from './BookingsItem';
 import ShoppingCartItem from './ShoppingCartItem';
 import LoginItem from './LoginItem';
@@ -64,9 +63,6 @@ const HeaderLinks = props => {
 
   return (
     <List className={classes.list + ' ' + classes.mlAuto}>
-      <ListItem className={classes.listItem}>
-        <HomeItem />
-      </ListItem>
       <ListItem className={classes.listItem}>
         <LocationItem />
       </ListItem>

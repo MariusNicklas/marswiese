@@ -1,34 +1,26 @@
 /*eslint-disable*/
-import React from "react";
+import React from 'react';
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import classNames from 'classnames';
 // react components used to create a google map
 import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker,
-} from "react-google-maps";
+  Marker
+} from 'react-google-maps';
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import { makeStyles } from '@material-ui/core/styles';
 // @material-ui/icons
-import Favorite from "@material-ui/icons/Favorite";
-import PinDrop from "@material-ui/icons/PinDrop";
-import Phone from "@material-ui/icons/Phone";
-import BusinessCenter from "@material-ui/icons/BusinessCenter";
+import PinDrop from '@material-ui/icons/PinDrop';
+import Phone from '@material-ui/icons/Phone';
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import InfoArea from "components/InfoArea/InfoArea.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Button from "components/CustomButtons/Button.js";
-import Footer from "components/Footer/Footer.js";
+import GridContainer from 'components/Grid/GridContainer.js';
+import GridItem from 'components/Grid/GridItem.js';
+import InfoArea from 'components/InfoArea/InfoArea.js';
+import Footer from 'components/Footer/Footer.js';
 
-import contactUsStyle from "assets/jss/material-kit-pro-react/views/contactUsStyle.js";
+import contactUsStyle from 'assets/jss/material-kit-pro-react/views/contactUsStyle.js';
 
 const CustomSkinMap = withScriptjs(
   withGoogleMap(() => (
@@ -40,64 +32,64 @@ const CustomSkinMap = withScriptjs(
         zoomControl: true,
         styles: [
           {
-            featureType: "water",
+            featureType: 'water',
             stylers: [
               { saturation: 43 },
               { lightness: -11 },
-              { hue: "#0088ff" },
-            ],
+              { hue: '#0088ff' }
+            ]
           },
           {
-            featureType: "road",
-            elementType: "geometry.fill",
+            featureType: 'road',
+            elementType: 'geometry.fill',
             stylers: [
-              { hue: "#ff0000" },
+              { hue: '#ff0000' },
               { saturation: -100 },
-              { lightness: 99 },
-            ],
+              { lightness: 99 }
+            ]
           },
           {
-            featureType: "road",
-            elementType: "geometry.stroke",
-            stylers: [{ color: "#808080" }, { lightness: 54 }],
+            featureType: 'road',
+            elementType: 'geometry.stroke',
+            stylers: [{ color: '#808080' }, { lightness: 54 }]
           },
           {
-            featureType: "landscape.man_made",
-            elementType: "geometry.fill",
-            stylers: [{ color: "#ece2d9" }],
+            featureType: 'landscape.man_made',
+            elementType: 'geometry.fill',
+            stylers: [{ color: '#ece2d9' }]
           },
           {
-            featureType: "poi.park",
-            elementType: "geometry.fill",
-            stylers: [{ color: "#ccdca1" }],
+            featureType: 'poi.park',
+            elementType: 'geometry.fill',
+            stylers: [{ color: '#ccdca1' }]
           },
           {
-            featureType: "road",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#767676" }],
+            featureType: 'road',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#767676' }]
           },
           {
-            featureType: "road",
-            elementType: "labels.text.stroke",
-            stylers: [{ color: "#ffffff" }],
+            featureType: 'road',
+            elementType: 'labels.text.stroke',
+            stylers: [{ color: '#ffffff' }]
           },
-          { featureType: "poi", stylers: [{ visibility: "off" }] },
+          { featureType: 'poi', stylers: [{ visibility: 'off' }] },
           {
-            featureType: "landscape.natural",
-            elementType: "geometry.fill",
-            stylers: [{ visibility: "on" }, { color: "#b8cb93" }],
+            featureType: 'landscape.natural',
+            elementType: 'geometry.fill',
+            stylers: [{ visibility: 'on' }, { color: '#b8cb93' }]
           },
-          { featureType: "poi.park", stylers: [{ visibility: "on" }] },
+          { featureType: 'poi.park', stylers: [{ visibility: 'on' }] },
           {
-            featureType: "poi.sports_complex",
-            stylers: [{ visibility: "on" }],
+            featureType: 'poi.sports_complex',
+            stylers: [{ visibility: 'on' }]
           },
-          { featureType: "poi.medical", stylers: [{ visibility: "on" }] },
+          { featureType: 'poi.medical', stylers: [{ visibility: 'on' }] },
           {
-            featureType: "poi.business",
-            stylers: [{ visibility: "simplified" }],
-          },
-        ],
+            featureType: 'poi.business',
+            stylers: [{ visibility: 'simplified' }]
+          }
+        ]
       }}
     >
       <Marker position={{ lat: 44.43353, lng: 26.093928 }} />
@@ -123,8 +115,8 @@ export default function ContactUsPage() {
             <div
               style={{
                 height: `100%`,
-                borderRadius: "6px",
-                overflow: "hidden",
+                borderRadius: '6px',
+                overflow: 'hidden'
               }}
             />
           }
