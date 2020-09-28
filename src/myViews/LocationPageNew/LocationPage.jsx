@@ -64,6 +64,7 @@ const LocationPage = () => {
           <div className={contactUsClasses.container}>
             <SectionGeneral />
           </div>
+          <hline />
           <div className={contactUsClasses.container}>
             <SectionGettingThere />
           </div>
