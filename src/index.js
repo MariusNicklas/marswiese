@@ -19,10 +19,9 @@ import SignUp from 'myViews/SignUp/SignUp.component.jsx';
 import SuccessPage from 'myViews/SuccessPage';
 import CancelPage from 'myViews/CancelPage';
 import FailurePage from 'myViews/FailurePage';
-import LocationPage from 'myViews/LocationPage/LocationPage';
+import LocationPage from 'myViews/LocationPageNew/LocationPage';
 import BookingsPage from 'myViews/BookingsPage/BookingsPage';
 import CartPage from 'myViews/CartPage/CartPage';
-import NavBar from 'myComponents/NavBar/NavBar';
 import CoursesPage from 'myViews/CoursesPage/CoursesPage';
 import CoursePage from 'myViews/CoursePage/CoursePage';
 import BookCoursePage from 'myViews/BookCoursePage/BookCoursePage';
@@ -62,7 +61,6 @@ const App = () => {
       <UserContext.Provider value={{ userData, setUserData }}>
         <ShoppingCartContextProvider>
           <Router history={hist}>
-            <NavBar />
             <Switch>
               {/* Auth Routes*/}
               <AuthRoute

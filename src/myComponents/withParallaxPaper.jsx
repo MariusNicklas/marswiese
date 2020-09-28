@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import MainPageStyle from '../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 import MarswieseFooter from './Footer/Footer.jsx';
+import Header from 'components/Header/Header.js';
+import HeaderLinks from './NavBar/NavBar.jsx';
 
 export const useMainPageStyles = makeStyles(MainPageStyle);
 
@@ -23,6 +25,17 @@ export const withParallaxPaper = WrappedComponent => ({
 
   return (
     <div>
+      <Header
+        brand="Marswiese"
+        links={<HeaderLinks dropdownHoverColor="secondary" />}
+        fixed
+        color="transparent"
+        changeColorOnScroll={{
+          height: 100,
+          color: 'primary'
+        }}
+      />
+
       <Parallax
         image={
           image

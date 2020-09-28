@@ -1,6 +1,4 @@
 import React, { useContext } from 'react';
-// core components
-import Header from 'components/Header/Header.js';
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -88,19 +86,4 @@ const HeaderLinks = props => {
   );
 };
 
-const NavBar = () => {
-  return (
-    <Header
-      brand="Marswiese"
-      links={<HeaderLinks dropdownHoverColor="secondary" />}
-      fixed
-      color="transparent"
-      changeColorOnScroll={{
-        height: 100,
-        color: 'primary'
-      }}
-    />
-  );
-};
-
-export default NavBar;
+export default HeaderLinks;

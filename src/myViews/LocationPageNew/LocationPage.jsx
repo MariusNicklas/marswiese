@@ -22,6 +22,8 @@ import { MapComponent } from '@terrestris/react-geo';
 import './LocationPageStyles.scss';
 
 import contactUsStyle from 'assets/jss/material-kit-pro-react/views/contactUsStyle.js';
+import Header from 'components/Header/Header';
+import HeaderLinks from 'myComponents/NavBar/NavBar';
 
 const marswieseLatLon = [16.2767598, 48.2394908];
 const marswieseWebMercator = fromLonLat(marswieseLatLon);
@@ -33,9 +35,10 @@ const layer = new OlLayerTile({
 const map = new OlMap({
   view: new OlView({
     center: marswieseWebMercator,
-    zoom: 18
+    zoom: 17
   }),
-  layers: [layer]
+  layers: [layer],
+  controls: []
 });
 
 const useStyles = makeStyles(contactUsStyle);
@@ -44,6 +47,12 @@ const LocationPage = () => {
   const classes = useStyles();
   return (
     <div>
+      <Header
+        brand="Marswiese"
+        links={<HeaderLinks dropdownHoverColor="secondary" />}
+        fixed
+        color="primary"
+      />
       <div className={classes.bigMap}>
         <MapComponent map={map} />
       </div>
