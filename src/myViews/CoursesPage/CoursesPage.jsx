@@ -397,13 +397,6 @@ const CoursesPage = props => {
                                   >
                                     <CardBody background>
                                       <h3>{course.courseName}</h3>
-                                      <h4>
-                                        {course.minAge}
-                                        {course.maxAge
-                                          ? ' - ' + course.maxAge
-                                          : '+'}
-                                        {' Jahre'}
-                                      </h4>
                                     </CardBody>
                                   </Card>
                                 </Grid>

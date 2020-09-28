@@ -28,6 +28,8 @@ import BookCoursePage from 'myViews/BookCoursePage/BookCoursePage';
 import CoursesOverviewPage from 'myViews/CoursesOverviewPage/CoursesOverviewPage';
 import { isLoggedIn } from 'APIUtils';
 import { getMe } from 'APIUtils';
+//styles
+import './index.css';
 
 var hist = createBrowserHistory();
 

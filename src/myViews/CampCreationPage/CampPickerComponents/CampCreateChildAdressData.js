@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import CustomInput from "components/CustomInput/CustomInput";
-import { Grid } from "@material-ui/core";
-import campCreationContext from "../CampCreationContext";
+import React, { useContext } from 'react';
+import CustomInput from 'components/CustomInput/CustomInput';
+import { Grid } from '@material-ui/core';
+import campCreationContext from '../CampCreationContext';
 
 const CampCreateChildPersonalData = () => {
   const { state, dispatch } = useContext(campCreationContext);
@@ -15,14 +15,13 @@ const CampCreateChildPersonalData = () => {
           labelText="Adresse"
           onChange={e =>
             dispatch({
-              type: "field-change",
-              field: "address",
+              type: 'field-change',
+              field: 'address',
               value: e.target.value
             })
           }
         />
       </Grid>
-
       <Grid item key="zip-input-grid-item" xs={12} md={6}>
         <CustomInput
           key="zip-input"
@@ -30,14 +29,13 @@ const CampCreateChildPersonalData = () => {
           labelText="Postleitzahl"
           onChange={e =>
             dispatch({
-              type: "field-change",
-              field: "zip",
+              type: 'field-change',
+              field: 'zip',
               value: e.target.value
             })
           }
         />
       </Grid>
-
       <Grid item key="city-input-grid-item" xs={12} md={6}>
         <CustomInput
           key="city-input"
@@ -45,14 +43,13 @@ const CampCreateChildPersonalData = () => {
           labelText="Stadt"
           onChange={e =>
             dispatch({
-              type: "field-change",
-              field: "city",
+              type: 'field-change',
+              field: 'city',
               value: e.target.value
             })
           }
         />
       </Grid>
-
       <Grid item key="emergency-number-input-grid-item" xs={12} md={6}>
         <CustomInput
           id="emergency-number-input"
@@ -60,8 +57,8 @@ const CampCreateChildPersonalData = () => {
           labelText="Notfallrufnummer"
           onChange={e =>
             dispatch({
-              type: "field-change",
-              field: "emergencyNumber",
+              type: 'field-change',
+              field: 'emergencyNumber',
               value: e.target.value
             })
           }
