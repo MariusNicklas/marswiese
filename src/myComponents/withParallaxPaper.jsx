@@ -7,11 +7,12 @@ import GridContainer from 'components/Grid/GridContainer.js';
 import GridItem from 'components/Grid/GridItem.js';
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
-
-import MainPageStyle from '../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+// own components
 import MarswieseFooter from './Footer/Footer.jsx';
 import Header from 'components/Header/Header.js';
 import HeaderLinks from './NavBar/NavBar.jsx';
+
+import MainPageStyle from '../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 
 export const useMainPageStyles = makeStyles(MainPageStyle);
 
