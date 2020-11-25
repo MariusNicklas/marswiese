@@ -49,7 +49,6 @@ const CoursesPage = props => {
 
   // filter states
   const [multipleSelect, setMultipleSelect] = useState([]);
-  //const [ageSliderValue, setAgeSliderValue] = useState(null);
   const [age, setAge] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
