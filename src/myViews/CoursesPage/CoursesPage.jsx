@@ -50,7 +50,7 @@ const CoursesPage = props => {
   // filter states
   const [multipleSelect, setMultipleSelect] = useState([]);
   //const [ageSliderValue, setAgeSliderValue] = useState(null);
-  const [minAge, setMinAge] = useState();
+  const [age, setAge] = useState();
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [chips, setChips] = useState([]);
@@ -62,7 +62,7 @@ const CoursesPage = props => {
       categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
     );
     //setAgeSliderValue([0, 100]);
-    setMinAge(0);
+    setAge(0);
     setSelectedStartDate(null);
     setSelectedEndDate(null);
     setChips([]);
@@ -108,10 +108,10 @@ const CoursesPage = props => {
         label: 'bis ' + ageSliderValue[1] + ' Jahre'
       });
     }*/
-    if (minAge !== 0) {
+    if (age !== 0) {
       newChips.push({
         key: 'minAge',
-        label: 'ab ' + minAge + ' Jahre'
+        label: age + ' Jahre'
       });
     }
 
@@ -148,7 +148,7 @@ const CoursesPage = props => {
           course =>
             /*course.minAge >= ageSliderValue[0] &&
             course.maxAge <= ageSliderValue[1]*/
-            course.minAge >= minAge
+            course.minAge <= age
         )
       };
     });
@@ -210,7 +210,7 @@ const CoursesPage = props => {
         setAgeSliderValue([ageSliderValue[0], 100]);
         break;*/
       case 'minAge':
-        setMinAge(0);
+        setAge(0);
         break;
       case 'startDate':
         setSelectedStartDate(null);
@@ -243,9 +243,8 @@ const CoursesPage = props => {
               return (
                 <div className={mainPageClasses.container}>
                   <div className={CoursesPageClasses.filterSection}>
-                    <Grid container justify="center">
-                      <Grid item lg={6} xs={12}>
-                        <Grid item>
+                    <Grid id="main-container" container spacing={10}>
+                      <Grid id="left-column" container item lg={6} xs={12} direction="column">
                           {/* CATEGORY SELECT */}
                           <Grid item>
                             <Typography id="category-select-label" gutterBottom>
@@ -293,29 +292,14 @@ const CoursesPage = props => {
                             </Select>
                           </Grid>
 
-                          {/* AGE SLIDER
-                        <Grid item lg={6} md={6} xs={12}>
-                          <div>
-                            <Typography id="age-slider-label" gutterBottom>
-                              Alter
-                            </Typography>
-                            <Slider
-                              value={ageSliderValue}
-                              onChange={handleAgeSliderChange}
-                              valueLabelDisplay="auto"
-                              aria-labelledby="range-slider"
-                            />
-                          </div>
-                        </Grid> */}
-
                           {/* AGE INPUT FIELD */}
                           <Grid item>
                             <ValidatedTextField
-                              id="minAge"
+                              id="age"
                               type="number"
-                              name="minAge"
-                              label="Mindestalter"
-                              value={minAge}
+                              name="age"
+                              label="Alter des Teilnehmers"
+                              value={age}
                               fullWidth
                               parentCallback={() => {}}
                               handleChange={e =>
@@ -324,16 +308,16 @@ const CoursesPage = props => {
                             field: 'minAge',
                             value: e.target.value.toString()
                           })*/
-                                setMinAge(e.target.value)
+                                setAge(e.target.value)
                               }
                               validators={[]}
                             />
                           </Grid>
 
                           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <Grid item md={6} xs={12} direction="row">
-                              <Grid item>
-                                {/* START DATE*/}
+                            <Grid id="third-row" container item>
+                              {/* START DATE*/}
+                              <Grid item lg={6} xs={12}>
                                 <Typography
                                   id="courses-start-date-label"
                                   gutterBottom
@@ -352,10 +336,10 @@ const CoursesPage = props => {
                                     'aria-label': 'change date'
                                   }}
                                 />
-                              </Grid>
-
-                              <Grid item>
-                                {/* END DATE*/}
+                            </Grid>
+                            
+                              {/* END DATE*/}
+                              <Grid item lg={6} xs={12}>
                                 <Typography
                                   id="courses-end-date-label"
                                   gutterBottom
@@ -377,11 +361,9 @@ const CoursesPage = props => {
                               </Grid>
                             </Grid>
                           </MuiPickersUtilsProvider>
-                        </Grid>
                       </Grid>
 
-                      <Grid item lg={6} xs={12}>
-                        <Grid item>
+                      <Grid container item direction="column" lg={6} xs={12} justify="center" alignItems="center">
                           {/* APPLY FILTER BUTTON*/}
                           <Grid item>
                             <Button color="primary" onClick={applyFilter}>
@@ -395,7 +377,6 @@ const CoursesPage = props => {
                               Filter zurücksetzen
                             </Button>
                           </Grid>
-                        </Grid>
                       </Grid>
                     </Grid>
                   </div>
