@@ -50,41 +50,23 @@ const CoursesPage = props => {
   // filter states
   const [multipleSelect, setMultipleSelect] = useState([]);
   //const [ageSliderValue, setAgeSliderValue] = useState(null);
-  const [age, setAge] = useState();
+  const [age, setAge] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [chips, setChips] = useState([]);
+  const [chipDeleted, setChipDeleted] = useState(false);
   const [filtering, setFiltering] = useState(false);
+  const [resettingFilter, setResettingFilter] = useState(false);
 
-  // initialize filter options
-  const initializeFilter = categories => {
-    setMultipleSelect(
-      categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
-    );
-    //setAgeSliderValue([0, 100]);
-    setAge(0);
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
-    setChips([]);
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        applyFilter();
-      } catch {}
-    })();
-  }, [filtering]);
-
-  // set categories on mount
+  // ON MOUNT
   useEffect(() => {
     (async () => {
       try {
         setIsLoading(true);
+        // get courses and save to state variable "categories"
         const response = await getCoursesByCategory();
-        console.log('Data from getCoursesByCategory:');
-        console.log(response);
         setCategories(response);
+        console.log(response)
         setFilteredCategories(response);
         initializeFilter(response);
         setIsLoading(false);
@@ -92,25 +74,25 @@ const CoursesPage = props => {
     })();
   }, []);
 
+  // initialize filter options
+  const initializeFilter = categories => {
+    setMultipleSelect(
+      categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
+    );
+    setAge(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+    setFiltering(!filtering)
+  };
+
   // create chips array
   const createChips = () => {
     var newChips = [];
 
     multipleSelect.map(value => newChips.push({ key: value, label: value }));
-
-    /*if (ageSliderValue[0] > 0) {
-      
-    }
-
-    if (ageSliderValue[1] < 100) {
+    if (age !== null) {
       newChips.push({
-        key: 'maxAge',
-        label: 'bis ' + ageSliderValue[1] + ' Jahre'
-      });
-    }*/
-    if (age !== 0) {
-      newChips.push({
-        key: 'minAge',
+        key: 'age',
         label: age + ' Jahre'
       });
     }
@@ -130,7 +112,28 @@ const CoursesPage = props => {
     }
 
     setChips(newChips);
+    console.log("chips set to ", newChips)
   };
+
+  // create chips when state variables change
+  useEffect(() => {
+    (async () => {
+      try {
+        createChips();
+      } catch {}
+    })();
+  }, [filtering]);
+
+  // apply filter when "filter" button is pressed or when filter was resetted
+  useEffect(() => {
+    (async () => {
+      try {
+        applyFilter();
+      } catch {}
+    })();
+  }, [chipDeleted, resettingFilter]);
+
+  
 
   // apply filter to courses with selected options
   const applyFilter = () => {
@@ -148,7 +151,7 @@ const CoursesPage = props => {
           course =>
             /*course.minAge >= ageSliderValue[0] &&
             course.maxAge <= ageSliderValue[1]*/
-            course.minAge <= age
+            age === null ? true : (course.minAge <= age && course.maxAge >= age)
         )
       };
     });
@@ -180,10 +183,6 @@ const CoursesPage = props => {
     setMultipleSelect(event.target.value);
   };
 
-  /*const handleAgeSliderChange = (event, newValue) => {
-    setAgeSliderValue(newValue);
-  };*/
-
   const handleStartDateChange = newDate => {
     const date = new Date(newDate);
     date.setHours(0, 0, 0, 0);
@@ -198,6 +197,7 @@ const CoursesPage = props => {
 
   const clearFilter = () => {
     initializeFilter(categories);
+    setResettingFilter(!resettingFilter);
   };
 
   const handleDeleteChip = key => {
@@ -209,19 +209,23 @@ const CoursesPage = props => {
       case 'maxAge':
         setAgeSliderValue([ageSliderValue[0], 100]);
         break;*/
-      case 'minAge':
-        setAge(0);
+      case 'age':
+        setAge(null);
+        setChipDeleted(!chipDeleted);
         break;
       case 'startDate':
         setSelectedStartDate(null);
+        setChipDeleted(!chipDeleted);
         break;
       case 'endDate':
         setSelectedEndDate(null);
+        setChipDeleted(!chipDeleted);
         break;
       default:
         setMultipleSelect(multipleSelect =>
           multipleSelect.filter(ms => ms !== key)
         );
+        setChipDeleted(!chipDeleted);
     }
   };
 
@@ -302,14 +306,7 @@ const CoursesPage = props => {
                               value={age}
                               fullWidth
                               parentCallback={() => {}}
-                              handleChange={e =>
-                                /*dispatch({
-                            type: 'field',
-                            field: 'minAge',
-                            value: e.target.value.toString()
-                          })*/
-                                setAge(e.target.value)
-                              }
+                              handleChange={e => setAge(e.target.value)}
                               validators={[]}
                             />
                           </Grid>
@@ -366,14 +363,14 @@ const CoursesPage = props => {
                       <Grid container item direction="column" lg={6} xs={12} justify="center" alignItems="center">
                           {/* APPLY FILTER BUTTON*/}
                           <Grid item>
-                            <Button color="primary" onClick={applyFilter}>
+                            <Button color="primary" onClick={() => applyFilter()}>
                               Filter anwenden
                             </Button>
                           </Grid>
 
                           {/* CLEAR FILTER BUTTON*/}
                           <Grid item>
-                            <Button onClick={clearFilter}>
+                            <Button onClick={() => clearFilter()}>
                               Filter zurücksetzen
                             </Button>
                           </Grid>
