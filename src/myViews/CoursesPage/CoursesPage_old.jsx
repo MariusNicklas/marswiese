@@ -27,7 +27,7 @@ import { justDate } from '../../DateUtils';
 
 // styles
 import basicsStyle from 'assets/jss/material-kit-pro-react/views/componentsSections/basicsStyle.js';
-import MainPageStyle from 'assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
+import MainPageStyle from '../../assets/jss/material-kit-pro-react/myViews/mainPageStyle.js';
 import sectionPillsStyle from 'assets/jss/material-kit-pro-react/views/blogPostsSections/sectionPillsStyle.js';
 import CoursesPageStyle from './CoursesPageStyles';
 
@@ -36,179 +36,199 @@ const useMainPageStyles = makeStyles(MainPageStyle);
 const useSectionPillsStyles = makeStyles(sectionPillsStyle);
 const useCoursesPageStyles = makeStyles(CoursesPageStyle);
 
+const CoursesPage = props => {
+  // styles
+  const basicClasses = useBasicStyles();
+  const mainPageClasses = useMainPageStyles();
+  const sectionPillsClasses = useSectionPillsStyles();
+  const CoursesPageClasses = useCoursesPageStyles();
 
-const CoursesPage = (props) => {
-    // styles
-    const basicClasses = useBasicStyles();
-    const mainPageClasses = useMainPageStyles();
-    const sectionPillsClasses = useSectionPillsStyles();
-    const CoursesPageClasses = useCoursesPageStyles();
+  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
 
-    // state
-    const [isLoading, setIsLoading] = useState(true);
-    const [categories, setCategories] = useState({});
-    const [fieldState, setFieldState] = useState({age: "", startDate: null, endDate: null, categoryLabels: []});
-    const [chips, setChips] = useState([]);
-    const [filterState, setFilterState] = useState({})
+  // filter states
+  const [multipleSelect, setMultipleSelect] = useState([]);
+  const [age, setAge] = useState(null);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [chips, setChips] = useState([]);
+  const [chipDeleted, setChipDeleted] = useState(false);
+  const [filtering, setFiltering] = useState(false);
+  const [resettingFilter, setResettingFilter] = useState(false);
 
-    // ON MOUNT
-    useEffect(() => {
-        (async () => {
-        try {
-            setIsLoading(true);
-            const response = await getCoursesByCategory();
-            // save only categories that actually have courses
-            setCategories(response.filter(cat => cat.courses.length > 0));
-            setIsLoading(false);
-        } catch {}
-        })();
-    }, []);
-  
-    useEffect(() => {
-      (async () => {
-        try {
-          setFilterState({
-            categories: categories
-          });
+  // ON MOUNT
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        // get courses and save to state variable "categories"
+        const response = await getCoursesByCategory();
+        setCategories(response);
+        console.log(response)
+        setFilteredCategories(response);
+        initializeFilter(response);
+        setIsLoading(false);
       } catch {}
-      })();
-    }, [categories]);
-  
-    // create chips when state variable "filterState" changes
-    useEffect(() => {
-      (async () => {
-        try {
-          createChips();
-      } catch {}
-      })();
-    }, [filterState]);
+    })();
+  }, []);
 
-    // update "fieldState" when "filterState" changes
-    useEffect(() => {
-      (async () => {
-        try {
-          console.log("filter state set to:", filterState);
-          setFieldState({
-            ...fieldState,
-            categoryLabels: filterState.categories.map(cat => cat.label)
-          });
-      } catch {}
-      })();
-    }, [filterState]);
-
-    useEffect(() => {
-      (async () => {
-        try {
-          console.log("field state changed to: ", fieldState);
-      } catch {}
-      })();
-    }, [fieldState]);
-
-    const handleMultipleSelect = event => {
-        setFieldState({...fieldState, categoryLabels: event.target.value});
-    };
-    
-    const handleStartDateChange = newDate => {
-        const date = new Date(newDate);
-        date.setHours(0, 0, 0, 0);
-        setFieldState({...fieldState, startDate: date});
-    };
-    
-    const handleEndDateChange = newDate => {
-        const date = new Date(newDate);
-        date.setHours(0, 0, 0, 0);
-        setFieldState({...fieldState, endDate: date});
-    };
-
-    // apply filter to courses with selected options
-  const applyFilter = () => {
-    // filter courses by selected categories
-    var newFilterState = {
-      categories: categories.filter(cat => fieldState.categoryLabels.includes(cat.label))
-    };
-
-    // filter courses by selected age range
-    if (fieldState.age != "") {
-      newFilterState = {
-        ...newFilterState,
-        categories: newFilterState.categories.map(category => {
-          return {
-            ...category,
-            courses: category.courses.filter(
-              course =>
-                course.minAge <= fieldState.age && course.maxAge >= fieldState.age
-            )
-          };
-        })
-      };
-    }
-    
-    if (fieldState.startDate !== null && fieldState.endDate != null) {
-      newFilterState = {
-        ...newFilterState,
-        categories: newFilterState.categories.filter(cat => cat.courses.filter(
-          course =>
-            new Date(course.timeUnits[0].startDate) >=
-            new Date(fieldState.startDate) &&
-            new Date(
-              course.timeUnits[course.timeUnits.length - 1].endDate
-            ) <= new Date(fieldState.endDate)
-        ))
-      };
-    }
-    
-    setFilterState(newFilterState);
-    };
-
-    // create chips array
-    const createChips = () => {
-      var newChips = [];
-
-      filterState.categories.map(cat => newChips.push({ key: cat.label, label: cat.label }));
-        
-      if (fieldState.age !== "") {
-        newChips.push({
-          key: 'age',
-          label: fieldState.age + ' Jahre'
-        });
-      }
-
-      if (fieldState.startDate !== null) {
-        newChips.push({
-          key: 'startDate',
-          label: 'ab ' + justDate(fieldState.startDate)
-        });
-      }
-
-      if (fieldState.endDate !== null) {
-        newChips.push({
-          key: 'endDate',
-          label: 'bis ' + justDate(fieldState.endDate)
-        });
-      }
-      
-      setChips(newChips);
-    };
-
-    const handleDeleteChip = key => {
-      // remove chip with key "key" from array
-        switch (key) {
-          case 'age':
-            setFilterState({...filterState, age: ""});
-            break;
-          case 'startDate':
-            setFilterState({...filterState, startDate: null});
-            break;
-          case 'endDate':
-            setFilterState({...filterState, endDate: null});
-            break;
-          default:
-            setFilterState({...filterState, categories: filterState.categories.filter(cat => cat.label !== key)});
-            break;
-        }
+  // initialize filter options
+  const initializeFilter = categories => {
+    setMultipleSelect(
+      categories.filter(cat => cat.courses.length > 0).map(cat => cat.label)
+    );
+    setAge(null);
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+    setFiltering(!filtering)
   };
 
-    return (
+  // create chips array
+  const createChips = () => {
+    var newChips = [];
+
+    multipleSelect.map(value => newChips.push({ key: value, label: value }));
+    if (age !== null) {
+      newChips.push({
+        key: 'age',
+        label: age + ' Jahre'
+      });
+    }
+
+    if (selectedStartDate !== null) {
+      newChips.push({
+        key: 'startDate',
+        label: 'ab ' + justDate(selectedStartDate)
+      });
+    }
+
+    if (selectedEndDate !== null) {
+      newChips.push({
+        key: 'endDate',
+        label: 'bis ' + justDate(selectedEndDate)
+      });
+    }
+
+    setChips(newChips);
+    console.log("chips set to ", newChips)
+  };
+
+  // create chips when state variables change
+  useEffect(() => {
+    (async () => {
+      try {
+        createChips();
+      } catch {}
+    })();
+  }, [filtering]);
+
+  // apply filter when "filter" button is pressed or when filter was resetted
+  useEffect(() => {
+    (async () => {
+      try {
+        applyFilter();
+      } catch {}
+    })();
+  }, [chipDeleted, resettingFilter]);
+
+  
+
+  // apply filter to courses with selected options
+  const applyFilter = () => {
+    setFiltering(true);
+    // filter courses by selected categries
+    const byCategory = categories.filter(category =>
+      multipleSelect.includes(category.label)
+    );
+
+    // filter courses by selected age range
+    const byAge = byCategory.map(category => {
+      return {
+        ...category,
+        courses: category.courses.filter(
+          course =>
+            /*course.minAge >= ageSliderValue[0] &&
+            course.maxAge <= ageSliderValue[1]*/
+            age === null ? true : (course.minAge <= age && course.maxAge >= age)
+        )
+      };
+    });
+
+    // filter courses by date
+    const byDate =
+      selectedStartDate !== null && selectedEndDate !== null
+        ? byAge.map(category => {
+            return {
+              ...category,
+              courses: category.courses.filter(
+                course =>
+                  new Date(course.timeUnits[0].startDate) >=
+                    new Date(selectedStartDate) &&
+                  new Date(
+                    course.timeUnits[course.timeUnits.length - 1].endDate
+                  ) <= new Date(selectedEndDate)
+              )
+            };
+          })
+        : byAge;
+
+    setFilteredCategories(byDate);
+    createChips();
+    setFiltering(false);
+  };
+
+  const handleMultipleSelect = event => {
+    setMultipleSelect(event.target.value);
+  };
+
+  const handleStartDateChange = newDate => {
+    const date = new Date(newDate);
+    date.setHours(0, 0, 0, 0);
+    setSelectedStartDate(date);
+  };
+
+  const handleEndDateChange = newDate => {
+    const date = new Date(newDate);
+    date.setHours(0, 0, 0, 0);
+    setSelectedEndDate(date);
+  };
+
+  const clearFilter = () => {
+    initializeFilter(categories);
+    setResettingFilter(!resettingFilter);
+  };
+
+  const handleDeleteChip = key => {
+    setChips(chips => chips.filter(chip => chip.key !== key));
+    switch (key) {
+      /*case 'minAge':
+        setAgeSliderValue([0, ageSliderValue[1]]);
+        break;
+      case 'maxAge':
+        setAgeSliderValue([ageSliderValue[0], 100]);
+        break;*/
+      case 'age':
+        setAge(null);
+        setChipDeleted(!chipDeleted);
+        break;
+      case 'startDate':
+        setSelectedStartDate(null);
+        setChipDeleted(!chipDeleted);
+        break;
+      case 'endDate':
+        setSelectedEndDate(null);
+        setChipDeleted(!chipDeleted);
+        break;
+      default:
+        setMultipleSelect(multipleSelect =>
+          multipleSelect.filter(ms => ms !== key)
+        );
+        setChipDeleted(!chipDeleted);
+    }
+  };
+
+  return (
     <DivWithParallaxPaper
       title="Kurse"
       image="https://www.marswiese.at/wordpress/wp-content/uploads/Banner3.jpg"
@@ -236,7 +256,7 @@ const CoursesPage = (props) => {
                             <Select
                               multiple
                               fullWidth
-                              value={fieldState.categoryLabels}
+                              value={multipleSelect}
                               onChange={handleMultipleSelect}
                               MenuProps={{
                                 className: basicClasses.selectMenu,
@@ -257,18 +277,20 @@ const CoursesPage = (props) => {
                                 Mehrfachauswahl
                               </MenuItem>
 
-                              {categories.map(cat =>
+                              {categories.map(category =>
+                                category.courses.length > 0 ? (
                                   <MenuItem
                                     classes={{
                                       root: basicClasses.selectMenuItem,
                                       selected:
                                         basicClasses.selectMenuItemSelectedMultiple
                                     }}
-                                    key={cat.label}
-                                    value={cat.label}
+                                    key={category.id}
+                                    value={category.label}
                                   >
-                                    {cat.label}
+                                    {category.label}
                                   </MenuItem>
+                                ) : null
                               )}
                             </Select>
                           </Grid>
@@ -280,13 +302,10 @@ const CoursesPage = (props) => {
                               type="number"
                               name="age"
                               label="Alter des Teilnehmers"
-                              value={fieldState.age}
+                              value={age}
                               fullWidth
                               parentCallback={() => {}}
-                              handleChange={e => setFieldState({
-                                ...fieldState,
-                                age: e.target.value
-                              })}
+                              handleChange={e => setAge(e.target.value)}
                               validators={[]}
                             />
                           </Grid>
@@ -307,7 +326,7 @@ const CoursesPage = (props) => {
                                   format="dd/MM/yyyy"
                                   margin="normal"
                                   id="courses-start-date-picker"
-                                  value={fieldState.startDate}
+                                  value={selectedStartDate}
                                   onChange={handleStartDateChange}
                                   KeyboardButtonProps={{
                                     'aria-label': 'change date'
@@ -329,7 +348,7 @@ const CoursesPage = (props) => {
                                   format="dd/MM/yyyy"
                                   margin="normal"
                                   id="courses-end-date-picker"
-                                  value={fieldState.endDate}
+                                  value={selectedEndDate}
                                   onChange={handleEndDateChange}
                                   KeyboardButtonProps={{
                                     'aria-label': 'change date'
@@ -343,14 +362,14 @@ const CoursesPage = (props) => {
                       <Grid container item direction="column" lg={6} xs={12} justify="center" alignItems="center">
                           {/* APPLY FILTER BUTTON*/}
                           <Grid item>
-                            <Button color="primary" onClick={applyFilter}>
+                            <Button color="primary" onClick={() => applyFilter()}>
                               Filter anwenden
                             </Button>
                           </Grid>
 
                           {/* CLEAR FILTER BUTTON*/}
                           <Grid item>
-                          <Button onClick={() => setFilterState({ categories: categories })}>
+                            <Button onClick={() => clearFilter()}>
                               Filter zurücksetzen
                             </Button>
                           </Grid>
@@ -371,7 +390,7 @@ const CoursesPage = (props) => {
                   ))}
 
                   <Grid container spacing={2}>
-                    {filterState.categories.map(category => {
+                    {filteredCategories.map(category => {
                       return (
                         <React.Fragment key={category._id}>
                           {/* display title only when there are actually courses */}
@@ -421,6 +440,6 @@ const CoursesPage = (props) => {
       </div>
     </DivWithParallaxPaper>
   );
-}
+};
 
-export default CoursesPage
+export default CoursesPage;
